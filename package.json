@@ -1,0 +1,13 @@
+{
+  "name": "becker-ribeiro-adv",
+  "version": "1.0.0",
+  "description": "Site Institucional",
+  "license": "ISC",
+  "author": "Gerson Bernardo da Silva",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "deploy:hml": "copy .clasp-hml.json .clasp.json && clasp push",
+    "deploy:prod": "copy .clasp-prod.json .clasp.json && clasp push"
+  }
+}
