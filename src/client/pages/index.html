@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Becker & Ribeiro Advocacia</title>
+
+    <!-- Bootstrap 5 CSS via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome para ícones -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Injeção do nosso CSS Personalizado -->
+    <?!= include('styles'); ?>
+  </head>
+  <body>
+    <!-- O Cabeçalho (Menu) será injetado aqui futuramente -->
+    <?!= include('header'); ?>
+
+    <main>
+      <!-- SEÇÃO 1: Capa (Hero Section) -->
+      <section class="bg-principal py-5">
+        <div class="container py-5">
+          <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+              <h1 class="display-4 fw-bold mb-4">
+                Atendimento de qualidade aliado a profissionais de excelência.
+              </h1>
+              <p class="lead mb-4 opacity-75">
+                Soluções jurídicas personalizadas em Direito Imobiliário,
+                Direito das Famílias e Sucessões.
+              </p>
+              <a
+                href="https://wa.me/5551995840635"
+                target="_blank"
+                class="btn btn-dourado btn-lg shadow-sm"
+              >
+                <i class="fab fa-whatsapp me-2"></i>Falar com um Advogado
+              </a>
+            </div>
+            <div class="col-lg-6 text-center">
+              <!-- IMAGEM DO ESCRITÓRIO ATUALIZADA -->
+              <img
+                src="https://majb.online/shared/eduardo_adv/Escritorio.jpg"
+                alt="Interior do Escritório Becker & Ribeiro"
+                class="img-fluid rounded shadow-lg"
+                style="border: 3px solid var(--cor-destaque)"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 2: Áreas de Atuação (Serviços) -->
+      <section class="py-5">
+        <div class="container py-5">
+          <div class="text-center mb-5">
+            <h2 class="text-principal fw-bold">Conheça os nossos serviços</h2>
+            <p class="text-muted">
+              Conheça nossas soluções e como podemos ajudá-lo:
+            </p>
+          </div>
+
+          <div class="row g-4">
+            <!-- Card 1 -->
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                <i class="fas fa-users fa-3x mb-3 text-destaque"></i>
+                <h4 class="text-principal mb-3">Direito das Famílias</h4>
+                <p class="text-muted small">
+                  Orientação personalizada para o seu caso, aliado a um
+                  atendimento ágil e humanizado em situações de fragilidade.
+                </p>
+              </div>
+            </div>
+            <!-- Card 2 -->
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                <i class="fas fa-file-contract fa-3x mb-3 text-destaque"></i>
+                <h4 class="text-principal mb-3">Direito das Sucessões</h4>
+                <p class="text-muted small">
+                  Assessoria completa na perda de um ente familiar querido,
+                  determinando os procedimentos necessários para os herdeiros.
+                </p>
+              </div>
+            </div>
+            <!-- Card 3 -->
+            <div class="col-md-4">
+              <div class="card h-100 border-0 shadow-sm p-4 text-center">
+                <i class="fas fa-home fa-3x mb-3 text-destaque"></i>
+                <h4 class="text-principal mb-3">Direito Imobiliário</h4>
+                <p class="text-muted small">
+                  Atuação em regularização, acompanhamento de negócios
+                  imobiliários, usucapião e adjudicação.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO 3: Um pouco sobre o escritório -->
+      <section class="py-5 bg-fundo">
+        <div class="container py-5">
+          <div class="row align-items-center">
+            <!-- Início da alteração: Grid com as duas fotos separadas -->
+            <div class="col-lg-5 mb-4 mb-lg-0 text-center">
+              <div class="row g-3">
+                <div class="col-6">
+                  <img
+                    src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Eduardo-1-scaled.jpg"
+                    alt="Eduardo Becker"
+                    class="img-fluid rounded shadow"
+                  />
+                </div>
+                <div class="col-6">
+                  <img
+                    src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
+                    alt="Carolina Ribeiro"
+                    class="img-fluid rounded shadow"
+                  />
+                </div>
+              </div>
+            </div>
+            <!-- Fim da alteração -->
+            <div class="col-lg-7 px-lg-5">
+              <h2 class="text-principal fw-bold mb-4">
+                Um pouco sobre nosso escritório
+              </h2>
+              <p>
+                O escritório Becker & Ribeiro Advocacia nasceu da união dos
+                sócios Eduardo Becker da Rosa e Carolina Ribeiro Berny. Tem como
+                missão e compromisso prestar serviços jurídicos de qualidade,
+                oferecendo estratégias e soluções personalizadas conforme a
+                necessidade de cada cliente.
+              </p>
+              <p class="mb-4">
+                <strong
+                  >Confiança. Honestidade. Dedicação. Ética. Respeito.</strong
+                >
+              </p>
+              <!-- O link '?page=quemsomos' ativa o roteamento dinâmico que programamos no Code.js -->
+              <a href="?page=quemsomos" class="btn btn-outline-dark"
+                >Saiba mais sobre nós</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- O Rodapé será injetado aqui futuramente -->
+    <?!= include('footer'); ?>
+
+    <!-- Bootstrap JS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Injeção dos nossos Scripts Personalizados -->
+    <?!= include('scripts'); ?>
+  </body>
+</html>
