@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Área Exclusiva - Becker & Ribeiro</title>
+
+    <!-- Bootstrap 5 CSS via CDN -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome para ícones -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Injeção do nosso CSS Personalizado -->
+    <?!= include('styles'); ?>
+  </head>
+  <body class="bg-fundo">
+    <!-- Utilizamos a cor de fundo bege da paleta oficial -->
+
+    <!-- O Cabeçalho (Menu) é injetado aqui -->
+    <?!= include('header'); ?>
+
+    <main class="container py-5">
+      <div
+        class="row justify-content-center align-items-center"
+        style="min-height: 60vh"
+      >
+        <div class="col-md-6 col-lg-5">
+          <!-- Card de Login com borda superior dourada -->
+          <div
+            class="card border-0 shadow-lg"
+            style="border-top: 5px solid var(--cor-destaque) !important"
+          >
+            <div class="card-body p-5">
+              <!-- Título e Ícone -->
+              <div class="text-center mb-4">
+                <div
+                  class="bg-principal text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow"
+                  style="width: 70px; height: 70px"
+                >
+                  <i class="fas fa-lock fa-2x"></i>
+                </div>
+                <h3 class="fw-bold text-principal">Área Exclusiva</h3>
+                <p class="text-muted small">
+                  Acesso restrito para sócios e administração.
+                </p>
+              </div>
+
+              <!-- Formulário de Login Visual (Sem backend ainda) -->
+              <form
+                onsubmit="
+                  event.preventDefault();
+                  alert(
+                    'Em desenvolvimento! A autenticação e o banco de dados serão conectados em breve.',
+                  );
+                "
+              >
+                <!-- E-mail -->
+                <div class="mb-3">
+                  <label
+                    for="emailInput"
+                    class="form-label fw-semibold text-principal"
+                    >E-mail Corporativo</label
+                  >
+                  <div class="input-group shadow-sm">
+                    <span
+                      class="input-group-text bg-light text-muted border-end-0"
+                      ><i class="fas fa-envelope"></i
+                    ></span>
+                    <input
+                      type="email"
+                      class="form-control border-start-0 bg-light py-2"
+                      id="emailInput"
+                      placeholder="advogado@beckereribeiro.adv.br"
+                      required
+                    />
+                  </div>
+                </div>
+
+                <!-- Senha -->
+                <div class="mb-4">
+                  <label
+                    for="senhaInput"
+                    class="form-label fw-semibold text-principal"
+                    >Senha</label
+                  >
+                  <div class="input-group shadow-sm">
+                    <span
+                      class="input-group-text bg-light text-muted border-end-0"
+                      ><i class="fas fa-key"></i
+                    ></span>
+                    <input
+                      type="password"
+                      class="form-control border-start-0 bg-light py-2"
+                      id="senhaInput"
+                      placeholder="••••••••"
+                      required
+                    />
+                  </div>
+                  <div class="text-end mt-2">
+                    <a href="#" class="small text-decoration-none text-destaque"
+                      >Esqueceu a senha?</a
+                    >
+                  </div>
+                </div>
+
+                <!-- Botão de Entrar -->
+                <div class="d-grid gap-2 mt-4">
+                  <button
+                    type="submit"
+                    class="btn btn-dourado btn-lg shadow-sm"
+                  >
+                    Entrar no Sistema <i class="fas fa-sign-in-alt ms-2"></i>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- O Rodapé é injetado aqui -->
+    <?!= include('footer'); ?>
+
+    <!-- Bootstrap JS via CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Injeção dos nossos Scripts Personalizados -->
+    <?!= include('scripts'); ?>
+  </body>
+</html>
