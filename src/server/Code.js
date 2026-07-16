@@ -24,9 +24,9 @@ function doGet(e) {
 }
 
 /**
- * Função auxiliar para incluir componentes (header, footer, css, js) dentro das páginas.
- * Essa função será chamada diretamente de dentro dos arquivos .html
+ * Função auxiliar para incluir componentes e avaliar comandos do servidor
  */
 function include(filename) {
-  return HtmlService.createHtmlOutputFromFile('client/components/' + filename).getContent();
+  // Mudamos de createHtmlOutputFromFile para createTemplateFromFile().evaluate()
+  return HtmlService.createTemplateFromFile('client/components/' + filename).evaluate().getContent();
 }

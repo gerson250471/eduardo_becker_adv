@@ -22,23 +22,37 @@
 
     <div class="collapse navbar-collapse" id="menuNavegacao">
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
-        <li class="nav-item px-3">
-          <a class="nav-link active" aria-current="page" href="?page=index"
-            >Home</a
-          >
-        </li>
-        <li class="nav-item px-3">
-          <a class="nav-link" href="#servicos">Serviços</a>
-        </li>
-        <li class="nav-item px-3">
-          <a class="nav-link" href="?page=quemsomos">Quem Somos</a>
-        </li>
-        <li class="nav-item px-3">
-          <a class="nav-link" href="?page=blog">Blog</a>
-        </li>
-        <li class="nav-item px-3">
-          <a class="nav-link" href="#contato">Contato</a>
-        </li>
+        <!-- Menu Centralizado com URLs Dinâmicas -->
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+          <li class="nav-item px-3">
+            <a
+              class="nav-link active"
+              aria-current="page"
+              href="<?= ScriptApp.getService().getUrl() ?>?page=index"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item px-3">
+            <a class="nav-link" href="#servicos">Serviços</a>
+          </li>
+          <li class="nav-item px-3">
+            <a
+              class="nav-link"
+              href="<?= ScriptApp.getService().getUrl() ?>?page=quemsomos"
+              >Quem Somos</a
+            >
+          </li>
+          <li class="nav-item px-3">
+            <a
+              class="nav-link"
+              href="<?= ScriptApp.getService().getUrl() ?>?page=blog"
+              >Blog</a
+            >
+          </li>
+          <li class="nav-item px-3">
+            <a class="nav-link" href="#contato">Contato</a>
+          </li>
+        </ul>
       </ul>
 
       <div class="d-flex align-items-center mt-3 mt-lg-0">
@@ -80,7 +94,11 @@
           style="opacity: 0.2; height: 35px"
         ></div>
 
-        <a class="btn btn-outline-light px-4" href="?page=admin">
+        <!-- Botão Área Exclusiva com URL Dinâmica -->
+        <a
+          class="btn btn-outline-light px-4"
+          href="<?= ScriptApp.getService().getUrl() ?>?page=admin"
+        >
           <i class="fas fa-lock me-2"></i>Área Exclusiva
         </a>
       </div>
