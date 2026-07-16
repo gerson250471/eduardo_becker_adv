@@ -1,8 +1,6 @@
-**/**
-!src/**
-!src/**/*
 node_modules/
 .git/
-package.json
-package-lock.json
+.github/
 .clasp*.json
+package*.json
+.gitignore
