@@ -1,14 +1,30 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-principal py-3 shadow-sm">
   <div class="container-fluid px-lg-5">
-    <!-- Logotipo Limpo (Com URL Dinâmica corrigida) -->
+    <!-- Logotipo Totalmente Limpo (Reset completo de estilos) -->
     <a
       href="<?= ScriptApp.getService().getUrl() ?>?page=index"
-      class="text-decoration-none d-flex align-items-center"
+      style="
+        display: inline-block;
+        border: none;
+        outline: none;
+        background: transparent;
+        padding: 0;
+        margin: 0;
+        text-decoration: none;
+        box-shadow: none;
+      "
     >
       <img
         src="https://majb.online/shared/eduardo_adv/logo.png"
         alt="Becker & Ribeiro Advocacia"
-        style="max-height: 70px; width: auto; object-fit: contain"
+        style="
+          height: 75px;
+          width: auto;
+          object-fit: contain;
+          border: none;
+          outline: none;
+          padding: 0;
+        "
       />
     </a>
 
