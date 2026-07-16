@@ -1,11 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-principal shadow-sm py-3">
-  <div class="container">
-    <!-- Logotipo -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-principal py-3 shadow-sm">
+  <div class="container-fluid px-lg-5">
+    <!-- Logotipo (Esquerda) -->
     <a class="navbar-brand" href="?page=index">
       <img
         src="https://majb.online/shared/eduardo_adv/logo.png"
         alt="Becker & Ribeiro Advocacia"
-        height="45"
+        style="max-height: 80px; width: auto"
       />
     </a>
 
@@ -19,28 +19,56 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Links de Navegação -->
-    <div
-      class="collapse navbar-collapse justify-content-end"
-      id="menuNavegacao"
-    >
-      <ul class="navbar-nav align-items-center">
-        <li class="nav-item">
-          <a class="nav-link active" href="?page=index">Início</a>
+    <!-- Links de Navegação e Redes Sociais -->
+    <div class="collapse navbar-collapse" id="menuNavegacao">
+      <!-- Menu (Centralizado com mx-auto) -->
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+        <li class="nav-item px-3">
+          <a class="nav-link active" aria-current="page" href="?page=index"
+            >Home</a
+          >
         </li>
-        <li class="nav-item">
+        <li class="nav-item px-3">
+          <a class="nav-link" href="#servicos">Serviços</a>
+        </li>
+        <li class="nav-item px-3">
           <a class="nav-link" href="?page=quemsomos">Quem Somos</a>
         </li>
-        <li class="nav-item">
-          <!-- O botão da Área Exclusiva destacado com o ícone de cadeado -->
-          <a
-            class="btn btn-outline-light ms-lg-3 mt-2 mt-lg-0 px-4"
-            href="?page=admin"
-          >
-            <i class="fas fa-lock me-2"></i>Área Exclusiva
-          </a>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="?page=blog">Blog</a>
+        </li>
+        <li class="nav-item px-3">
+          <a class="nav-link" href="#contato">Contato</a>
         </li>
       </ul>
+
+      <!-- Ícones Redes Sociais (Direita) -->
+      <div class="d-flex align-items-center mt-3 mt-lg-0">
+        <a
+          href="https://wa.me/5551995840635"
+          target="_blank"
+          class="text-white text-decoration-none me-3 fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px; transition: 0.3s"
+        >
+          <i class="fab fa-whatsapp"></i>
+        </a>
+        <a
+          href="#"
+          target="_blank"
+          class="text-white text-decoration-none me-3 fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px; transition: 0.3s"
+        >
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a
+          href="#"
+          target="_blank"
+          class="text-white text-decoration-none fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 40px; height: 40px; transition: 0.3s"
+        >
+          <i class="fab fa-facebook-f"></i>
+        </a>
+      </div>
     </div>
   </div>
 </nav>
