@@ -116,50 +116,98 @@
         </div>
       </section>
 
-      <!-- SEÇÃO 3: Um pouco sobre o escritório -->
+      <!-- SEÇÃO 3: Os Sócios (Layout de Sobreposição) -->
+      <style>
+        .card-socio-overlap {
+          z-index: 10;
+        }
+        /* Aplica a sobreposição (margem negativa) apenas em telas grandes */
+        @media (min-width: 992px) {
+          .card-socio-overlap {
+            margin-left: -80px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+          }
+        }
+        .texto-justificado {
+          text-align: justify;
+        }
+      </style>
+
       <section class="py-5 bg-fundo">
-        <div class="container py-5">
-          <div class="row align-items-center">
-            <!-- Início da alteração: Grid com as duas fotos separadas -->
-            <div class="col-lg-5 mb-4 mb-lg-0 text-center">
-              <div class="row g-3">
-                <div class="col-6">
-                  <img
-                    src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Eduardo-1-scaled.jpg"
-                    alt="Eduardo Becker"
-                    class="img-fluid rounded shadow"
-                  />
-                </div>
-                <div class="col-6">
-                  <img
-                    src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
-                    alt="Carolina Ribeiro"
-                    class="img-fluid rounded shadow"
-                  />
+        <div class="container py-4">
+          <!-- Card Sócio: Eduardo Becker -->
+          <div class="row align-items-center mb-5 pb-lg-4">
+            <div class="col-lg-5 z-0">
+              <img
+                src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Eduardo-1-scaled.jpg"
+                alt="Eduardo Becker da Rosa"
+                class="img-fluid rounded-4 shadow-lg w-100"
+                style="object-fit: cover; max-height: 600px"
+              />
+            </div>
+            <div class="col-lg-7 mt-4 mt-lg-0">
+              <div
+                class="card border-0 rounded-4 shadow-lg bg-light card-socio-overlap"
+              >
+                <div class="card-body p-4 p-md-5">
+                  <p class="text-destaque mb-2">| Advogado – OAB/RS 123.319</p>
+                  <h2 class="text-principal text-uppercase fw-bold mb-4">
+                    Eduardo <span style="color: #212529">Becker</span>
+                  </h2>
+                  <p class="text-muted texto-justificado mb-0">
+                    Eduardo Becker é advogado inscrito na OAB/RS sob o n.
+                    123.319. Formou-se em Direito na Uniritter Canoas (2019).
+                    Pós-graduando em Direito Imobiliário. No escritório é
+                    responsável pelas áreas de direito imobiliário, bancário e
+                    civil.
+                  </p>
                 </div>
               </div>
             </div>
-            <!-- Fim da alteração -->
-            <div class="col-lg-7 px-lg-5">
-              <h2 class="text-principal fw-bold mb-4">
-                Um pouco sobre nosso escritório
-              </h2>
-              <p>
-                O escritório Becker & Ribeiro Advocacia nasceu da união dos
-                sócios Eduardo Becker da Rosa e Carolina Ribeiro Berny. Tem como
-                missão e compromisso prestar serviços jurídicos de qualidade,
-                oferecendo estratégias e soluções personalizadas conforme a
-                necessidade de cada cliente.
-              </p>
-              <p class="mb-4">
-                <strong
-                  >Confiança. Honestidade. Dedicação. Ética. Respeito.</strong
-                >
-              </p>
-              <!-- O link '?page=quemsomos' ativa o roteamento dinâmico que programamos no Code.js -->
-              <a href="?page=quemsomos" class="btn btn-outline-dark"
-                >Saiba mais sobre nós</a
+          </div>
+
+          <!-- Card Sócia: Carolina Ribeiro -->
+          <div class="row align-items-center">
+            <div class="col-lg-5 z-0">
+              <img
+                src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
+                alt="Carolina Ribeiro Berny"
+                class="img-fluid rounded-4 shadow-lg w-100"
+                style="object-fit: cover; max-height: 600px"
+              />
+            </div>
+            <div class="col-lg-7 mt-4 mt-lg-0">
+              <div
+                class="card border-0 rounded-4 shadow-lg bg-light card-socio-overlap"
               >
+                <div class="card-body p-4 p-md-5">
+                  <p class="text-destaque mb-2">| Advogada – OAB/RS 116.096</p>
+                  <h2 class="text-principal text-uppercase fw-bold mb-4">
+                    Carolina <span style="color: #212529">Ribeiro</span>
+                  </h2>
+                  <p class="text-muted texto-justificado mb-3">
+                    Carolina Ribeiro é advogada inscrita na OAB/RS sob o n.
+                    116.096. Formou-se em Direito na Uniritter Canoas (2018).
+                    Pós-graduada em Direito de Família e Sucessões pela Fundação
+                    Superior do Ministério Público (FMP). Mentorada pelos
+                    doutrinadores familiaristas Conrado Paulino e Cristiano
+                    Chaves na “Mentoria Direito em Prática – Família e
+                    Sucessões”. Associada ao Instituto Brasileiro de Direito de
+                    Família (IBDFAM). Realiza vários cursos profissionalizantes
+                    voltados para o planejamento sucessório e ao direito de
+                    família. No escritório é responsável pelas áreas de direito
+                    de família e sucessões, consumidor e saúde.
+                  </p>
+                  <p class="text-muted texto-justificado mb-0">
+                    Preza por um atendimento diferenciado com acolhimento,
+                    empatia, escuta ativa e sem preconcepções diante do contexto
+                    familiar apresentado. Seu objetivo é buscar a melhor solução
+                    para as relações familiares alcançando a devida proteção
+                    legal de seus clientes.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
