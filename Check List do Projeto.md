@@ -1,12 +1,12 @@
 📋 Checklist do Projeto — Becker & Ribeiro Advocacia
 🎨 Fase 1: Componentes Globais (header, styles e footer)
-[ ] 1.1 Ajuste do Tom de Verde: Reduzir um tom no verde do cabeçalho (#00382B ou similar mais suave).
+[x] 1.1 Ajuste do Tom de Verde: Reduzir um tom no verde do cabeçalho (#00382B ou similar mais suave).
 
-[ ] 1.2 Ajuste do Logo no Mobile: Corrigir proporção/margens para o logotipo aparecer perfeitamente responsivo no celular.
+[x] 1.2 Ajuste do Logo no Mobile: Corrigir proporção/margens para o logotipo aparecer perfeitamente responsivo no celular.
 
-[ ] 1.3 Botão do WhatsApp no Header: Adicionar botão/ícone do WhatsApp ao lado do logo (visível no mobile e desktop).
+[x] 1.3 Botão do WhatsApp no Header: Adicionar botão/ícone do WhatsApp ao lado do logo (visível no mobile e desktop).
 
-[ ] 1.4 Botão Flutuante do WhatsApp: Adicionar o botão verde fixo no canto inferior direito de todas as telas.
+[x] 1.4 Botão Flutuante do WhatsApp: Adicionar o botão verde fixo no canto inferior direito de todas as telas.
 
 🏠 Fase 2: Reestruturação da Home (index.html em Scroll Infinito)
 [ ] 2.1 Roteamento e Rolagem Suave (Smooth Scroll): Configurar o menu para que, estando na Home, os cliques rolem suavemente até a seção desejada (#quemsomos, #servicos, #avaliacoes, #contato).
