@@ -1,5 +1,5 @@
 // Configuração da Versão Atual do Sistema
-const VERSAO_SISTEMA = 'V 1.0.5';
+const VERSAO_SISTEMA = 'V 1.1.0';
 
 // ID do Banco de Dados (Google Sheets)
 const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
@@ -62,5 +62,38 @@ function buscarArtigosBlog() {
   } catch (erro) {
     Logger.log('Erro ao buscar artigos: ' + erro.toString());
     return [];
+  }
+}
+
+/**
+ * Salva os dados do formulário de contato na aba 'Contatos' da Planilha
+ */
+function salvarContato(dadosFormulario) {
+  try {
+    const ss = SpreadsheetApp.openById(ID_BANCO_DADOS);
+    let aba = ss.getSheetByName('Contatos');
+    
+    // Se a aba não existir, cria automaticamente com os cabeçalhos
+    if (!aba) {
+      aba = ss.insertSheet('Contatos');
+      aba.appendRow(['Data/Hora', 'Nome', 'Telefone/WhatsApp', 'E-mail', 'Cidade', 'Mensagem']);
+    }
+
+    const dataAtual = new Date().toLocaleString('pt-BR');
+
+    aba.appendRow([
+      dataAtual,
+      dadosFormulario.nome,
+      dadosFormulario.telefone,
+      dadosFormulario.email || 'Não informado',
+      dadosFormulario.cidade || 'Não informada',
+      dadosFormulario.mensagem
+    ]);
+
+    return { sucesso: true, mensagem: 'Mensagem enviada com sucesso!' };
+
+  } catch (erro) {
+    Logger.log('Erro ao salvar contato: ' + erro.toString());
+    return { sucesso: false, mensagem: 'Erro ao enviar mensagem. Tente novamente.' };
   }
 }
