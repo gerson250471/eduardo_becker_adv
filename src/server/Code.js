@@ -1,12 +1,3 @@
-// Configuração da Versão Atual do Sistema
-const VERSAO_SISTEMA = 'V 1.1.0';
-
-// ID do Banco de Dados (Google Sheets)
-const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
-
-/**
- * Função principal que responde às requisições GET
- */
 function doGet(e) {
   var page = e.parameter.page || 'index';
   var template;
@@ -14,10 +5,13 @@ function doGet(e) {
   try {
     template = HtmlService.createTemplateFromFile('client/pages/' + page);
   } catch (error) {
+    page = 'index';
     template = HtmlService.createTemplateFromFile('client/pages/index');
   }
   
+  // Repassa a versão do sistema e a página atual para o template
   template.versaoSistema = VERSAO_SISTEMA;
+  template.pageAtual = page;
   
   return template.evaluate()
     .setTitle('Becker & Ribeiro Advocacia')
@@ -28,9 +22,10 @@ function doGet(e) {
 /**
  * Função auxiliar para incluir componentes e avaliar comandos do servidor
  */
-function include(filename) {
+function include(filename, pageAtual) {
   var t = HtmlService.createTemplateFromFile('client/components/' + filename);
   t.versaoSistema = VERSAO_SISTEMA;
+  t.pageAtual = pageAtual || 'index'; // Repassa a página atual para o header/footer
   return t.evaluate().getContent();
 }
 

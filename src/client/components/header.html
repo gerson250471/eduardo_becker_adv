@@ -1,31 +1,15 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-principal py-3 shadow-sm">
   <div class="container-fluid px-lg-5">
-    <!-- Logotipo Totalmente Limpo (com target="_top" e domínio customizado) -->
+    <!-- Logotipo -->
     <a
       href="https://majbsistemas.com/adv/?page=index"
       target="_top"
-      style="
-        display: inline-block;
-        border: none;
-        outline: none;
-        background: transparent;
-        padding: 0;
-        margin: 0;
-        text-decoration: none;
-        box-shadow: none;
-      "
+      style="display: inline-block; border: none; outline: none; background: transparent; padding: 0; margin: 0; text-decoration: none; box-shadow: none;"
     >
       <img
         src="https://majb.online/shared/eduardo_adv/logo.png"
         alt="Becker & Ribeiro Advocacia"
-        style="
-          height: 75px;
-          width: auto;
-          object-fit: contain;
-          border: none;
-          outline: none;
-          padding: 0;
-        "
+        style="height: 75px; width: auto; object-fit: contain; border: none; outline: none; padding: 0;"
       />
     </a>
 
@@ -39,57 +23,65 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Links de Navegação, Redes Sociais e Área Exclusiva -->
+    <!-- Links de Navegação Dinâmicos -->
     <div class="collapse navbar-collapse" id="menuNavegacao">
-      <!-- Menu Centralizado -->
+      <!-- Menu Centralizado Dinâmico -->
       <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+        
         <li class="nav-item px-3">
           <a
-            class="nav-link active"
-            aria-current="page"
+            class="nav-link <?= (pageAtual === 'index') ? 'active border-bottom border-2 border-warning' : '' ?>"
+            <?= (pageAtual === 'index') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=index"
             target="_top"
             >Home</a
           >
         </li>
-        <!-- Links com "#" não precisam de target="_top" para ancoragem funcionar -->
+
         <li class="nav-item px-3">
           <a
-            class="nav-link"
+            class="nav-link <?= (pageAtual === 'servicos') ? 'active border-bottom border-2 border-warning' : '' ?>"
+            <?= (pageAtual === 'servicos') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=servicos"
             target="_top"
             >Serviços</a
           >
         </li>
+
         <li class="nav-item px-3">
           <a
-            class="nav-link"
+            class="nav-link <?= (pageAtual === 'quemsomos') ? 'active border-bottom border-2 border-warning' : '' ?>"
+            <?= (pageAtual === 'quemsomos') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=quemsomos"
             target="_top"
             >Quem Somos</a
           >
         </li>
+
         <li class="nav-item px-3">
           <a
-            class="nav-link"
+            class="nav-link <?= (pageAtual === 'blog') ? 'active border-bottom border-2 border-warning' : '' ?>"
+            <?= (pageAtual === 'blog') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=blog"
             target="_top"
             >Blog</a
           >
         </li>
+
         <li class="nav-item px-3">
           <a
-            class="nav-link"
+            class="nav-link <?= (pageAtual === 'contato') ? 'active border-bottom border-2 border-warning' : '' ?>"
+            <?= (pageAtual === 'contato') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=contato"
             target="_top"
             >Contato</a
           >
         </li>
+
       </ul>
 
-      <!-- Bloco da Direita (Ícones + Botão) -->
+      <!-- Bloco da Direita (Ícones + Botão Área Exclusiva) -->
       <div class="d-flex align-items-center mt-3 mt-lg-0">
-        <!-- Ícones de Redes Sociais mantidos iguais... -->
         <div class="d-flex me-3">
           <a
             href="https://wa.me/5551995840635"
@@ -125,9 +117,9 @@
           style="opacity: 0.2; height: 35px"
         ></div>
 
-        <!-- Botão Área Exclusiva customizado com URL principal -->
+        <!-- Botão Área Exclusiva -->
         <a
-          class="btn btn-outline-light px-4"
+          class="btn btn-outline-light px-4 <?= (pageAtual === 'admin') ? 'active bg-white text-dark' : '' ?>"
           href="https://majbsistemas.com/adv/?page=admin"
           target="_top"
         >
