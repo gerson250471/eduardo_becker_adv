@@ -2,7 +2,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <title>Área Exclusiva - Becker & Ribeiro</title>
+    <title>Área Exclusiva - Becker & Ribeiro Advocacia</title>
 
     <!-- Bootstrap 5 CSS via CDN -->
     <link
@@ -17,114 +17,102 @@
 
     <!-- Injeção do nosso CSS Personalizado -->
     <?!= include('styles'); ?>
+
+    <style>
+      .card-login {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+      .input-login {
+        padding: 12px 15px;
+        border-radius: 8px;
+      }
+      .input-login:focus {
+        border-color: var(--cor-destaque);
+        box-shadow: 0 0 0 3px rgba(184, 142, 47, 0.25);
+      }
+    </style>
   </head>
-  <body class="bg-fundo">
-    <!-- Utilizamos a cor de fundo bege da paleta oficial -->
+  <body class="bg-fundo d-flex flex-column min-vh-100">
+    <!-- Cabeçalho (Menu Dinâmico) -->
+    <?!= include('header', pageAtual); ?>
 
-    <!-- O Cabeçalho (Menu) é injetado aqui -->
-    <?!= include('header'); ?>
-
-    <main class="container py-5">
-      <div
-        class="row justify-content-center align-items-center"
-        style="min-height: 60vh"
-      >
-        <div class="col-md-6 col-lg-5">
-          <!-- Card de Login com borda superior dourada -->
-          <div
-            class="card border-0 shadow-lg"
-            style="border-top: 5px solid var(--cor-destaque) !important"
-          >
-            <div class="card-body p-5">
-              <!-- Título e Ícone -->
+    <main class="flex-grow-1 d-flex align-items-center py-5">
+      <div class="container py-4">
+        <div class="row justify-content-center">
+          <div class="col-md-6 col-lg-5">
+            <div class="card card-login bg-white p-4 p-md-5">
               <div class="text-center mb-4">
-                <div
-                  class="bg-principal text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 shadow"
-                  style="width: 70px; height: 70px"
-                >
-                  <i class="fas fa-lock fa-2x"></i>
-                </div>
-                <h3 class="fw-bold text-principal">Área Exclusiva</h3>
+                <i class="fas fa-lock text-destaque fs-1 mb-3"></i>
+                <h3 class="text-principal fw-bold mb-1">Área Exclusiva</h3>
                 <p class="text-muted small">
-                  Acesso restrito para sócios e administração.
+                  Acesso restrito aos sócios e colaboradores
                 </p>
               </div>
 
-              <!-- Formulário de Login Visual (Sem backend ainda) -->
-              <form
-                onsubmit="
-                  event.preventDefault();
-                  alert(
-                    'Em desenvolvimento! A autenticação e o banco de dados serão conectados em breve.',
-                  );
-                "
-              >
-                <!-- E-mail -->
+              <form id="formLogin" onsubmit="autenticarUsuario(event)">
                 <div class="mb-3">
                   <label
-                    for="emailInput"
-                    class="form-label fw-semibold text-principal"
-                    >E-mail Corporativo</label
+                    for="usuario"
+                    class="form-label text-muted small fw-semibold"
+                    >Usuário ou E-mail</label
                   >
-                  <div class="input-group shadow-sm">
-                    <span
-                      class="input-group-text bg-light text-muted border-end-0"
-                      ><i class="fas fa-envelope"></i
-                    ></span>
-                    <input
-                      type="email"
-                      class="form-control border-start-0 bg-light py-2"
-                      id="emailInput"
-                      placeholder="advogado@beckereribeiro.adv.br"
-                      required
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    class="form-control input-login"
+                    id="usuario"
+                    placeholder="Digite seu usuário"
+                    required
+                  />
                 </div>
 
-                <!-- Senha -->
                 <div class="mb-4">
                   <label
-                    for="senhaInput"
-                    class="form-label fw-semibold text-principal"
+                    for="senha"
+                    class="form-label text-muted small fw-semibold"
                     >Senha</label
                   >
-                  <div class="input-group shadow-sm">
-                    <span
-                      class="input-group-text bg-light text-muted border-end-0"
-                      ><i class="fas fa-key"></i
-                    ></span>
-                    <input
-                      type="password"
-                      class="form-control border-start-0 bg-light py-2"
-                      id="senhaInput"
-                      placeholder="••••••••"
-                      required
-                    />
-                  </div>
-                  <div class="text-end mt-2">
-                    <a href="#" class="small text-decoration-none text-destaque"
-                      >Esqueceu a senha?</a
-                    >
-                  </div>
+                  <input
+                    type="password"
+                    class="form-control input-login"
+                    id="senha"
+                    placeholder="••••••••"
+                    required
+                  />
                 </div>
 
-                <!-- Botão de Entrar -->
-                <div class="d-grid gap-2 mt-4">
-                  <button
-                    type="submit"
-                    class="btn btn-dourado btn-lg shadow-sm"
-                  >
-                    Entrar no Sistema <i class="fas fa-sign-in-alt ms-2"></i>
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  id="btnEntrar"
+                  class="btn btn-dourado w-100 py-2 fw-semibold rounded-3 mb-3"
+                >
+                  Acessar Painel
+                </button>
               </form>
+
+              <div
+                id="alertaLogin"
+                class="alert alert-danger mt-2"
+                style="display: none"
+              ></div>
+
+              <div class="text-center mt-3">
+                <a
+                  href="https://majbsistemas.com/adv/?page=index"
+                  class="text-muted small text-decoration-none"
+                >
+                  <i class="fas fa-arrow-left me-1"></i> Voltar ao site
+                  principal
+                </a>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </main>
 
-    <!-- O Rodapé é injetado aqui -->
+    <!-- Rodapé -->
     <?!= include('footer'); ?>
 
     <!-- Bootstrap JS via CDN -->
@@ -132,5 +120,48 @@
 
     <!-- Injeção dos nossos Scripts Personalizados -->
     <?!= include('scripts'); ?>
+
+    <script>
+      function autenticarUsuario(event) {
+        event.preventDefault();
+        const btn = document.getElementById("btnEntrar");
+        const alerta = document.getElementById("alertaLogin");
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i> Autenticando...';
+        alerta.style.display = "none";
+
+        const usuario = document.getElementById("usuario").value;
+        const senha = document.getElementById("senha").value;
+
+        if (typeof google !== "undefined" && google.script) {
+          google.script.run
+            .withSuccessHandler((resposta) => {
+              btn.disabled = false;
+              btn.innerText = "Acessar Painel";
+
+              if (resposta.sucesso) {
+                // Redireciona ou exibe o painel administrativo
+                alert("Login efetuado com sucesso!");
+              } else {
+                alerta.innerText =
+                  resposta.mensagem || "Usuário ou senha inválidos.";
+                alerta.style.display = "block";
+              }
+            })
+            .validarLogin(usuario, senha);
+        } else {
+          // Teste visual local
+          setTimeout(() => {
+            btn.disabled = false;
+            btn.innerText = "Acessar Painel";
+            alerta.innerText =
+              "Funcionalidade conectada à planilha do Google Sheets!";
+            alerta.style.display = "block";
+          }, 1000);
+        }
+      }
+    </script>
   </body>
 </html>
