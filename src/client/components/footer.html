@@ -36,21 +36,24 @@
         <ul class="list-unstyled small">
           <li class="mb-2">
             <a
-              href="<?= ScriptApp.getService().getUrl() ?>?page=index"
+              href="https://majbsistemas.com/adv/?page=index"
+              target="_top"
               class="text-white text-decoration-none opacity-75"
               >Página Inicial</a
             >
           </li>
           <li class="mb-2">
             <a
-              href="<?= ScriptApp.getService().getUrl() ?>?page=quemsomos"
+              href="https://majbsistemas.com/adv/?page=quemsomos"
+              target="_top"
               class="text-white text-decoration-none opacity-75"
               >Sobre o Escritório</a
             >
           </li>
           <li class="mb-2">
             <a
-              href="<?= ScriptApp.getService().getUrl() ?>?page=admin"
+              href="https://majbsistemas.com/adv/?page=admin"
+              target="_top"
               class="text-white text-decoration-none opacity-75"
               >Acesso de Sócios</a
             >
@@ -66,7 +69,11 @@
       <p class="mb-1">
         &copy; 2026 Becker & Ribeiro Advocacia. Todos os direitos reservados.
       </p>
-      <p class="mb-0">Desenvolvido por <strong>MAJB.SISTEMAS</strong></p>
+      <!-- Exibição da Versão do Sistema -->
+      <p class="mb-0 small" style="opacity: 0.5; font-size: 0.8rem">
+        Desenvolvido por MAJB Sistemas |
+        <span class="badge bg-secondary opacity-75"><?= versaoSistema ?></span>
+      </p>
     </div>
   </div>
 </footer>

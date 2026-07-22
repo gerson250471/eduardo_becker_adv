@@ -8,6 +8,10 @@
   "main": "index.js",
   "scripts": {
     "deploy:hml": "copy .clasp-hml.json .clasp.json && clasp push",
-    "deploy:prod": "copy .clasp-prod.json .clasp.json && clasp push"
+    "deploy:prod": "copy .clasp-prod.json .clasp.json && clasp push",
+    "sync-version": "node update-version.js",
+    "bump:patch": "yarn version --patch && yarn sync-version",
+    "bump:minor": "yarn version --minor && yarn sync-version",
+    "bump:major": "yarn version --major && yarn sync-version"
   }
 }

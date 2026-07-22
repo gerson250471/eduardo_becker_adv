@@ -5,3 +5,9 @@ node_modules/
 package*.json
 .gitignore
 yarn-error.log
+# Ignora arquivos de configuração e scripts locais do Node/Yarn
+update-version.js
+package.json
+yarn.lock
+node_modules/
+README.md
