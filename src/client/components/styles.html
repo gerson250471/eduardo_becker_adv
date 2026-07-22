@@ -1,45 +1,64 @@
 <style>
   :root {
-    /* Paleta Oficial da Becker & Ribeiro */
-    --cor-principal: #08453d;
-    --cor-destaque: #84652c;
-    --cor-fundo: #d6cfc4;
+    /* Tom de verde levemente mais suave/suave conforme pedido */
+    --cor-principal: #0d4234;
+    --cor-destaque: #b88e2f;
+    --cor-fundo: #f8f6f0;
   }
 
   body {
-    background-color: #ffffff;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-  }
-
-  /* Classes auxiliares para usar no HTML */
-  .bg-principal {
-    background-color: var(--cor-principal);
-    color: white;
-  }
-  .bg-fundo {
+    font-family: "Montserrat", sans-serif;
     background-color: var(--cor-fundo);
-  }
-  .text-principal {
-    color: var(--cor-principal);
-  }
-  .text-destaque {
-    color: var(--cor-destaque);
+    color: #333333;
   }
 
-  /* Botão personalizado */
+  .bg-principal {
+    background-color: var(--cor-principal) !important;
+  }
+
+  .text-principal {
+    color: var(--cor-principal) !important;
+  }
+
+  .text-destaque {
+    color: var(--cor-destaque) !important;
+  }
+
   .btn-dourado {
     background-color: var(--cor-destaque);
-    color: white;
+    color: #ffffff;
     border: none;
-    padding: 12px 25px;
     font-weight: 600;
-    transition: all 0.3s ease;
   }
 
   .btn-dourado:hover {
-    background-color: #6a5123;
-    color: white;
-    transform: translateY(-2px);
+    background-color: #9a7625;
+    color: #ffffff;
+  }
+
+  /* Botão Flutuante do WhatsApp no Canto Inferior Direito */
+  .btn-whats-flutuante {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 25px;
+    right: 25px;
+    background-color: #25d366;
+    color: #ffffff;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+  }
+
+  .btn-whats-flutuante:hover {
+    transform: scale(1.1);
+    color: #ffffff;
   }
 </style>

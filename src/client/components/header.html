@@ -1,21 +1,43 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-principal py-3 shadow-sm">
-  <div class="container-fluid px-lg-5">
-    <!-- Logotipo -->
-    <a
-      href="https://majbsistemas.com/adv/?page=index"
-      target="_top"
-      style="display: inline-block; border: none; outline: none; background: transparent; padding: 0; margin: 0; text-decoration: none; box-shadow: none;"
-    >
-      <img
-        src="https://majb.online/shared/eduardo_adv/logo.png"
-        alt="Becker & Ribeiro Advocacia"
-        style="height: 75px; width: auto; object-fit: contain; border: none; outline: none; padding: 0;"
-      />
-    </a>
+<nav
+  class="navbar navbar-expand-lg navbar-dark bg-principal py-2 py-lg-3 shadow-sm sticky-top"
+>
+  <div
+    class="container-fluid px-3 px-lg-5 d-flex align-items-center justify-content-between"
+  >
+    <!-- Lado Esquerdo: Logo + Botão Whats do Header -->
+    <div class="d-flex align-items-center gap-2 gap-md-3">
+      <a
+        href="https://majbsistemas.com/adv/?page=index"
+        target="_top"
+        class="d-inline-block text-decoration-none border-0 p-0 m-0"
+      >
+        <img
+          src="https://majb.online/shared/eduardo_adv/logo.png"
+          alt="Becker & Ribeiro Advocacia"
+          style="
+            height: 55px;
+            max-height: 65px;
+            width: auto;
+            object-fit: contain;
+          "
+        />
+      </a>
 
-    <!-- Botão menu responsivo para celular -->
+      <!-- Botão Whats rápido do topo (pedido pelo Eduardo entre o logo e menu) -->
+      <a
+        href="https://wa.me/5551995840635"
+        target="_blank"
+        class="btn btn-success btn-sm rounded-pill d-flex align-items-center px-2 px-md-3 py-1 text-white fw-semibold ms-1"
+        style="font-size: 0.8rem; background-color: #25d366; border: none"
+      >
+        <i class="fab fa-whatsapp me-1 fs-6"></i>
+        <span class="d-none d-sm-inline">Falar no Whats</span>
+      </a>
+    </div>
+
+    <!-- Botão Hamburguer para Celular -->
     <button
-      class="navbar-toggler"
+      class="navbar-toggler border-0"
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#menuNavegacao"
@@ -23,107 +45,65 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Links de Navegação Dinâmicos -->
+    <!-- Links de Navegação -->
     <div class="collapse navbar-collapse" id="menuNavegacao">
-      <!-- Menu Centralizado Dinâmico -->
-      <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
-        
-        <li class="nav-item px-3">
+      <ul
+        class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold text-center py-2 py-lg-0"
+      >
+        <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'index') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            <?= (pageAtual === 'index') ? 'aria-current="page"' : '' ?>
-            href="https://majbsistemas.com/adv/?page=index"
-            target="_top"
+            href="<?= (pageAtual === 'index') ? '#home' : 'https://majbsistemas.com/adv/?page=index' ?>"
+            target="<?= (pageAtual === 'index') ? '_self' : '_top' ?>"
             >Home</a
           >
         </li>
 
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'servicos') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            <?= (pageAtual === 'servicos') ? 'aria-current="page"' : '' ?>
-            href="https://majbsistemas.com/adv/?page=servicos"
-            target="_top"
+            href="<?= (pageAtual === 'index') ? '#servicos' : 'https://majbsistemas.com/adv/?page=servicos' ?>"
+            target="<?= (pageAtual === 'index') ? '_self' : '_top' ?>"
             >Serviços</a
           >
         </li>
 
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'quemsomos') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            <?= (pageAtual === 'quemsomos') ? 'aria-current="page"' : '' ?>
-            href="https://majbsistemas.com/adv/?page=quemsomos"
-            target="_top"
+            href="<?= (pageAtual === 'index') ? '#quemsomos' : 'https://majbsistemas.com/adv/?page=quemsomos' ?>"
+            target="<?= (pageAtual === 'index') ? '_self' : '_top' ?>"
             >Quem Somos</a
           >
         </li>
 
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'blog') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            <?= (pageAtual === 'blog') ? 'aria-current="page"' : '' ?>
             href="https://majbsistemas.com/adv/?page=blog"
             target="_top"
             >Blog</a
           >
         </li>
 
-        <li class="nav-item px-3">
+        <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'contato') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            <?= (pageAtual === 'contato') ? 'aria-current="page"' : '' ?>
-            href="https://majbsistemas.com/adv/?page=contato"
-            target="_top"
+            href="<?= (pageAtual === 'index') ? '#contato' : 'https://majbsistemas.com/adv/?page=contato' ?>"
+            target="<?= (pageAtual === 'index') ? '_self' : '_top' ?>"
             >Contato</a
           >
         </li>
-
       </ul>
 
-      <!-- Bloco da Direita (Ícones + Botão Área Exclusiva) -->
-      <div class="d-flex align-items-center mt-3 mt-lg-0">
-        <div class="d-flex me-3">
-          <a
-            href="https://wa.me/5551995840635"
-            target="_blank"
-            class="text-white text-decoration-none me-2 fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
-            style="width: 40px; height: 40px; transition: 0.3s"
-            onmouseover="this.style.backgroundColor = 'rgba(255,255,255,0.2)'"
-            onmouseout="this.style.backgroundColor = 'rgba(255,255,255,0.1)'"
-            ><i class="fab fa-whatsapp"></i
-          ></a>
-          <a
-            href="#"
-            target="_blank"
-            class="text-white text-decoration-none me-2 fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
-            style="width: 40px; height: 40px; transition: 0.3s"
-            onmouseover="this.style.backgroundColor = 'rgba(255,255,255,0.2)'"
-            onmouseout="this.style.backgroundColor = 'rgba(255,255,255,0.1)'"
-            ><i class="fab fa-instagram"></i
-          ></a>
-          <a
-            href="#"
-            target="_blank"
-            class="text-white text-decoration-none fs-5 bg-white bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
-            style="width: 40px; height: 40px; transition: 0.3s"
-            onmouseover="this.style.backgroundColor = 'rgba(255,255,255,0.2)'"
-            onmouseout="this.style.backgroundColor = 'rgba(255,255,255,0.1)'"
-            ><i class="fab fa-facebook-f"></i
-          ></a>
-        </div>
-
-        <div
-          class="vr bg-white mx-3 d-none d-lg-block"
-          style="opacity: 0.2; height: 35px"
-        ></div>
-
-        <!-- Botão Área Exclusiva -->
+      <!-- Botão Área Exclusiva na Direita -->
+      <div class="d-flex justify-content-center mt-2 mt-lg-0">
         <a
-          class="btn btn-outline-light px-4 <?= (pageAtual === 'admin') ? 'active bg-white text-dark' : '' ?>"
+          class="btn btn-outline-light btn-sm px-3 py-2 <?= (pageAtual === 'admin') ? 'active bg-white text-dark' : '' ?>"
           href="https://majbsistemas.com/adv/?page=admin"
           target="_top"
         >
-          <i class="fas fa-lock me-2"></i>Área Exclusiva
+          <i class="fas fa-lock me-1"></i>Área Exclusiva
         </a>
       </div>
     </div>
