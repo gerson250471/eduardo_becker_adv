@@ -55,61 +55,95 @@
         </div>
       </section>
 
-      <!-- SEÇÃO 3: Os Sócios -->
-      <section class="py-5">
-        <div class="container py-4">
-          <h3 class="text-center text-principal fw-bold mb-5">Nossos Sócios</h3>
+      <!-- SEÇÃO 3: Os Sócios (Layout de Sobreposição) -->
+      <style>
+        .card-socio-overlap {
+          z-index: 10;
+        }
+        /* Aplica a sobreposição (margem negativa) apenas em telas grandes */
+        @media (min-width: 992px) {
+          .card-socio-overlap {
+            margin-left: -80px;
+            margin-top: 40px;
+            margin-bottom: 40px;
+          }
+        }
+        .texto-justificado {
+          text-align: justify;
+        }
+      </style>
 
-          <div class="row g-5 justify-content-center">
-            <!-- Card Sócio: Eduardo -->
-            <div class="col-md-6 col-lg-4">
+      <section class="py-5 bg-fundo">
+        <div class="container py-4">
+          <!-- Card Sócio: Eduardo Becker -->
+          <div class="row align-items-center mb-5 pb-lg-4">
+            <div class="col-lg-5 z-0">
+              <img
+                src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Eduardo-1-scaled.jpg"
+                alt="Eduardo Becker da Rosa"
+                class="img-fluid rounded-4 shadow-lg w-100"
+                style="object-fit: cover; max-height: 600px"
+              />
+            </div>
+            <div class="col-lg-7 mt-4 mt-lg-0">
               <div
-                class="card h-100 border-0 shadow-sm overflow-hidden"
-                style="border-bottom: 4px solid var(--cor-destaque) !important"
+                class="card border-0 rounded-4 shadow-lg bg-light card-socio-overlap"
               >
-                <img
-                  src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Eduardo-1-scaled.jpg"
-                  class="card-img-top"
-                  alt="Eduardo Becker da Rosa"
-                  style="object-fit: cover; height: 400px; object-position: top"
-                />
-                <div class="card-body p-4 text-center bg-white">
-                  <h4 class="card-title text-principal fw-bold mb-1">
-                    Eduardo Becker
-                  </h4>
-                  <p class="text-destaque small fw-bold mb-3">SÓCIO FUNDADOR</p>
-                  <p class="card-text text-muted small">
-                    Atuação estratégica em litígios complexos e consultoria
-                    jurídica preventiva, sempre focado em resultados sólidos
-                    para seus clientes.
+                <div class="card-body p-4 p-md-5">
+                  <p class="text-destaque mb-2">| Advogado – OAB/RS 123.319</p>
+                  <h2 class="text-principal text-uppercase fw-bold mb-4">
+                    Eduardo <span style="color: #212529">Becker</span>
+                  </h2>
+                  <p class="text-muted texto-justificado mb-0">
+                    Eduardo Becker é advogado inscrito na OAB/RS sob o n.
+                    123.319. Formou-se em Direito na Uniritter Canoas (2019).
+                    Pós-graduando em Direito Imobiliário. No escritório é
+                    responsável pelas áreas de direito imobiliário, bancário e
+                    civil.
                   </p>
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Card Sócia: Carolina -->
-            <div class="col-md-6 col-lg-4">
+          <!-- Card Sócia: Carolina Ribeiro -->
+          <div class="row align-items-center">
+            <div class="col-lg-5 z-0">
+              <img
+                src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
+                alt="Carolina Ribeiro Berny"
+                class="img-fluid rounded-4 shadow-lg w-100"
+                style="object-fit: cover; max-height: 600px"
+              />
+            </div>
+            <div class="col-lg-7 mt-4 mt-lg-0">
               <div
-                class="card h-100 border-0 shadow-sm overflow-hidden"
-                style="border-bottom: 4px solid var(--cor-destaque) !important"
+                class="card border-0 rounded-4 shadow-lg bg-light card-socio-overlap"
               >
-                <img
-                  src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
-                  class="card-img-top"
-                  alt="Carolina Ribeiro Berny"
-                  style="object-fit: cover; height: 400px; object-position: top"
-                />
-                <div class="card-body p-4 text-center bg-white">
-                  <h4 class="card-title text-principal fw-bold mb-1">
-                    Carolina Ribeiro
-                  </h4>
-                  <p class="text-destaque small fw-bold mb-3">
-                    SÓCIA FUNDADORA
+                <div class="card-body p-4 p-md-5">
+                  <p class="text-destaque mb-2">| Advogada – OAB/RS 116.096</p>
+                  <h2 class="text-principal text-uppercase fw-bold mb-4">
+                    Carolina <span style="color: #212529">Ribeiro</span>
+                  </h2>
+                  <p class="text-muted texto-justificado mb-3">
+                    Carolina Ribeiro é advogada inscrita na OAB/RS sob o n.
+                    116.096. Formou-se em Direito na Uniritter Canoas (2018).
+                    Pós-graduada em Direito de Família e Sucessões pela Fundação
+                    Superior do Ministério Público (FMP). Mentorada pelos
+                    doutrinadores familiaristas Conrado Paulino e Cristiano
+                    Chaves na “Mentoria Direito em Prática – Família e
+                    Sucessões”. Associada ao Instituto Brasileiro de Direito de
+                    Família (IBDFAM). Realiza vários cursos profissionalizantes
+                    voltados para o planejamento sucessório e ao direito de
+                    família. No escritório é responsável pelas áreas de direito
+                    de família e sucessões, consumidor e saúde.
                   </p>
-                  <p class="card-text text-muted small">
-                    Vasta experiência em Direito Imobiliário e das Famílias,
-                    proporcionando um atendimento ágil e humanizado em cada
-                    caso.
+                  <p class="text-muted texto-justificado mb-0">
+                    Preza por um atendimento diferenciado com acolhimento,
+                    empatia, escuta ativa e sem preconcepções diante do contexto
+                    familiar apresentado. Seu objetivo é buscar a melhor solução
+                    para as relações familiares alcançando a devida proteção
+                    legal de seus clientes.
                   </p>
                 </div>
               </div>
