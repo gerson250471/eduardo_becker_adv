@@ -18,7 +18,6 @@
     <!-- Injeção do nosso CSS Personalizado -->
     <?!= include('styles'); ?>
 
-    <!-- Estilos específicos para os cartões de serviço -->
     <style>
       .card-servico {
         transition:
@@ -37,6 +36,23 @@
       .texto-justificado {
         text-align: justify;
       }
+      .btn-whatsapp-servico {
+        background: linear-gradient(180deg, #32b041 0%, #1c7c29 100%);
+        color: #ffffff;
+        font-weight: 600;
+        border: none;
+        border-radius: 8px;
+        padding: 12px 30px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .btn-whatsapp-servico:hover {
+        color: #ffffff;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      }
     </style>
   </head>
   <body class="bg-fundo">
@@ -45,214 +61,274 @@
 
     <main class="py-5">
       <div class="container py-4">
-        <!-- Cabeçalho da Seção -->
-        <div class="mb-5">
-          <p class="text-destaque mb-1 fw-semibold">| Serviços</p>
-          <h2 class="text-principal display-6 mb-2">
-            Conheça os <span class="fw-bold">nossos serviços</span>
-          </h2>
-          <p class="text-muted lead">
-            Conheça nossas soluções e como podemos ajudá-lo:
-          </p>
+        <!-- ================= VISÃO 1: GRADE DE SERVIÇOS ================= -->
+        <div id="visao-grade">
+          <!-- Cabeçalho da Seção -->
+          <div class="mb-5">
+            <p class="text-destaque mb-1 fw-semibold">| Serviços</p>
+            <h2 class="text-principal display-6 mb-2">
+              Conheça os <span class="fw-bold">nossos serviços</span>
+            </h2>
+            <p class="text-muted lead">
+              Conheça nossas soluções e como podemos ajudá-lo:
+            </p>
+          </div>
+
+          <!-- Grid de Serviços -->
+          <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            <!-- Card 1: Famílias -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito das Famílias
+                    </h4>
+                    <i
+                      class="fa-solid fa-hand-holding-heart icone-servico ms-3"
+                    ></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    As relações familiares nem sempre são fáceis e, não raras
+                    vezes, nos deparamos com clientes em situação de fragilidade
+                    diante de um problema familiar. Por isso você precisa de
+                    orientação personalizada para o seu caso...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('familias')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: Sucessões -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito das Sucessões
+                    </h4>
+                    <i class="fa-solid fa-scroll icone-servico ms-3"></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    A perda de um ente familiar querido gera direitos e
+                    obrigações àqueles que ficaram. É o direito sucessório que
+                    determina os procedimentos necessários para que os herdeiros
+                    possam regularizar o recebimento de bens...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('sucessoes')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Imobiliário -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito Imobiliário
+                    </h4>
+                    <i
+                      class="fa-solid fa-house-circle-check icone-servico ms-3"
+                    ></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    Área que regula os direitos envolvendo imóveis. Atuamos na
+                    regularização, acompanhamento de negócios imobiliários,
+                    usucapião, adjudicação, relação contratual envolvendo
+                    imóveis e entre outros...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('imobiliario')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Bancário -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito Bancário
+                    </h4>
+                    <i
+                      class="fa-solid fa-money-check-dollar icone-servico ms-3"
+                    ></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    Lidar com os bancos nunca é fácil e por isso é importante
+                    que você tenha ajuda. Converse com advogados que entendem de
+                    bancos, sejam fraudes, superendividamento, juros abusivos,
+                    ou outra falha...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('bancario')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5: Consumidor -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito do Consumidor
+                    </h4>
+                    <i class="fa-solid fa-cart-shopping icone-servico ms-3"></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    Consumimos muitos produtos e serviços ofertados por
+                    diferentes empresas que vão desde a energia elétrica, ao
+                    supermercado ou até algum produto dos sonhos. A atuação do
+                    advogado visa reestabelecer...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('consumidor')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6: Saúde -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+              >
+                <div class="card-body d-flex flex-column">
+                  <div
+                    class="d-flex justify-content-between align-items-start mb-3"
+                  >
+                    <h4 class="card-title text-principal fw-normal mb-0">
+                      Direito da Saúde
+                    </h4>
+                    <i class="fa-solid fa-stethoscope icone-servico ms-3"></i>
+                  </div>
+                  <p
+                    class="card-text text-muted texto-justificado small flex-grow-1"
+                  >
+                    Atuamos para efetivar o seu Direito à Saúde, seja em
+                    desfavor do Plano de Saúde ou mesmo do SUS. Utilizamos das
+                    liminares para um rápido fornecimento de Saúde, tanto para
+                    cirurgias ou medicamentos...
+                  </p>
+                  <a
+                    href="javascript:void(0)"
+                    onclick="abrirDetalhe('saude')"
+                    class="text-principal text-decoration-none mt-3 fw-semibold"
+                    >Saiba mais</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Grid de Serviços (3 colunas em telas grandes, 2 médias, 1 celular) -->
-        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-          <!-- Serviço 1: Direito das Famílias -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
+        <!-- ================= VISÃO 2: DETALHE DO SERVIÇO (INICIALMENTE OCULTO) ================= -->
+        <div id="visao-detalhe" style="display: none">
+          <div class="mb-4">
+            <button
+              onclick="voltarParaGrade()"
+              class="btn btn-outline-secondary btn-sm rounded-pill px-3"
             >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito das Famílias
-                  </h4>
-                  <i
-                    class="fa-solid fa-hand-holding-heart icone-servico ms-3"
-                  ></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  As relações familiares nem sempre são fáceis e, não raras
-                  vezes, nos deparamos com clientes em situação de fragilidade
-                  diante de um problema familiar. Por isso você precisa de
-                  orientação personalizada para o seu caso, aliado a um
-                  atendimento ágil, humanizado e com técnica jurídica de
-                  excelência.
-                </p>
-                <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
-                >
-              </div>
-            </div>
+              <i class="fas fa-arrow-left me-2"></i>Voltar para Serviços
+            </button>
           </div>
 
-          <!-- Serviço 2: Direito das Sucessões -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
-            >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito das Sucessões
-                  </h4>
-                  <i class="fa-solid fa-scroll icone-servico ms-3"></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  A perda de um ente familiar querido gera direitos e obrigações
-                  àqueles que ficaram. É o direito sucessório que determina os
-                  procedimentos necessários para que os herdeiros possam
-                  regularizar o recebimento de bens e valores a título de
-                  herança.
-                </p>
-                <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
-                >
+          <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+              <!-- Ícone Dourado do Serviço -->
+              <div class="mb-3">
+                <i
+                  id="detalhe-icone"
+                  class="icone-servico"
+                  style="font-size: 3.5rem"
+                ></i>
               </div>
-            </div>
-          </div>
 
-          <!-- Serviço 3: Direito Imobiliário -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
-            >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito Imobiliário
-                  </h4>
-                  <i
-                    class="fa-solid fa-house-circle-check icone-servico ms-3"
-                  ></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  Área que regula os direitos envolvendo imóveis. Atuamos na
-                  regularização, acompanhamento de negócios imobiliários,
-                  usucapião, adjudicação, relação contratual envolvendo imóveis
-                  e entre outros. Antes de comprar ou mesmo diante de problemas
-                  procure quem entende.
-                </p>
-                <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
-                >
+              <!-- Título -->
+              <h1
+                id="detalhe-titulo"
+                class="text-principal display-5 mb-4"
+              ></h1>
+
+              <!-- Descrição Curta -->
+              <p
+                id="detalhe-descricao"
+                class="text-muted lead texto-justificado mb-5 px-lg-4"
+              ></p>
+
+              <!-- Lista de Tópicos -->
+              <div class="d-flex justify-content-center text-start mb-5">
+                <ul
+                  id="detalhe-lista"
+                  class="list-unstyled lead text-muted"
+                  style="font-size: 1.05rem; line-height: 2"
+                ></ul>
               </div>
-            </div>
-          </div>
 
-          <!-- Serviço 4: Direito Bancário -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
-            >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito Bancário
-                  </h4>
-                  <i
-                    class="fa-solid fa-money-check-dollar icone-servico ms-3"
-                  ></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  Lidar com os bancos nunca é fácil e por isso é importante que
-                  você tenha ajuda. Converse com advogados que entendem de
-                  bancos, sejam fraudes, superendividamento, juros abusivos, ou
-                  outra falha dessas empresas que te prejudique.
-                </p>
+              <!-- Botão do WhatsApp do Serviço -->
+              <div class="mt-4">
                 <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
+                  href="https://wa.me/5551995840635"
+                  target="_blank"
+                  class="btn btn-whatsapp-servico btn-lg text-decoration-none d-inline-flex align-items-center"
                 >
-              </div>
-            </div>
-          </div>
-
-          <!-- Serviço 5: Direito do Consumidor -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
-            >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito do Consumidor
-                  </h4>
-                  <i class="fa-solid fa-cart-shopping icone-servico ms-3"></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  Consumimos muitos produtos e serviços ofertados por diferentes
-                  empresas que vão desde a energia elétrica, ao supermercado ou
-                  até algum produto dos sonhos. A atuação do advogado visa
-                  reestabelecer os seus direitos como consumidor através de
-                  indenizatórias de dano material ou moral, conforme os
-                  problemas ocorridos.
-                </p>
-                <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
-                >
-              </div>
-            </div>
-          </div>
-
-          <!-- Serviço 6: Direito da Saúde -->
-          <div class="col">
-            <div
-              class="card h-100 border-0 shadow-sm rounded-4 card-servico p-3 bg-white"
-            >
-              <div class="card-body d-flex flex-column">
-                <div
-                  class="d-flex justify-content-between align-items-start mb-3"
-                >
-                  <h4 class="card-title text-principal fw-normal mb-0">
-                    Direito da Saúde
-                  </h4>
-                  <i class="fa-solid fa-stethoscope icone-servico ms-3"></i>
-                </div>
-                <p
-                  class="card-text text-muted texto-justificado small flex-grow-1"
-                >
-                  Atuamos para efetivar o seu Direito à Saúde, seja em desfavor
-                  do Plano de Saúde ou mesmo do SUS. Utilizamos das liminares
-                  para um rápido fornecimento de Saúde, tanto para cirurgias ou
-                  medicamentos, mesmo que de altíssimo custo ou não cobertos
-                  dentro do Próprio SUS, contanto que cumprido os requisitos.
-                </p>
-                <a
-                  href="#"
-                  class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >Saiba mais</a
-                >
+                  <i class="fab fa-whatsapp me-2 fs-4"></i> Falar com
+                  especialista
+                </a>
               </div>
             </div>
           </div>
@@ -268,5 +344,124 @@
 
     <!-- Injeção dos nossos Scripts Personalizados -->
     <?!= include('scripts'); ?>
+
+    <!-- Lógica de Alternância de Tela e Base de Dados dos Serviços -->
+    <script>
+      const dadosServicos = {
+        familias: {
+          titulo: "Direito das Famílias",
+          icone: "fa-solid fa-hand-holding-heart",
+          descricao:
+            "As relações familiares nem sempre são fáceis e, não raras vezes, nos deparamos com clientes em situação de fragilidade diante de um problema familiar. Por isso você precisa de orientação personalizada para o seu caso, aliado a um atendimento ágil, humanizado e com técnica jurídica de excelência.",
+          topicos: [
+            "Divórcio",
+            "Reconhecimento e Dissolução de União Estável",
+            "Planejamento Matrimonial",
+            "Contrato de Namoro e União Estável",
+            "Alteração do Regime de Bens",
+            "Pensão Alimentícia",
+            "Guarda e Regulamentação de Convivência (Visitas)",
+            "Investigação de Paternidade",
+            "Adoção",
+          ],
+        },
+        sucessoes: {
+          titulo: "Direito das Sucessões",
+          icone: "fa-solid fa-scroll",
+          descricao:
+            "A perda de um ente familiar querido gera direitos e obrigações àqueles que ficaram. É o direito sucessório que determina os procedimentos necessários para que os herdeiros possam regularizar o recebimento de bens e valores a título de herança.",
+          topicos: [
+            "Inventário Judicial e Extrajudicial (cartórios)",
+            "Testamentos",
+            "Doações",
+            "Planejamento Sucessório e Patrimonial",
+          ],
+        },
+        imobiliario: {
+          titulo: "Direito Imobiliário",
+          icone: "fa-solid fa-house-circle-check",
+          descricao:
+            "Área que regula os direitos envolvendo imóveis. Atuamos na regularização, acompanhamento de negócios imobiliários, usucapião, adjudicação, relação contratual envolvendo imóveis e entre outros. Antes de comprar ou mesmo diante de problemas procure quem entende.",
+          topicos: [
+            "Relações contratuais envolvendo imóveis – compra e venda, cessão de direitos",
+            "Usucapião Judicial e Extrajudicial",
+            "Adjudicação Compulsória Judicial e Extrajudicial",
+            "Distrato Imobiliário (multipropriedade/timeshare)",
+            "Retificação e desmembramento de matrículas",
+            "Acompanhamento de transações imobiliárias",
+          ],
+        },
+        bancario: {
+          titulo: "Direito Bancário",
+          icone: "fa-solid fa-money-check-dollar",
+          descricao:
+            "Lidar com os bancos nunca é fácil e por isso é importante que você tenha ajuda. Converse com advogados que entendem de bancos, sejam fraudes, superendividamento, juros abusivos, ou outra falha dessas empresas que te prejudique.",
+          topicos: [
+            "Superendividamento – para quem possui mais de 50% do salário comprometido com bancos",
+            "Fraudes bancárias – empréstimos não solicitados, compras indevidas no cartão de crédito, fraude do motoboy, fraude do boleto falso e dentre outros",
+            "Redução de juros abusivos – reduzindo parcelas mensais",
+            "Devolução de juros de contratos já pagos",
+            'Cartão de Crédito Consignado, conhecido por "RMC" ou "Dívida Infinita"',
+            "Restituição de saldo de consórcio com correção monetária",
+            "Defesa em Processos de Cobrança movidos por Instituições Financeiras contra Clientes",
+          ],
+        },
+        consumidor: {
+          titulo: "Direito do Consumidor",
+          icone: "fa-solid fa-cart-shopping",
+          descricao:
+            "Consumimos muitos produtos e serviços ofertados por diferentes empresas que vão desde a energia elétrica, ao supermercado ou até algum produto dos sonhos. A atuação do advogado visa reestabelecer os seus direitos como consumidor através de indenizatórias de dano material ou moral, conforme os problemas ocorridos.",
+          topicos: [
+            "Danos morais e materiais na relação de consumo",
+            "Inscrição e negativação indevida em banco de dados e cadastro de inadimplentes (SPC e Serasa)",
+            "Abusos cometidos por companhias aéreas (atraso em voo, cancelamento, desvio de bagagem e overbooking)",
+            "Problemas com serviços de telefonia, energia elétrica, internet e outros",
+            "Atraso de entrega de produtos ou prestação de serviços",
+            "Fornecimento de produto com vício ou defeito",
+            "Restituição de saldos de consórcio com juros",
+          ],
+        },
+        saude: {
+          titulo: "Direito da Saúde",
+          icone: "fa-solid fa-stethoscope",
+          descricao:
+            "Atuamos para efetivar o seu Direito à Saúde, seja em desfavor do Plano de Saúde ou mesmo do SUS. Utilizamos das liminares para um rápido fornecimento de Saúde, tanto para cirurgias ou medicamentos, mesmo que de altíssimo custo ou não cobertos dentro do Próprio SUS, contanto que cumprido os requisitos.",
+          topicos: [
+            "Fornecimento de Medicamentos de Alto Custo pelo SUS ou Planos de Saúde;",
+            "Leitos de emergência, pelo SUS ou plano de saúde",
+            "Cirurgias, com urgência, ou utilização de equipamento de alto custo",
+          ],
+        },
+      };
+
+      function abrirDetalhe(chaveServico) {
+        const servico = dadosServicos[chaveServico];
+        if (!servico) return;
+
+        document.getElementById("detalhe-titulo").innerText = servico.titulo;
+        document.getElementById("detalhe-icone").className =
+          servico.icone + " icone-servico";
+        document.getElementById("detalhe-descricao").innerText =
+          servico.descricao;
+
+        const ulLista = document.getElementById("detalhe-lista");
+        ulLista.innerHTML = "";
+        servico.topicos.forEach((topico) => {
+          const li = document.createElement("li");
+          li.innerHTML = `<i class="fas fa-circle text-destaque me-2" style="font-size: 0.5rem; vertical-align: middle;"></i> ${topico}`;
+          ulLista.appendChild(li);
+        });
+
+        document.getElementById("visao-grade").style.display = "none";
+        document.getElementById("visao-detalhe").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function voltarParaGrade() {
+        document.getElementById("visao-detalhe").style.display = "none";
+        document.getElementById("visao-grade").style.display = "block";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
   </body>
 </html>

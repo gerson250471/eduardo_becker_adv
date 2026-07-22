@@ -1,5 +1,5 @@
 // Configuração da Versão Atual do Sistema
-const VERSAO_SISTEMA = 'V 1.0.3';
+const VERSAO_SISTEMA = 'V 1.0.4';
 
 /**
  * Função principal que responde às requisições GET (quando o usuário acessa o link)
