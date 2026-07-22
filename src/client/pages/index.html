@@ -23,18 +23,39 @@
     <?!= include('header'); ?>
 
     <main>
-      <!-- SEÇÃO 1: Capa (Hero Section) -->
-      <section class="bg-principal pt-2 pb-5">
-        <div class="container pt-3 pb-5">
-          <div class="row align-items-center">
-            <div class="col-lg-6 mb-4 mb-lg-0">
-              <h1 class="display-4 fw-bold mb-4">
+      <!-- SEÇÃO 1: Capa (Hero Section) com Background Full -->
+      <section
+        class="d-flex align-items-center"
+        style="
+          background-image: url(&quot;https://majb.online/shared/eduardo_adv/capa.jpg&quot;);
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+          min-height: calc(
+            100vh - 100px
+          ); /* Preenche a altura da tela descontando o tamanho do cabeçalho */
+        "
+      >
+        <div class="container py-5">
+          <div class="row">
+            <!-- A classe col-lg-7 limita a largura para o texto não vazar pela tela inteira, mantendo a proporção do site antigo -->
+            <div class="col-lg-7 text-center text-lg-start">
+              <!-- Texto com leve sombra (text-shadow) para garantir a leitura sobre a imagem de fundo -->
+              <h1
+                class="display-5 fw-bold text-white mb-4"
+                style="text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6)"
+              >
                 Atendimento de qualidade aliado a profissionais de excelência.
               </h1>
-              <p class="lead mb-4 opacity-75">
+
+              <p
+                class="lead text-white opacity-75 mb-5"
+                style="text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6)"
+              >
                 Soluções jurídicas personalizadas em Direito Imobiliário,
                 Direito das Famílias e Sucessões.
               </p>
+
               <a
                 href="https://wa.me/5551995840635"
                 target="_blank"
@@ -42,15 +63,6 @@
               >
                 <i class="fab fa-whatsapp me-2"></i>Falar com um Advogado
               </a>
-            </div>
-            <div class="col-lg-6 text-center">
-              <!-- IMAGEM DO ESCRITÓRIO -->
-              <img
-                src="https://majb.online/shared/eduardo_adv/Escritorio.jpg"
-                alt="Interior do Escritório Becker & Ribeiro"
-                class="img-fluid rounded shadow-lg"
-                style="border: 3px solid var(--cor-destaque)"
-              />
             </div>
           </div>
         </div>
