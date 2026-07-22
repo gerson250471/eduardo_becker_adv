@@ -1,5 +1,5 @@
 // Configuração da Versão Atual do Sistema
-const VERSAO_SISTEMA = 'V 1.0.4';
+const VERSAO_SISTEMA = 'V 1.0.5';
 
 // ID do Banco de Dados (Google Sheets)
 const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
