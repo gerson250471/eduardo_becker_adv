@@ -1,9 +1,7 @@
 <style>
   :root {
-    /* Tom de verde levemente mais suave/suave conforme pedido */
-    /* Verde com tom ajustado conforme sugestão */
-    --cor-principal: #0f4032;
-    --cor-principal-transparente: rgba(15, 64, 50, 0.85);
+    /* Verde sólido refinado (mesmo tom do 2º print) */
+    --cor-principal: #0b3d2e;
     --cor-destaque: #b88e2f;
     --cor-fundo: #f8f6f0;
   }
@@ -14,15 +12,13 @@
     color: #333333;
   }
 
-  /* Aplicação do fundo com leve transparência e efeito de desfoque de fundo */
   .bg-principal {
     background-color: var(--cor-principal) !important;
   }
 
+  /* Cabeçalho Fixo na cor sólida exata do 2º print */
   .bg-header-transparente {
-    background-color: var(--cor-principal-transparente) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    background-color: var(--cor-principal) !important;
   }
 
   .text-principal {
