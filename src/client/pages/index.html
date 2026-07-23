@@ -198,7 +198,7 @@
         </div>
       </section>
 
-      <!-- ================= 3. SERVIÇOS (COM LINKS DIRETOS PARA O WHATSAPP) ================= -->
+      <!-- ================= 3. SERVIÇOS (CARDS EXPANSÍVEIS + WHATSAPP DIRECIANADO) ================= -->
       <section id="servicos" class="py-5 bg-fundo">
         <div class="container py-4">
           <div class="mb-5">
@@ -228,20 +228,43 @@
                       class="fa-solid fa-hand-holding-heart icone-servico ms-3"
                     ></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
+
+                  <p class="card-text text-muted texto-justificado small">
                     Atendimento ágil, humanizado e com técnica jurídica de
-                    excelência em Divórcio, Guarda, Pensão Alimentícia, Partilha
-                    de Bens e mais.
+                    excelência em Divórcio, Guarda, Pensão Alimentícia e
+                    Partilha de Bens.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20de%20Fam%C3%ADlia"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido (Oculto por padrão) -->
+                  <div class="collapse mt-2" id="exp-familia">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Nossa equipe atua na mediação de conflitos familiares e no
+                      contencioso, priorizando a proteção dos vulneráveis, o
+                      planejamento matrimonial e a resolução eficiente de
+                      litígios.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-familia"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20de%20Fam%C3%ADlia"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -260,19 +283,42 @@
                     </h4>
                     <i class="fa-solid fa-scroll icone-servico ms-3"></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
+
+                  <p class="card-text text-muted texto-justificado small">
                     Inventário Judicial e Extrajudicial, Testamentos, Doações e
                     Planejamento Sucessório com máxima segurança jurídica.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Invent%C3%A1rio%20e%20Sucess%C3%B5es"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido -->
+                  <div class="collapse mt-2" id="exp-sucessoes">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Auxiliamos famílias no processo de partilha patrimonial,
+                      minimizando custos tributários (ITCD) e prevenindo
+                      disputas judiciais desgastantes através da doação e
+                      estruturação de testamentos.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-sucessoes"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Invent%C3%A1rio%20e%20Sucess%C3%B5es"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -293,20 +339,42 @@
                       class="fa-solid fa-money-check-dollar icone-servico ms-3"
                     ></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
+
+                  <p class="card-text text-muted texto-justificado small">
                     Defesa contra abusos bancários: Ação de Superendividamento,
-                    Fraudes em Empréstimos, Cartão RMC e Redução de Juros
-                    Abusivos.
+                    Fraudes em Empréstimos, Cartão RMC e Redução de Juros.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20Banc%C3%A1rio"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido -->
+                  <div class="collapse mt-2" id="exp-bancario">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Analisamos contratos de financiamento e empréstimos
+                      consignados para identificar e anular cobranças abusivas
+                      de juros acima da taxa média do Banco Central, além de
+                      defender vítimas de golpe do PIX e cartão de crédito.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-bancario"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20Banc%C3%A1rio"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -327,19 +395,41 @@
                       class="fa-solid fa-house-circle-check icone-servico ms-3"
                     ></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
+
+                  <p class="card-text text-muted texto-justificado small">
                     Regularização de imóveis, Usucapião, Adjudicação, Contratos
                     de Compra e Venda e Distrato Imobiliário.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20Imobili%C3%A1rio"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido -->
+                  <div class="collapse mt-2" id="exp-imobiliario">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Assessoria completa para compradores e vendedores em
+                      negócios imobiliários, análise de riscos de matrícula,
+                      ações possessórias e regularização urbana e rural.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-imobiliario"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20Imobili%C3%A1rio"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -358,20 +448,42 @@
                     </h4>
                     <i class="fa-solid fa-cart-shopping icone-servico ms-3"></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
+
+                  <p class="card-text text-muted texto-justificado small">
                     Restabelecimento de direitos do consumidor, cobranças
-                    indevidas, problemas com companhias aéreas e negativas de
-                    cadastro.
+                    indevidas, problemas com companhias aéreas e negativas.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20do%20Consumidor"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido -->
+                  <div class="collapse mt-2" id="exp-consumidor">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Garantia de indenizações por danos morais e materiais em
+                      virtude de falhas na prestação de serviços, inclusão
+                      indevida no SPC/Serasa e litígios contra grandes
+                      concessionárias e companhias aéreas.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-consumidor"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20do%20Consumidor"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -390,20 +502,42 @@
                     </h4>
                     <i class="fa-solid fa-stethoscope icone-servico ms-3"></i>
                   </div>
-                  <p
-                    class="card-text text-muted texto-justificado small flex-grow-1"
-                  >
-                    Atuação em liminares para fornecimento rápido de
-                    medicamentos de alto custo e cirurgias pelo SUS ou Planos de
-                    Saúde.
+
+                  <p class="card-text text-muted texto-justificado small">
+                    Atuação em liminares para fornecimento de medicamentos de
+                    alto custo e cirurgias pelo SUS ou Planos de Saúde.
                   </p>
-                  <a
-                    href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20da%20Sa%C3%BAde"
-                    target="_blank"
-                    class="text-principal text-decoration-none mt-3 fw-semibold"
-                  >
-                    Saiba mais &raquo;
-                  </a>
+
+                  <!-- Texto Expandido -->
+                  <div class="collapse mt-2" id="exp-saude">
+                    <div
+                      class="pt-2 border-top text-muted small texto-justificado"
+                    >
+                      Ações com pedido de urgência (liminar) para garantir o
+                      reajuste abusivo de mensalidades de planos de saúde,
+                      cobertura de tratamentos negados e fornecimento imediato
+                      de remédios essenciais.
+                    </div>
+                  </div>
+
+                  <div class="mt-auto pt-3 d-flex flex-column gap-2">
+                    <a
+                      href="#exp-saude"
+                      data-bs-toggle="collapse"
+                      class="text-destaque text-decoration-none fw-semibold small"
+                      onclick="toggleTexto(this)"
+                    >
+                      Saiba mais <i class="fas fa-chevron-down ms-1"></i>
+                    </a>
+
+                    <a
+                      href="https://wa.me/5551995840635?text=Venho%20atrav%C3%A9s%20do%20site%20e%20gostaria%20de%20falar%20com%20um%20especialista%20em%20Direito%20da%20Sa%C3%BAde"
+                      target="_blank"
+                      class="btn btn-outline-success btn-sm w-100 mt-2 d-flex align-items-center justify-content-center gap-2"
+                    >
+                      <i class="fab fa-whatsapp"></i> Falar com Especialista
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -739,6 +873,18 @@
       `;
           container.appendChild(col);
         });
+      }
+
+      function toggleTexto(el) {
+        const icone = el.querySelector("i");
+        setTimeout(() => {
+          if (el.getAttribute("aria-expanded") === "true") {
+            el.innerHTML = 'Recolher <i class="fas fa-chevron-up ms-1"></i>';
+          } else {
+            el.innerHTML =
+              'Saiba mais <i class="fas fa-chevron-down ms-1"></i>';
+          }
+        }, 200);
       }
     </script>
   </body>
