@@ -98,3 +98,48 @@ function salvarContato(dadosFormulario) {
     return { sucesso: false, mensagem: 'Erro ao enviar mensagem. Tente novamente.' };
   }
 }
+
+/**
+ * Busca a nota, total de avaliações e comentários reais do Google Meu Negócio via API do Google Places
+ */
+function buscarAvaliacoesGoogle() {
+  // Substitua pela chave da API do Google Cloud e pelo Place ID do escritório
+  const API_KEY = 'SUA_API_KEY_AQUI'; 
+  const PLACE_ID = 'SEU_PLACE_ID_AQUI';
+
+  if (API_KEY === 'SUA_API_KEY_AQUI' || !API_KEY) {
+    Logger.log('Chave da API do Google Places não configurada. Usando fallback estático.');
+    return { sucesso: false };
+  }
+
+  const url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=' + 
+              PLACE_ID + 
+              '&fields=rating,user_ratings_total,reviews&language=pt-BR&key=' + 
+              API_KEY;
+
+  try {
+    const resposta = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    const json = JSON.parse(resposta.getContentText());
+
+    if (json.status === 'OK' && json.result) {
+      return {
+        sucesso: true,
+        notaMedia: json.result.rating || 5.0,
+        totalAvaliacoes: json.result.user_ratings_total || 0,
+        reviews: (json.result.reviews || []).map(r => ({
+          autor: r.author_name,
+          foto: r.profile_photo_url,
+          nota: r.rating,
+          texto: r.text,
+          tempo: r.relative_time_description
+        }))
+      };
+    } else {
+      Logger.log('Erro na API do Google Places: ' + json.status);
+      return { sucesso: false };
+    }
+  } catch (erro) {
+    Logger.log('Exceção ao buscar avaliações do Google: ' + erro.toString());
+    return { sucesso: false };
+  }
+}
