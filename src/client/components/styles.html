@@ -1,7 +1,9 @@
 <style>
   :root {
-    /* Verde sólido refinado (mesmo tom do 2º print) */
+    /* Verde oficial da marca */
     --cor-principal: #0b3d2e;
+    /* Verde com opacidade suave para efeito vidro/transparência */
+    --cor-header-transparente: rgba(11, 61, 46, 0.75);
     --cor-destaque: #b88e2f;
     --cor-fundo: #f8f6f0;
   }
@@ -12,14 +14,16 @@
     color: #333333;
   }
 
-  /* Aplicação do fundo com leve transparência e efeito de desfoque de fundo */
   .bg-principal {
     background-color: var(--cor-principal) !important;
   }
 
-  /* Aplica a cor sólida perfeita do 2º print diretamente */
+  /* Cabeçalho transparente elegante com efeito glassmorphism */
   .bg-header-transparente {
-    background-color: var(--cor-principal) !important;
+    background-color: var(--cor-header-transparente) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: background-color 0.3s ease;
   }
 
   .text-principal {
