@@ -100,40 +100,78 @@ function salvarContato(dadosFormulario) {
 }
 
 /**
- * Busca a nota, total de avaliações e comentários reais do Google Meu Negócio via API do Google Places
+ * Busca a nota, total de avaliações e comentários reais do Google Meu Negócio via Places API (New)
  */
 function buscarAvaliacoesGoogle() {
   const API_KEY = 'AIzaSyApbYa5LITFDA8mgLPzsC41ur4vN02g6H4'; 
   const PLACE_ID = 'ChIJXQDDy1PlG5URXeUGEmFodI8';
 
-  const url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=' + 
-              PLACE_ID + 
-              '&fields=rating,user_ratings_total,reviews&language=pt-BR&key=' + 
-              API_KEY;
+  // Endpoint moderno da Places API (New)
+  const url = 'https://places.googleapis.com/v1/places/' + PLACE_ID + '?languageCode=pt-BR';
+
+  const options = {
+    method: 'get',
+    headers: {
+      'X-Goog-Api-Key': API_KEY,
+      'X-Goog-FieldMask': 'rating,userRatingCount,reviews'
+    },
+    muteHttpExceptions: true
+  };
 
   try {
-    const resposta = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    const resposta = UrlFetchApp.fetch(url, options);
     const json = JSON.parse(resposta.getContentText());
 
-    if (json.status === 'OK' && json.result) {
+    if (json.rating || json.reviews) {
       return {
         sucesso: true,
-        notaMedia: json.result.rating || 5.0,
-        totalAvaliacoes: json.result.user_ratings_total || 0,
-        reviews: (json.result.reviews || []).map(r => ({
-          autor: r.author_name,
-          foto: r.profile_photo_url,
-          nota: r.rating,
-          texto: r.text,
-          tempo: r.relative_time_description
+        notaMedia: json.rating || 5.0,
+        totalAvaliacoes: json.userRatingCount || 0,
+        reviews: (json.reviews || []).map(r => ({
+          autor: r.authorAttribution ? r.authorAttribution.displayName : 'Cliente Google',
+          foto: r.authorAttribution ? r.authorAttribution.photoUri : '',
+          nota: r.rating || 5,
+          texto: r.originalText ? r.originalText.text : (r.text ? r.text.text : ''),
+          tempo: r.relativePublishTimeDescription || ''
         }))
       };
     } else {
-      Logger.log('Erro na API do Google Places: ' + json.status);
+      Logger.log('Erro na requisição Places API: ' + resposta.getContentText());
       return { sucesso: false };
     }
   } catch (erro) {
     Logger.log('Exceção ao buscar avaliações do Google: ' + erro.toString());
     return { sucesso: false };
   }
-} 
+}
+/**
+ * Valida o login de sócios/colaboradores na aba 'Usuarios'
+ */
+function validarLogin(usuario, senha) {
+  try {
+    const ss = SpreadsheetApp.openById(ID_BANCO_DADOS);
+    const aba = ss.getSheetByName('Usuarios');
+    
+    if (!aba) {
+      return { sucesso: false, mensagem: 'Aba de usuários não configurada na planilha.' };
+    }
+
+    const dados = aba.getDataRange().getValues();
+    dados.shift(); // Remove cabeçalho
+
+    const usuarioValido = dados.find(linha => {
+      const userPlanilha = String(linha[0]).trim();
+      const senhaPlanilha = String(linha[1]).trim();
+      return (userPlanilha === usuario.trim()) && (senhaPlanilha === senha.trim());
+    });
+
+    if (usuarioValido) {
+      return { sucesso: true };
+    } else {
+      return { sucesso: false, mensagem: 'Usuário ou senha incorretos.' };
+    }
+  } catch (erro) {
+    Logger.log('Erro ao validar login: ' + erro.toString());
+    return { sucesso: false, mensagem: 'Erro interno ao validar acesso.' };
+  }
+}
