@@ -175,3 +175,41 @@ function validarLogin(usuario, senha) {
     return { sucesso: false, mensagem: 'Erro interno ao validar acesso.' };
   }
 }
+
+/**
+ * Consulta a taxa média de juros mensal no BACEN para a modalidade e data informadas
+ */
+function consultarTaxaBacen(modalidadeCodigo, dataContratacao) {
+  try {
+    // Formata a data (DD/MM/AAAA) para o padrão aceito pela API do BACEN
+    const partesData = dataContratacao.split('-'); // Espera AAAA-MM-DD
+    const dataFormatada = partesData[2] + '/' + partesData[1] + '/' + partesData[0];
+
+    // Endpoint do Banco Central (SGS)
+    const url = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.' + modalidadeCodigo + 
+                '/dados?formato=json&dataInicial=' + dataFormatada + '&dataFinal=' + dataFormatada;
+
+    const resposta = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+    const dados = JSON.parse(resposta.getContentText());
+
+    if (dados && dados.length > 0) {
+      return {
+        sucesso: true,
+        taxaMediaBacen: parseFloat(dados[0].valor) // Ex: 1.65 (% a.m.)
+      };
+    } else {
+      // Fallback: se a data for final de semana/feriado ou muito recente, busca o último valor disponível
+      const urlUltimo = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.' + modalidadeCodigo + '/dados/ultimos/1?formato=json';
+      const respUltimo = UrlFetchApp.fetch(urlUltimo, { muteHttpExceptions: true });
+      const dadosUltimo = JSON.parse(respUltimo.getContentText());
+      
+      return {
+        sucesso: true,
+        taxaMediaBacen: parseFloat(dadosUltimo[0].valor)
+      };
+    }
+  } catch (erro) {
+    Logger.log('Erro ao consultar API BACEN: ' + erro.toString());
+    return { sucesso: false, mensagem: 'Não foi possível obter a taxa do BACEN.' };
+  }
+}

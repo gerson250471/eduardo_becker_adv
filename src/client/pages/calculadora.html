@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      Calculadora de Possível Juros Abusivo - Becker & Ribeiro Advocacia
+    </title>
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <?!= include('styles'); ?>
+
+    <style>
+      .bg-dark-custom {
+        background-color: #0b0f12;
+        color: #ffffff;
+      }
+      .card-calc {
+        background-color: #ffffff;
+        color: #333333;
+        border-radius: 20px;
+      }
+      .text-dourado-titulo {
+        color: #e5be70;
+      }
+      .btn-analisar {
+        background-color: #0b3d2e;
+        color: #ffffff;
+        font-weight: 600;
+        padding: 14px;
+        font-size: 1.1rem;
+        border: none;
+        transition: background-color 0.2s ease;
+      }
+      .btn-analisar:hover {
+        background-color: #07281e;
+        color: #ffffff;
+      }
+    </style>
+  </head>
+  <body class="bg-dark-custom">
+    <?!= include('header', pageAtual); ?>
+
+    <main class="py-5">
+      <div class="container py-4">
+        <!-- Cabeçalho -->
+        <div class="text-center mb-5">
+          <p
+            class="text-uppercase small tracking-wide fw-bold opacity-75 text-dourado-titulo mb-2"
+          >
+            Análise Financeira Preliminar
+          </p>
+          <h1 class="display-5 fw-bold text-dourado-titulo mb-3">
+            Calculadora de possível juros abusivo
+          </h1>
+          <p class="lead opacity-75 fs-6 mx-auto" style="max-width: 700px">
+            Compare a taxa do seu contrato com a taxa média do Banco Central
+            para a mesma modalidade e o mesmo mês da contratação.
+          </p>
+        </div>
+
+        <!-- Formulário do Anexo -->
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card card-calc shadow-lg p-4 p-md-5">
+              <form id="formCalculadora" onsubmit="calcularJuros(event)">
+                <div class="row g-3">
+                  <!-- Modalidade -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Modalidade do crédito</label
+                    >
+                    <select class="form-select py-2" id="modalidade" required>
+                      <option value="20749">Financiamento de veículos</option>
+                      <option value="20742">Empréstimo consignado</option>
+                      <option value="20741">
+                        Empréstimo pessoal não consignado
+                      </option>
+                    </select>
+                  </div>
+
+                  <!-- Data da Contratação -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Data da contratação</label
+                    >
+                    <input
+                      type="date"
+                      class="form-control py-2"
+                      id="dataContratacao"
+                      required
+                    />
+                    <small class="text-muted" style="font-size: 0.75rem"
+                      >Use a data de assinatura do contrato.</small
+                    >
+                  </div>
+
+                  <!-- Valor Total Financiado -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Valor total financiado</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text">R$</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        class="form-control py-2"
+                        id="valorFinanciado"
+                        placeholder="50.000,00"
+                        required
+                      />
+                    </div>
+                    <small class="text-muted" style="font-size: 0.75rem"
+                      >Informe o valor financiado que consta no contrato.</small
+                    >
+                  </div>
+
+                  <!-- Quantidade de Parcelas -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Quantidade de parcelas</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control py-2"
+                      id="qtdParcelas"
+                      placeholder="48"
+                      required
+                    />
+                  </div>
+
+                  <!-- Valor da Parcela -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Valor de cada parcela</label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text">R$</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        class="form-control py-2"
+                        id="valorParcela"
+                        placeholder="1.450,00"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Parcela Final (Residual) -->
+                  <div class="col-md-6">
+                    <label class="form-label fw-bold small"
+                      >Parcela final ou valor residual
+                      <span class="text-muted font-normal"
+                        >(opcional)</span
+                      ></label
+                    >
+                    <div class="input-group">
+                      <span class="input-group-text">R$</span>
+                      <input
+                        type="number"
+                        step="0.01"
+                        class="form-control py-2"
+                        id="valorResidual"
+                        placeholder="0,00"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Termo de Triagem -->
+                <div class="form-check mt-4 mb-4">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    id="termoTriagem"
+                    required
+                    checked
+                  />
+                  <label
+                    class="form-check-label small text-muted"
+                    for="termoTriagem"
+                  >
+                    Entendo que o resultado é uma triagem financeira e não
+                    confirma, isoladamente, a existência jurídica de
+                    abusividade.
+                  </label>
+                </div>
+
+                <!-- Botão de Ação -->
+                <div class="d-grid">
+                  <button
+                    type="submit"
+                    id="btnAnalisar"
+                    class="btn btn-analisar rounded-3"
+                  >
+                    Analisar contrato
+                  </button>
+                </div>
+              </form>
+
+              <!-- Área de Resultado da Análise -->
+              <div
+                id="resultadoAnalise"
+                class="mt-4 p-4 rounded-3"
+                style="display: none"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <?!= include('footer'); ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?!= include('scripts'); ?>
+
+    <script>
+      function calcularJuros(e) {
+        e.preventDefault();
+
+        const btn = document.getElementById("btnAnalisar");
+        const resultado = document.getElementById("resultadoAnalise");
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i> Consultando Banco Central...';
+
+        const modalidade = document.getElementById("modalidade").value;
+        const dataContratacao =
+          document.getElementById("dataContratacao").value;
+        const financiado = parseFloat(
+          document.getElementById("valorFinanciado").value,
+        );
+        const n = parseInt(document.getElementById("qtdParcelas").value);
+        const pmt = parseFloat(document.getElementById("valorParcela").value);
+
+        if (typeof google !== "undefined" && google.script) {
+          google.script.run
+            .withSuccessHandler((resBacen) => {
+              btn.disabled = false;
+              btn.innerText = "Analisar contrato";
+
+              if (!resBacen.sucesso) {
+                alert("Erro ao consultar BACEN: " + resBacen.mensagem);
+                return;
+              }
+
+              // Cálculo aproximado da taxa do contrato do cliente
+              const totalPago = pmt * n;
+              const taxaEstimadaContrato =
+                ((totalPago - financiado) / financiado / n) * 100;
+              const taxaBacen = resBacen.taxaMediaBacen;
+
+              resultado.style.display = "block";
+
+              if (taxaEstimadaContrato > taxaBacen) {
+                resultado.className = "alert alert-warning mt-4 border-warning";
+                resultado.innerHTML = `
+                <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Indício de Juros Abusivos Encontrado!</h5>
+                <p class="small text-dark mb-2">
+                  A taxa estimada do seu contrato é de aproximadamente <strong>${taxaEstimadaContrato.toFixed(2)}% a.m.</strong>, enquanto a taxa média praticada pelo mercado na época (BACEN) era de <strong>${taxaBacen.toFixed(2)}% a.m.</strong>
+                </p>
+                <div class="mt-3 text-center">
+                  <a href="https://wa.me/5551995840635?text=Olá!%20Fiz%20a%20simulação%20na%20calculadora%20e%20identifiquei%20suspeita%20de%20juros%20abusivos%20no%20meu%20contrato." 
+                     target="_blank" class="btn btn-success fw-bold">
+                    <i class="fab fa-whatsapp me-2"></i> Enviar resultado para um Advogado pelo Whats
+                  </a>
+                </div>
+              `;
+              } else {
+                resultado.className = "alert alert-success mt-4 border-success";
+                resultado.innerHTML = `
+                <h5 class="fw-bold text-dark mb-2"><i class="fas fa-check-circle text-success me-2"></i> Taxa Dentro do Esperado</h5>
+                <p class="small text-dark mb-0">
+                  A taxa do seu contrato parece estar alinhada com a média praticada pelo Banco Central na época (<strong>${taxaBacen.toFixed(2)}% a.m.</strong>).
+                </p>
+              `;
+              }
+            })
+            .consultarTaxaBacen(modalidade, dataContratacao);
+        }
+      }
+    </script>
+  </body>
+</html>
