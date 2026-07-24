@@ -100,10 +100,10 @@ function salvarContato(dadosFormulario) {
 }
 
 /**
- * Busca a nota, total de avaliações e comentários reais do Google Meu Negócio via Places API (New)
+ * Busca a nota, total de avaliações e comentários reais do Google via Places API (New)
  */
 function buscarAvaliacoesGoogle() {
-  const API_KEY = 'AIzaSyApbYa5LITFDA8mgLPzsC41ur4vN02g6H4'; 
+  const API_KEY = 'AIzaSyBeFgWgQMhLIz6laK0vcNhkeWPDzoyIf84'; 
   const PLACE_ID = 'ChIJXQDDy1PlG5URXeUGEmFodI8';
 
   // Endpoint moderno da Places API (New)
@@ -136,14 +136,15 @@ function buscarAvaliacoesGoogle() {
         }))
       };
     } else {
-      Logger.log('Erro na requisição Places API: ' + resposta.getContentText());
+      Logger.log('Retorno do Google sem dados: ' + resposta.getContentText());
       return { sucesso: false };
     }
   } catch (erro) {
-    Logger.log('Exceção ao buscar avaliações do Google: ' + erro.toString());
+    Logger.log('Erro ao buscar avaliações do Google: ' + erro.toString());
     return { sucesso: false };
   }
 }
+
 /**
  * Valida o login de sócios/colaboradores na aba 'Usuarios'
  */
