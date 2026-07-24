@@ -103,14 +103,8 @@ function salvarContato(dadosFormulario) {
  * Busca a nota, total de avaliações e comentários reais do Google Meu Negócio via API do Google Places
  */
 function buscarAvaliacoesGoogle() {
-  // Substitua pela chave da API do Google Cloud e pelo Place ID do escritório
-  const API_KEY = 'SUA_API_KEY_AQUI'; 
-  const PLACE_ID = 'SEU_PLACE_ID_AQUI';
-
-  if (API_KEY === 'SUA_API_KEY_AQUI' || !API_KEY) {
-    Logger.log('Chave da API do Google Places não configurada. Usando fallback estático.');
-    return { sucesso: false };
-  }
+  const API_KEY = 'AIzaSyApbYa5LITFDA8mgLPzsC41ur4vN02g6H4'; 
+  const PLACE_ID = 'ChIJXQDDy1PlG5URXeUGEmFodI8';
 
   const url = 'https://maps.googleapis.com/maps/api/place/details/json?place_id=' + 
               PLACE_ID + 
@@ -142,4 +136,4 @@ function buscarAvaliacoesGoogle() {
     Logger.log('Exceção ao buscar avaliações do Google: ' + erro.toString());
     return { sucesso: false };
   }
-}
+} 
