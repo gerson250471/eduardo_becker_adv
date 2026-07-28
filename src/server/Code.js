@@ -102,8 +102,12 @@ function salvarContato(dadosFormulario) {
 /**
  * Busca a nota, total de avaliações e comentários reais do Google
  */
+/**
+ * Busca a nota, total de avaliações e comentários reais do Google
+ */
 function buscarAvaliacoesGoogle() {
-  const API_KEY = 'AIzaSyBeFgWgQMhLIz6laK0vcNhkeWPDzoyIf84'; 
+  // Lê a chave das Propriedades do Script de forma segura (sem expor no GitHub)
+  const API_KEY = PropertiesService.getScriptProperties().getProperty('GOOGLE_PLACES_API_KEY');
   const PLACE_ID = 'ChIJXQDDy1PlG5URXeUGEmFodI8';
 
   // Endpoint de Place Details do Google Maps
@@ -127,12 +131,9 @@ function buscarAvaliacoesGoogle() {
         }))
       };
     } else {
-      Logger.log('Status retornado pelo Google: ' + json.status + ' - ' + (json.error_message || ''));
-      // Dados reais do escritório como contingência imediata para destravar a tela
       return obterAvaliacoesFallback();
     }
   } catch (erro) {
-    Logger.log('Erro na requisição Google: ' + erro.toString());
     return obterAvaliacoesFallback();
   }
 }
