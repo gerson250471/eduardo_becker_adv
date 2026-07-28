@@ -205,7 +205,7 @@
           <div class="row align-items-center">
             <div class="col-lg-5 z-0">
               <img
-                src="https://majb.online/shared/eduardo_adv/QUEM-SOMOS-Carol-1-scaled-e1684240481562.jpg"
+                src="https://majb.online/shared/eduardo_adv/carol.jpg"
                 alt="Carolina Ribeiro Berny"
                 class="img-fluid rounded-4 shadow-lg w-100"
                 style="object-fit: cover; max-height: 550px"
@@ -589,27 +589,42 @@
       <!-- ================= 4. OPINIÃO DOS NOSSOS CLIENTES (GOOGLE REVIEWS) ================= -->
       <section id="avaliacoes" class="py-5 bg-white">
         <div class="container py-4">
-          <div class="text-center mb-5">
-            <p class="text-destaque mb-1 fw-semibold">| Depoimentos</p>
-            <h2 class="text-principal display-6 fw-bold">
-              Opinião de nossos clientes
-            </h2>
+          <!-- Seção de Depoimentos com Scrollbar Horizontal/Vertical Suave -->
+          <section class="py-5 bg-light">
+            <div class="container text-center py-4">
+              <p class="text-destaque mb-1 fw-semibold">| Depoimentos</p>
+              <h2 class="text-principal display-6 fw-bold mb-3">
+                Opinião de nossos clientes
+              </h2>
 
-            <div
-              class="d-flex align-items-center justify-content-center gap-2 mt-2"
-            >
-              <i class="fab fa-google fs-4 text-primary"></i>
-              <span id="google-nota-media" class="fw-bold fs-5">5.0</span>
-              <div class="estrelas-google">
-                <i class="fas fa-star"></i><i class="fas fa-star"></i
-                ><i class="fas fa-star"></i><i class="fas fa-star"></i
-                ><i class="fas fa-star"></i>
-              </div>
-              <span id="google-total-reviews" class="text-muted small"
-                >(Avaliações no Google Meu Negócio)</span
-              >
+              <div id="google-rating-header" class="mb-4"></div>
+
+              <!-- Container com Rolagem / Scroll -->
+              <div
+                id="container-reviews-google"
+                class="row g-4 justify-content-start text-start flex-nowrap overflow-auto pb-3"
+                style="
+                  scroll-behavior: smooth;
+                  -webkit-overflow-scrolling: touch;
+                "
+              ></div>
             </div>
-          </div>
+          </section>
+
+          <style>
+            /* Estilização da barra de rolagem (Scroll) dos comentários */
+            #container-reviews-google::-webkit-scrollbar {
+              height: 8px;
+            }
+            #container-reviews-google::-webkit-scrollbar-track {
+              background: #e9ecef;
+              border-radius: 10px;
+            }
+            #container-reviews-google::-webkit-scrollbar-thumb {
+              background: var(--cor-destaque);
+              border-radius: 10px;
+            }
+          </style>
 
           <!-- Grid de Avaliações -->
           <div

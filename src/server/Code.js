@@ -178,39 +178,67 @@ function validarLogin(usuario, senha) {
 }
 
 /**
- * Consulta a taxa média de juros mensal no BACEN para a modalidade e data informadas
+ * Consulta a taxa média do BACEN e classifica o contrato do cliente
  */
-function consultarTaxaBacen(modalidadeCodigo, dataContratacao) {
+function calcularJurosAbusivos(dados) {
   try {
-    // Formata a data (DD/MM/AAAA) para o padrão aceito pela API do BACEN
-    const partesData = dataContratacao.split('-'); // Espera AAAA-MM-DD
-    const dataFormatada = partesData[2] + '/' + partesData[1] + '/' + partesData[0];
+    const { modalidade, dataContratacao, valorFinanciado, numParcelas, valorParcela } = dados;
 
-    // Endpoint do Banco Central (SGS)
-    const url = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.' + modalidadeCodigo + 
-                '/dados?formato=json&dataInicial=' + dataFormatada + '&dataFinal=' + dataFormatada;
+    // 1. Mapeamento de Séries do BACEN conforme novas modalidades
+    let serieBacen = 20742; // Padrão: Veículos PF
+    if (modalidade === 'veiculos') serieBacen = 20742;
+    if (modalidade === 'pessoal') serieBacen = 20739;
+    if (modalidade === 'consignado_inss') serieBacen = 20740; // Consignado INSS
+    if (modalidade === 'consignado_clt') serieBacen = 25471;  // Consignado Privado/CLT
+    if (modalidade === 'imobiliario') serieBacen = 20749;
 
-    const resposta = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
-    const dados = JSON.parse(resposta.getContentText());
+    // 2. Data para consulta BACEN (DD/MM/AAAA)
+    const partesData = dataContratacao.split('-'); // AAAA-MM-DD
+    const dataInicio = `01/${partesData[1]}/${partesData[0]}`;
+    const dataFim = `28/${partesData[1]}/${partesData[0]}`;
 
-    if (dados && dados.length > 0) {
-      return {
-        sucesso: true,
-        taxaMediaBacen: parseFloat(dados[0].valor) // Ex: 1.65 (% a.m.)
-      };
-    } else {
-      // Fallback: se a data for final de semana/feriado ou muito recente, busca o último valor disponível
-      const urlUltimo = 'https://api.bcb.gov.br/dados/serie/bcdata.sgs.' + modalidadeCodigo + '/dados/ultimos/1?formato=json';
-      const respUltimo = UrlFetchApp.fetch(urlUltimo, { muteHttpExceptions: true });
-      const dadosUltimo = JSON.parse(respUltimo.getContentText());
-      
-      return {
-        sucesso: true,
-        taxaMediaBacen: parseFloat(dadosUltimo[0].valor)
-      };
+    // 3. Requisita API do Banco Central
+    const urlBacen = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${serieBacen}/dados?formato=json&dataInicial=${dataInicio}&dataFinal=${dataFim}`;
+    
+    let taxaMediaBacen = 1.65; // Fallback caso não retorne
+    try {
+      const response = UrlFetchApp.fetch(urlBacen, { muteHttpExceptions: true });
+      const json = JSON.parse(response.getContentText());
+      if (json && json.length > 0) {
+        taxaMediaBacen = parseFloat(json[json.length - 1].valor);
+      }
+    } catch (e) {
+      Logger.log("Erro na API do BACEN: " + e.toString());
     }
+
+    // 4. Armazena e calcula a taxa do contrato em variável (Taxa Implícita)
+    let i = 0.01;
+    for (let iter = 0; iter < 100; iter++) {
+      let pmtCalculado = valorFinanciado * (i * Math.pow(1 + i, numParcelas)) / (Math.pow(1 + i, numParcelas) - 1);
+      let diff = pmtCalculado - valorParcela;
+      if (Math.abs(diff) < 0.01) break;
+      i += diff > 0 ? -0.0001 : 0.0001;
+    }
+    const taxaContratoEncontrada = parseFloat((i * 100).toFixed(2));
+    const limiteAbusivo50 = parseFloat((taxaMediaBacen * 1.5).toFixed(2));
+
+    // 5. Classificação nos 3 cenários (A, B e C)
+    let cenario = 'A';
+    if (taxaContratoEncontrada > taxaMediaBacen && taxaContratoEncontrada <= limiteAbusivo50) {
+      cenario = 'B';
+    } else if (taxaContratoEncontrada > limiteAbusivo50) {
+      cenario = 'C';
+    }
+
+    return {
+      sucesso: true,
+      taxaContrato: taxaContratoEncontrada, // Variável armazenada
+      taxaBacen: taxaMediaBacen.toFixed(2),
+      cenario: cenario
+    };
+
   } catch (erro) {
-    Logger.log('Erro ao consultar API BACEN: ' + erro.toString());
-    return { sucesso: false, mensagem: 'Não foi possível obter a taxa do BACEN.' };
+    Logger.log("Erro no cálculo: " + erro.toString());
+    return { sucesso: false, mensagem: "Não foi possível realizar a análise. Verifique os valores informados." };
   }
 }

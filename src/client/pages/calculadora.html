@@ -72,16 +72,28 @@
             <div class="card card-calc shadow-lg p-4 p-md-5">
               <form id="formCalculadora" onsubmit="calcularJuros(event)">
                 <div class="row g-3">
-                  <!-- Modalidade -->
+                  <!-- Modalidade de Crédito Atualizada -->
                   <div class="col-md-6">
-                    <label class="form-label fw-bold small"
+                    <label class="form-label fw-bold small text-dark"
                       >Modalidade do crédito</label
                     >
-                    <select class="form-select py-2" id="modalidade" required>
-                      <option value="20749">Financiamento de veículos</option>
-                      <option value="20742">Empréstimo consignado</option>
-                      <option value="20741">
-                        Empréstimo pessoal não consignado
+                    <select
+                      id="modalidade"
+                      class="form-select form-select-custom"
+                      required
+                    >
+                      <option value="veiculos" selected>
+                        Financiamento de veículos
+                      </option>
+                      <option value="consignado_inss">
+                        Empréstimo Consignado INSS
+                      </option>
+                      <option value="consignado_clt">
+                        Empréstimo Consignado CLT (Privado no Bacen)
+                      </option>
+                      <option value="pessoal">Empréstimo Pessoal</option>
+                      <option value="imobiliario">
+                        Financiamento Imobiliário
                       </option>
                     </select>
                   </div>
@@ -288,6 +300,77 @@
               }
             })
             .consultarTaxaBacen(modalidade, dataContratacao);
+        }
+      }
+      // Lógica de exibição dos quadros de resultado em Javascript
+      function exibirResultado(res) {
+        const div = document.getElementById("painelResultado");
+        div.style.display = "block";
+
+        if (!res.sucesso) {
+          div.className = "alert alert-danger rounded-4";
+          div.innerText = res.mensagem;
+          return;
+        }
+
+        const taxaEncontrada = res.taxaContrato;
+        const taxaBacen = res.taxaBacen;
+
+        // CENÁRIO A: Juros abaixo ou igual ao Bacen (Verde Claro)
+        if (res.cenario === "A") {
+          const msgWhats = encodeURIComponent(
+            "Consultei e meu contrato está dentro da taxa média mesmo assim preciso de advogado",
+          );
+          div.className = "p-4 rounded-4 shadow-sm text-dark";
+          div.style.backgroundColor = "#d4edda"; // Verde Claro
+          div.style.border = "1px solid #c3e6cb";
+          div.innerHTML = `
+      <h5 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-2"></i>Taxa dentro da Média</h5>
+      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncontrada}% a.m.</p>
+      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacen}% a.m.</p>
+      <p class="mb-3">Seu contrato está dentro da taxa média. Mesmo assim precisa de ajuda de um advogado?</p>
+      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-success fw-bold w-100">
+        <i class="fab fa-whatsapp me-2"></i> Falar com um Advogado no WhatsApp
+      </a>
+    `;
+        }
+
+        // CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja)
+        else if (res.cenario === "B") {
+          const msgWhats = encodeURIComponent(
+            "Meu contrato está com juros acima da taxa média, como posso reduzir?",
+          );
+          div.className = "p-4 rounded-4 shadow-sm text-dark";
+          div.style.backgroundColor = "#ffe8cc"; // Laranja Claro
+          div.style.border = "1px solid #ffd8a8";
+          div.innerHTML = `
+      <h5 class="fw-bold text-warning-emphasis mb-2"><i class="fas fa-exclamation-circle me-2"></i>Contrato acima da Média</h5>
+      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncontrada}% a.m.</p>
+      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacen}% a.m.</p>
+      <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
+      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-warning text-dark fw-bold w-100">
+        <i class="fab fa-whatsapp me-2"></i> Como posso reduzir? Falar no Whats
+      </a>
+    `;
+        }
+
+        // CENÁRIO C: Juros Maior que BACEN + 50% (Vermelho Claro)
+        else if (res.cenario === "C") {
+          const msgWhats = encodeURIComponent(
+            "meu contrato está com juros MUITO acima da taxa média, como posso reduzir?",
+          );
+          div.className = "p-4 rounded-4 shadow-sm text-dark";
+          div.style.backgroundColor = "#f8d7da"; // Vermelho Claro
+          div.style.border = "1px solid #f5c6cb";
+          div.innerHTML = `
+      <h5 class="fw-bold text-danger mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Contrato MUITO acima da Média</h5>
+      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncontrada}% a.m.</p>
+      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacen}% a.m.</p>
+      <p class="mb-3">Atenção: A taxa do seu contrato ultrapassa em mais de 50% a taxa média autorizada pelo Banco Central.</p>
+      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-danger fw-bold w-100">
+        <i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir
+      </a>
+    `;
         }
       }
     </script>
