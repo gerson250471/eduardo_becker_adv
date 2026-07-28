@@ -319,9 +319,10 @@
                 ></ul>
               </div>
 
-              <!-- Botão do WhatsApp do Serviço -->
+              <!-- Botão do WhatsApp do Serviço na tela de Detalhes -->
               <div class="mt-4">
                 <a
+                  id="btn-whats-detalhe"
                   href="https://wa.me/5551995840635"
                   target="_blank"
                   class="btn btn-whatsapp-servico btn-lg text-decoration-none d-inline-flex align-items-center"
@@ -443,6 +444,13 @@
           servico.icone + " icone-servico";
         document.getElementById("detalhe-descricao").innerText =
           servico.descricao;
+
+        // Atualiza dinamicamente o link do WhatsApp com a mensagem personalizada
+        const msgWhats = encodeURIComponent(
+          `Venho através do site e gostaria de falar com um especialista em ${servico.titulo}`,
+        );
+        document.getElementById("btn-whats-detalhe").href =
+          `https://wa.me/5551995840635?text=${msgWhats}`;
 
         const ulLista = document.getElementById("detalhe-lista");
         ulLista.innerHTML = "";
