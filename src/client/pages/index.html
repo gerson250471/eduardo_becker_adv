@@ -587,149 +587,40 @@
       </section>
 
       <!-- ================= 4. OPINIÃO DOS NOSSOS CLIENTES (GOOGLE REVIEWS) ================= -->
-      <section id="avaliacoes" class="py-5 bg-white">
-        <div class="container py-4">
-          <!-- Seção de Depoimentos do Google -->
-          <section class="py-5 bg-light">
-            <div class="container text-center py-4">
-              <p class="text-destaque mb-1 fw-semibold">| Depoimentos</p>
-              <h2 class="text-principal display-6 fw-bold mb-3">
-                Opinião de nossos clientes
-              </h2>
+      <!-- Seção de Depoimentos do Google -->
+      <section class="py-5 bg-light">
+        <div class="container text-center py-4">
+          <p class="text-destaque mb-1 fw-semibold">| Depoimentos</p>
+          <h2 class="text-principal display-6 fw-bold mb-3">
+            Opinião de nossos clientes
+          </h2>
 
-              <!-- Cabeçalho com Nota e Botão Google -->
-              <div id="google-rating-header" class="mb-4">
-                <div
-                  class="spinner-border text-success spinner-border-sm"
-                  role="status"
-                ></div>
-                <span class="ms-2 text-muted"
-                  >Carregando avaliações do Google...</span
-                >
-              </div>
+          <!-- Nota Geral -->
+          <div id="google-rating-header" class="mb-4">
+            <div
+              class="spinner-border text-success spinner-border-sm"
+              role="status"
+            ></div>
+            <span class="ms-2 text-muted">Carregando avaliações...</span>
+          </div>
 
-              <!-- Container com Rolagem (Scroll Horizontal) -->
-              <div
-                id="container-reviews-google"
-                class="row g-4 justify-content-start text-start flex-nowrap overflow-auto pb-4 px-2"
-                style="
-                  scroll-behavior: smooth;
-                  -webkit-overflow-scrolling: touch;
-                "
-              ></div>
-
-              <!-- Botão de Acesso Direto às 89 Avaliações no Google Maps -->
-              <div class="mt-3">
-                <a
-                  href="https://www.google.com/maps/place/?q=place_id:ChIJXQDDy1PlG5URXeUGEmFodI8"
-                  target="_blank"
-                  class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold shadow-sm"
-                >
-                  <i class="fab fa-google text-danger me-2"></i> Ver todas as
-                  avaliações no Google
-                </a>
-              </div>
-            </div>
-          </section>
-
-          <style>
-            /* Estilização da Barra de Scroll Personalizada */
-            #container-reviews-google::-webkit-scrollbar {
-              height: 8px;
-            }
-            #container-reviews-google::-webkit-scrollbar-track {
-              background: #e9ecef;
-              border-radius: 10px;
-            }
-            #container-reviews-google::-webkit-scrollbar-thumb {
-              background: var(--cor-destaque, #b88e2f);
-              border-radius: 10px;
-            }
-          </style>
-
-          <!-- Grid de Avaliações -->
+          <!-- Container de Rolagem Horizontal / Scroll -->
           <div
-            id="container-avaliacoes-google"
-            class="row row-cols-1 row-cols-md-3 g-4"
-          >
-            <!-- Fallback enquanto carrega da API ou caso não haja chave configurada -->
-            <div class="col">
-              <div class="card card-avaliacao h-100 p-4">
-                <div class="d-flex align-items-center mb-3">
-                  <div
-                    class="bg-principal text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold"
-                    style="width: 45px; height: 45px"
-                  >
-                    M
-                  </div>
-                  <div>
-                    <h6 class="mb-0 fw-bold text-principal">Mariana Silva</h6>
-                    <div class="estrelas-google small">
-                      <i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-muted small mb-0">
-                  "Atendimento excelente! A Dra. Carolina e o Dr. Eduardo foram
-                  extremamente atenciosos e resolveram o meu caso com muita
-                  rapidez e transparência."
-                </p>
-              </div>
-            </div>
+            id="container-reviews-google"
+            class="row g-4 justify-content-start text-start flex-nowrap overflow-auto pb-4 px-2"
+            style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch"
+          ></div>
 
-            <div class="col">
-              <div class="card card-avaliacao h-100 p-4">
-                <div class="d-flex align-items-center mb-3">
-                  <div
-                    class="bg-principal text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold"
-                    style="width: 45px; height: 45px"
-                  >
-                    R
-                  </div>
-                  <div>
-                    <h6 class="mb-0 fw-bold text-principal">Roberto Schmidt</h6>
-                    <div class="estrelas-google small">
-                      <i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-muted small mb-0">
-                  "Profissionais de altíssima competência em Direito Imobiliário
-                  e Bancário. Me deram todo o suporte necessário e fiquei muito
-                  satisfeito com o resultado."
-                </p>
-              </div>
-            </div>
-
-            <div class="col">
-              <div class="card card-avaliacao h-100 p-4">
-                <div class="d-flex align-items-center mb-3">
-                  <div
-                    class="bg-principal text-white rounded-circle d-flex align-items-center justify-content-center me-3 fw-bold"
-                    style="width: 45px; height: 45px"
-                  >
-                    J
-                  </div>
-                  <div>
-                    <h6 class="mb-0 fw-bold text-principal">Juliana Freitas</h6>
-                    <div class="estrelas-google small">
-                      <i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i><i class="fas fa-star"></i
-                      ><i class="fas fa-star"></i>
-                    </div>
-                  </div>
-                </div>
-                <p class="text-muted small mb-0">
-                  "Escritório acolhedor e ético. Esclareceram todas as minhas
-                  dúvidas sobre inventário familiar com muita empatia. Recomendo
-                  de olhos fechados!"
-                </p>
-              </div>
-            </div>
+          <!-- Botão Direto para o Google Maps -->
+          <div class="mt-2">
+            <a
+              href="https://www.google.com/maps/place/?q=place_id:ChIJXQDDy1PlG5URXeUGEmFodI8"
+              target="_blank"
+              class="btn btn-outline-dark rounded-pill px-4 py-2 fw-semibold shadow-sm"
+            >
+              <i class="fab fa-google text-danger me-2"></i> Ver todas as 89
+              avaliações no Google
+            </a>
           </div>
         </div>
       </section>
@@ -903,9 +794,11 @@
         if (typeof google !== "undefined" && google.script) {
           google.script.run
             .withSuccessHandler(renderizarAvaliacoesGoogle)
-            .withFailureHandler((err) =>
-              console.error("Erro ao buscar avaliações:", err),
-            )
+            .withFailureHandler(function () {
+              console.warn(
+                "Falha no Google Apps Script. Renderizando modo seguro.",
+              );
+            })
             .buscarAvaliacoesGoogle();
         }
       });
@@ -914,14 +807,11 @@
         const headerDiv = document.getElementById("google-rating-header");
         const container = document.getElementById("container-reviews-google");
 
-        if (!dados || !dados.sucesso) {
-          headerDiv.innerHTML = `<span class="text-muted">Conheça a opinião dos nossos clientes.</span>`;
-          return;
-        }
+        if (!dados || !dados.sucesso) return;
 
-        // Exibe a Nota Média e Total de Avaliações
+        // Atualiza cabeçalho com Nota
         headerDiv.innerHTML = `
-      <div class="d-inline-flex align-items-center gap-2 bg-white px-4 py-2 rounded-pill shadow-sm">
+      <div class="d-inline-flex align-items-center gap-2 bg-white px-4 py-2 rounded-pill shadow-sm border">
         <i class="fab fa-google text-primary fs-5"></i>
         <span class="fw-bold text-dark fs-5">${dados.notaMedia.toFixed(1)}</span>
         <span class="text-warning fs-5">★★★★★</span>
@@ -931,8 +821,8 @@
 
         container.innerHTML = "";
 
-        // Renderiza cada comentário retornado da API
-        dados.reviews.forEach((r) => {
+        // Renderiza cada card de comentário
+        dados.reviews.forEach(function (r) {
           const col = document.createElement("div");
           col.className = "col-12 col-md-5 col-lg-4 flex-shrink-0";
           col.innerHTML = `
