@@ -222,13 +222,14 @@ function calcularJurosAbusivos(dados) {
   try {
     const { modalidade, dataContratacao, valorFinanciado, numParcelas, valorParcela } = dados;
 
-    // 1. Mapeamento de Séries do BACEN conforme novas modalidades
-    let serieBacen = 20742; // Padrão: Veículos PF
-    if (modalidade === 'veiculos') serieBacen = 20742;
-    if (modalidade === 'pessoal') serieBacen = 20739;
-    if (modalidade === 'consignado_inss') serieBacen = 20740;
-    if (modalidade === 'consignado_clt') serieBacen = 25471;
-    if (modalidade === 'imobiliario') serieBacen = 20749;
+    // 1. Mapeamento de Séries do BACEN (Taxas Anuais)
+    let serieBacen = 20744; // Padrão corrigido: Veículos PF (20744)
+    
+    if (modalidade === 'veiculos') serieBacen = 20744; // Aquisição de Veículos
+    if (modalidade === 'pessoal') serieBacen = 20742;  // Crédito Pessoal Não Consignado
+    if (modalidade === 'consignado_inss') serieBacen = 25468; // Consignado INSS
+    if (modalidade === 'consignado_clt') serieBacen = 25471;  // Consignado Privado/CLT
+    if (modalidade === 'imobiliario') serieBacen = 20749;     // Imobiliário
 
     // 2. Data para consulta BACEN (DD/MM/AAAA)
     const partesData = dataContratacao.split('-'); // AAAA-MM-DD
