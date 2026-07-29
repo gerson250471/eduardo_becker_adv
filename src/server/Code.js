@@ -238,12 +238,17 @@ function calcularJurosAbusivos(dados) {
     // 3. Requisita API do Banco Central
     const urlBacen = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${serieBacen}/dados?formato=json&dataInicial=${dataInicio}&dataFinal=${dataFim}`;
     
-    let taxaMediaBacen = 1.65; // Fallback
+    let taxaMediaBacen = 1.65; // Fallback mensal
     try {
       const response = UrlFetchApp.fetch(urlBacen, { muteHttpExceptions: true });
       const json = JSON.parse(response.getContentText());
+      
       if (json && json.length > 0) {
-        taxaMediaBacen = parseFloat(json[json.length - 1].valor);
+        // Captura a taxa Anual retornada pelo BACEN
+        let taxaAnualBacen = parseFloat(json[json.length - 1].valor);
+        
+        // Converte a taxa Anual (% a.a.) para Mensal (% a.m.) com juros compostos
+        taxaMediaBacen = (Math.pow(1 + (taxaAnualBacen / 100), 1 / 12) - 1) * 100;
       }
     } catch (e) {
       Logger.log("Erro na API do BACEN: " + e.toString());
