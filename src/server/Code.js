@@ -250,33 +250,18 @@ function calcularJurosAbusivos(dados) {
     }
 
     // 4. Armazena e calcula a taxa do contrato em variável (Taxa Implícita)
-    let i = 0.01;
-    for (let iter = 0; iter < 100; iter++) {
+    let i = 0.01; // Chute inicial 1%
+    for (let iter = 0; iter < 5000; iter++) { // Aumentado para 5000 iterações para evitar falhas
       let pmtCalculado = valorFinanciado * (i * Math.pow(1 + i, numParcelas)) / (Math.pow(1 + i, numParcelas) - 1);
       let diff = pmtCalculado - valorParcela;
+      
       if (Math.abs(diff) < 0.01) break;
-      i += diff > 0 ? -0.0001 : 0.0001;
+      i += diff > 0 ? -0.00005 : 0.00005;
+      
+      // Trava de segurança contra loops infinitos ou juros irreais
+      if (i <= 0) { i = 0.001; break; } 
+      if (i > 0.5) { break; } // Limite máximo de 50% ao mês
     }
     const taxaContratoEncontrada = parseFloat((i * 100).toFixed(2));
     const limiteAbusivo50 = parseFloat((taxaMediaBacen * 1.5).toFixed(2));
-
-    // 5. Classificação nos 3 cenários (A, B e C)
-    let cenario = 'A';
-    if (taxaContratoEncontrada > taxaMediaBacen && taxaContratoEncontrada <= limiteAbusivo50) {
-      cenario = 'B';
-    } else if (taxaContratoEncontrada > limiteAbusivo50) {
-      cenario = 'C';
-    }
-
-    return {
-      sucesso: true,
-      taxaContrato: taxaContratoEncontrada, // Variável armazenada
-      taxaBacen: taxaMediaBacen.toFixed(2),
-      cenario: cenario
-    };
-
-  } catch (erro) {
-    Logger.log("Erro no cálculo: " + erro.toString());
-    return { sucesso: false, mensagem: "Não foi possível realizar a análise. Verifique os valores informados." };
-  }
 }

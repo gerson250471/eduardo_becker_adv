@@ -237,71 +237,52 @@
     <?!= include('scripts'); ?>
 
     <script>
-      function calcularJuros(e) {
-        e.preventDefault();
-
+      function processarCalculo(event) {
+        event.preventDefault();
         const btn = document.getElementById("btnAnalisar");
-        const resultado = document.getElementById("resultadoAnalise");
+        const painel = document.getElementById("painelResultado");
 
         btn.disabled = true;
         btn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i> Consultando Banco Central...';
+          '<i class="fas fa-spinner fa-spin me-2"></i>Consultando Banco Central...';
+        painel.style.display = "none";
 
-        const modalidade = document.getElementById("modalidade").value;
-        const dataContratacao =
-          document.getElementById("dataContratacao").value;
-        const financiado = parseFloat(
-          document.getElementById("valorFinanciado").value,
-        );
-        const n = parseInt(document.getElementById("qtdParcelas").value);
-        const pmt = parseFloat(document.getElementById("valorParcela").value);
+        const parseValor = (val) =>
+          parseFloat(val.replace(/[^\d,-]/g, "").replace(",", ".")) || 0;
+
+        const dados = {
+          modalidade: document.getElementById("modalidade").value,
+          dataContratacao: document.getElementById("dataContratacao").value,
+          valorFinanciado: parseValor(
+            document.getElementById("valorFinanciado").value,
+          ),
+          numParcelas: parseInt(document.getElementById("numParcelas").value),
+          valorParcela: parseValor(
+            document.getElementById("valorParcela").value,
+          ),
+        };
 
         if (typeof google !== "undefined" && google.script) {
           google.script.run
-            .withSuccessHandler((resBacen) => {
+            .withSuccessHandler((res) => {
               btn.disabled = false;
               btn.innerText = "Analisar contrato";
-
-              if (!resBacen.sucesso) {
-                alert("Erro ao consultar BACEN: " + resBacen.mensagem);
-                return;
-              }
-
-              // Cálculo aproximado da taxa do contrato do cliente
-              const totalPago = pmt * n;
-              const taxaEstimadaContrato =
-                ((totalPago - financiado) / financiado / n) * 100;
-              const taxaBacen = resBacen.taxaMediaBacen;
-
-              resultado.style.display = "block";
-
-              if (taxaEstimadaContrato > taxaBacen) {
-                resultado.className = "alert alert-warning mt-4 border-warning";
-                resultado.innerHTML = `
-                <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-triangle text-warning me-2"></i> Indício de Juros Abusivos Encontrado!</h5>
-                <p class="small text-dark mb-2">
-                  A taxa estimada do seu contrato é de aproximadamente <strong>${taxaEstimadaContrato.toFixed(2)}% a.m.</strong>, enquanto a taxa média praticada pelo mercado na época (BACEN) era de <strong>${taxaBacen.toFixed(2)}% a.m.</strong>
-                </p>
-                <div class="mt-3 text-center">
-                  <a href="https://wa.me/5551995840635?text=Olá!%20Fiz%20a%20simulação%20na%20calculadora%20e%20identifiquei%20suspeita%20de%20juros%20abusivos%20no%20meu%20contrato." 
-                     target="_blank" class="btn btn-success fw-bold">
-                    <i class="fab fa-whatsapp me-2"></i> Enviar resultado para um Advogado pelo Whats
-                  </a>
-                </div>
-              `;
-              } else {
-                resultado.className = "alert alert-success mt-4 border-success";
-                resultado.innerHTML = `
-                <h5 class="fw-bold text-dark mb-2"><i class="fas fa-check-circle text-success me-2"></i> Taxa Dentro do Esperado</h5>
-                <p class="small text-dark mb-0">
-                  A taxa do seu contrato parece estar alinhada com a média praticada pelo Banco Central na época (<strong>${taxaBacen.toFixed(2)}% a.m.</strong>).
-                </p>
-              `;
-              }
+              exibirResultado(res);
             })
-            .consultarTaxaBacen(modalidade, dataContratacao);
+            .withFailureHandler((erro) => {
+              // Destrava a tela se o servidor falhar
+              btn.disabled = false;
+              btn.innerText = "Analisar contrato";
+              painel.className = "alert alert-danger rounded-4 mt-4 p-4";
+              painel.innerText =
+                "Erro ao conectar com o servidor ou dados inválidos. Verifique os valores e tente novamente.";
+              painel.style.display = "block";
+              console.error(erro);
+            })
+            .calcularJurosAbusivos(dados);
         }
       }
+
       // Lógica de exibição dos quadros de resultado em Javascript
       function exibirResultado(res) {
         const div = document.getElementById("painelResultado");
