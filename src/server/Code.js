@@ -1,7 +1,7 @@
 // =========================================================
 // 1. CONFIGURAÇÕES GLOBAIS (DEVEM FICAR NO TOPO DO ARQUIVO)
 // =========================================================
-const VERSAO_SISTEMA = 'V 1.3.4';
+const VERSAO_SISTEMA = 'V 1.3.5';
 const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
 
 function doGet(e) {
@@ -222,14 +222,14 @@ function calcularJurosAbusivos(dados) {
   try {
     const { modalidade, dataContratacao, valorFinanciado, numParcelas, valorParcela } = dados;
 
-    // 1. Mapeamento de Séries do BACEN (Taxas Anuais)
-    let serieBacen = 20744; // Padrão corrigido: Veículos PF (20744)
+    // 1. Mapeamento de Séries do BACEN (Taxas Mensais fornecidas pelo Eduardo)
+    let serieBacen = 25471; // Padrão: Financiamento de Veículos
     
-    if (modalidade === 'veiculos') serieBacen = 20744; // Aquisição de Veículos
-    if (modalidade === 'pessoal') serieBacen = 20742;  // Crédito Pessoal Não Consignado
-    if (modalidade === 'consignado_inss') serieBacen = 25468; // Consignado INSS
-    if (modalidade === 'consignado_clt') serieBacen = 25471;  // Consignado Privado/CLT
-    if (modalidade === 'imobiliario') serieBacen = 20749;     // Imobiliário
+    if (modalidade === 'veiculos') serieBacen = 25471;
+    if (modalidade === 'pessoal') serieBacen = 25464;
+    if (modalidade === 'consignado_inss') serieBacen = 25468;
+    if (modalidade === 'consignado_clt') serieBacen = 25466;
+    if (modalidade === 'garantia_veiculo') serieBacen = 29976;
 
     // 2. Data para consulta BACEN (DD/MM/AAAA)
     const partesData = dataContratacao.split('-'); // AAAA-MM-DD
@@ -239,17 +239,13 @@ function calcularJurosAbusivos(dados) {
     // 3. Requisita API do Banco Central
     const urlBacen = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${serieBacen}/dados?formato=json&dataInicial=${dataInicio}&dataFinal=${dataFim}`;
     
-    let taxaMediaBacen = 1.65; // Fallback mensal
+    let taxaMediaBacen = 1.65; // Fallback
     try {
       const response = UrlFetchApp.fetch(urlBacen, { muteHttpExceptions: true });
       const json = JSON.parse(response.getContentText());
-      
       if (json && json.length > 0) {
-        // Captura a taxa Anual retornada pelo BACEN
-        let taxaAnualBacen = parseFloat(json[json.length - 1].valor);
-        
-        // Converte a taxa Anual (% a.a.) para Mensal (% a.m.) com juros compostos
-        taxaMediaBacen = (Math.pow(1 + (taxaAnualBacen / 100), 1 / 12) - 1) * 100;
+        // Como as novas séries já são mensais, pegamos o valor direto (sem conversão)
+        taxaMediaBacen = parseFloat(json[json.length - 1].valor);
       }
     } catch (e) {
       Logger.log("Erro na API do BACEN: " + e.toString());

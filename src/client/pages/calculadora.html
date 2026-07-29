@@ -89,11 +89,11 @@
                         Empréstimo Consignado INSS
                       </option>
                       <option value="consignado_clt">
-                        Empréstimo Consignado CLT (Privado no Bacen)
+                        Empréstimo Consignado CLT
                       </option>
-                      <option value="pessoal">Empréstimo Pessoal</option>
-                      <option value="imobiliario">
-                        Financiamento Imobiliário
+                      <option value="pessoal">Empréstimo Pessoal Normal</option>
+                      <option value="garantia_veiculo">
+                        Empréstimo com Garantia de Veículo
                       </option>
                     </select>
                   </div>
@@ -325,12 +325,12 @@
           div.style.backgroundColor = "#ffe8cc"; // Laranja Claro
           div.style.border = "1px solid #ffd8a8";
           div.innerHTML = `
-      <h5 class="fw-bold text-warning-emphasis mb-2"><i class="fas fa-exclamation-circle me-2"></i>Contrato acima da Média</h5>
+      <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncontrada}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacen}% a.m.</p>
       <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
-      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-warning text-dark fw-bold w-100">
-        <i class="fab fa-whatsapp me-2"></i> Como posso reduzir? Falar no Whats
+      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-dark fw-bold w-100 py-2">
+        <i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir
       </a>
     `;
         }
