@@ -102,9 +102,6 @@ function salvarContato(dadosFormulario) {
 /**
  * Busca a nota, total de avaliações e comentários reais do Google
  */
-/**
- * Busca a nota, total de avaliações e comentários reais do Google
- */
 function buscarAvaliacoesGoogle() {
   // Lê a chave das Propriedades do Script de forma segura (sem expor no GitHub)
   const API_KEY = PropertiesService.getScriptProperties().getProperty('GOOGLE_PLACES_API_KEY');

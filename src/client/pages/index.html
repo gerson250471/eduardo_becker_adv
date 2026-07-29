@@ -788,20 +788,71 @@
           }, 1000);
         }
       }
-      //
-      <!-- Script para carregar via API ao abrir a Home -->
+
+      function toggleTexto(el) {
+        const icone = el.querySelector("i");
+        setTimeout(() => {
+          if (el.getAttribute("aria-expanded") === "true") {
+            el.innerHTML = 'Recolher <i class="fas fa-chevron-up ms-1"></i>';
+          } else {
+            el.innerHTML =
+              'Saiba mais <i class="fas fa-chevron-down ms-1"></i>';
+          }
+        }, 200);
+      }
+
       window.addEventListener("DOMContentLoaded", () => {
         if (typeof google !== "undefined" && google.script) {
           google.script.run
             .withSuccessHandler(renderizarAvaliacoesGoogle)
             .withFailureHandler(function () {
               console.warn(
-                "Falha no Google Apps Script. Renderizando modo seguro.",
+                "Falha de rede ou no Google Apps Script. Renderizando fallback local.",
               );
+              // A linha abaixo estava faltando no seu código para destravar a tela:
+              renderizarAvaliacoesGoogle(obterAvaliacoesLocais());
             })
             .buscarAvaliacoesGoogle();
+        } else {
+          // Caso esteja testando localmente fora do servidor do Google
+          renderizarAvaliacoesGoogle(obterAvaliacoesLocais());
         }
       });
+
+      // Dados de segurança diretos no HTML para garantir o destravamento
+      function obterAvaliacoesLocais() {
+        return {
+          sucesso: true,
+          notaMedia: 5.0,
+          totalAvaliacoes: 89,
+          reviews: [
+            {
+              autor: "Claudiani Pereira Soares",
+              foto: "",
+              nota: 5,
+              texto:
+                "Passando pra agradecer o escritório Becker e Ribeiro advocacia por todo o desempenho do meu caso...",
+              tempo: "Há alguns meses",
+            },
+            {
+              autor: "rui lima",
+              foto: "",
+              nota: 5,
+              texto:
+                "Bons advogados né ajudaram a resolver dívida bancária com revisão de juros e redução.",
+              tempo: "Há alguns meses",
+            },
+            {
+              autor: "mich westhauser",
+              foto: "",
+              nota: 5,
+              texto:
+                "Dr. Eduardo super atencioso. Me deu todas as orientações para resolver da melhor maneira minha situação. Obrigado!",
+              tempo: "Há alguns meses",
+            },
+          ],
+        };
+      }
 
       function renderizarAvaliacoesGoogle(dados) {
         const headerDiv = document.getElementById("google-rating-header");
@@ -842,18 +893,6 @@
       `;
           container.appendChild(col);
         });
-      }
-
-      function toggleTexto(el) {
-        const icone = el.querySelector("i");
-        setTimeout(() => {
-          if (el.getAttribute("aria-expanded") === "true") {
-            el.innerHTML = 'Recolher <i class="fas fa-chevron-up ms-1"></i>';
-          } else {
-            el.innerHTML =
-              'Saiba mais <i class="fas fa-chevron-down ms-1"></i>';
-          }
-        }, 200);
       }
     </script>
   </body>
