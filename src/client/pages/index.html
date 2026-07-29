@@ -807,19 +807,16 @@
             .withSuccessHandler(renderizarAvaliacoesGoogle)
             .withFailureHandler(function () {
               console.warn(
-                "Falha de rede ou no Google Apps Script. Renderizando fallback local.",
+                "Falha de rede ou no servidor. Renderizando fallback local.",
               );
-              // A linha abaixo estava faltando no seu código para destravar a tela:
               renderizarAvaliacoesGoogle(obterAvaliacoesLocais());
             })
             .buscarAvaliacoesGoogle();
         } else {
-          // Caso esteja testando localmente fora do servidor do Google
           renderizarAvaliacoesGoogle(obterAvaliacoesLocais());
         }
       });
 
-      // Dados de segurança diretos no HTML para garantir o destravamento
       function obterAvaliacoesLocais() {
         return {
           sucesso: true,
@@ -860,7 +857,6 @@
 
         if (!dados || !dados.sucesso) return;
 
-        // Atualiza cabeçalho com Nota
         headerDiv.innerHTML = `
       <div class="d-inline-flex align-items-center gap-2 bg-white px-4 py-2 rounded-pill shadow-sm border">
         <i class="fab fa-google text-primary fs-5"></i>
@@ -872,16 +868,15 @@
 
         container.innerHTML = "";
 
-        // Renderiza cada card de comentário
         dados.reviews.forEach(function (r) {
           const col = document.createElement("div");
           col.className = "col-12 col-md-5 col-lg-4 flex-shrink-0";
           col.innerHTML = `
         <div class="card h-100 border-0 shadow-sm p-4 rounded-4 bg-white text-start">
           <div class="d-flex align-items-center mb-3">
-            <img src="${r.foto || "https://lh3.googleusercontent.com/a/default-user=s96-c"}" 
+            <img src="${r.foto || "[https://lh3.googleusercontent.com/a/default-user=s96-c](https://lh3.googleusercontent.com/a/default-user=s96-c)"}" 
                  class="rounded-circle me-3" width="45" height="45" alt="${r.autor}"
-                 onerror="this.src='https://lh3.googleusercontent.com/a/default-user=s96-c'">
+                 onerror="this.src='[https://lh3.googleusercontent.com/a/default-user=s96-c](https://lh3.googleusercontent.com/a/default-user=s96-c)'">
             <div>
               <h6 class="mb-0 fw-bold text-dark">${r.autor}</h6>
               <small class="text-warning">${"★".repeat(r.nota)}</small>
