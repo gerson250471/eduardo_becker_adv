@@ -226,8 +226,8 @@ function calcularJurosAbusivos(dados) {
     let serieBacen = 20742; // Padrão: Veículos PF
     if (modalidade === 'veiculos') serieBacen = 20742;
     if (modalidade === 'pessoal') serieBacen = 20739;
-    if (modalidade === 'consignado_inss') serieBacen = 20740; // Consignado INSS
-    if (modalidade === 'consignado_clt') serieBacen = 25471;  // Consignado Privado/CLT
+    if (modalidade === 'consignado_inss') serieBacen = 20740;
+    if (modalidade === 'consignado_clt') serieBacen = 25471;
     if (modalidade === 'imobiliario') serieBacen = 20749;
 
     // 2. Data para consulta BACEN (DD/MM/AAAA)
@@ -238,7 +238,7 @@ function calcularJurosAbusivos(dados) {
     // 3. Requisita API do Banco Central
     const urlBacen = `https://api.bcb.gov.br/dados/serie/bcdata.sgs.${serieBacen}/dados?formato=json&dataInicial=${dataInicio}&dataFinal=${dataFim}`;
     
-    let taxaMediaBacen = 1.65; // Fallback caso não retorne
+    let taxaMediaBacen = 1.65; // Fallback
     try {
       const response = UrlFetchApp.fetch(urlBacen, { muteHttpExceptions: true });
       const json = JSON.parse(response.getContentText());
@@ -264,4 +264,24 @@ function calcularJurosAbusivos(dados) {
     }
     const taxaContratoEncontrada = parseFloat((i * 100).toFixed(2));
     const limiteAbusivo50 = parseFloat((taxaMediaBacen * 1.5).toFixed(2));
+
+    // 5. Classificação nos 3 cenários (A, B e C)
+    let cenario = 'A';
+    if (taxaContratoEncontrada > taxaMediaBacen && taxaContratoEncontrada <= limiteAbusivo50) {
+      cenario = 'B';
+    } else if (taxaContratoEncontrada > limiteAbusivo50) {
+      cenario = 'C';
+    }
+
+    return {
+      sucesso: true,
+      taxaContrato: taxaContratoEncontrada,
+      taxaBacen: taxaMediaBacen.toFixed(2),
+      cenario: cenario
+    };
+
+  } catch (erro) {
+    Logger.log("Erro no cálculo: " + erro.toString());
+    return { sucesso: false, mensagem: "Não foi possível realizar a análise. Verifique os valores informados." };
+  }
 }
