@@ -871,12 +871,18 @@
         dados.reviews.forEach(function (r) {
           const col = document.createElement("div");
           col.className = "col-12 col-md-5 col-lg-4 flex-shrink-0";
+
+          // Foto de avatar padrão segura
+          const avatarPadrao =
+            "https://lh3.googleusercontent.com/a/default-user=s96-c";
+          const fotoPerfil = r.foto ? r.foto : avatarPadrao;
+
           col.innerHTML = `
         <div class="card h-100 border-0 shadow-sm p-4 rounded-4 bg-white text-start">
           <div class="d-flex align-items-center mb-3">
-            <img src="${r.foto || "[https://lh3.googleusercontent.com/a/default-user=s96-c](https://lh3.googleusercontent.com/a/default-user=s96-c)"}" 
+            <img src="${fotoPerfil}" 
                  class="rounded-circle me-3" width="45" height="45" alt="${r.autor}"
-                 onerror="this.src='[https://lh3.googleusercontent.com/a/default-user=s96-c](https://lh3.googleusercontent.com/a/default-user=s96-c)'">
+                 onerror="this.src='${avatarPadrao}'">
             <div>
               <h6 class="mb-0 fw-bold text-dark">${r.autor}</h6>
               <small class="text-warning">${"★".repeat(r.nota)}</small>
