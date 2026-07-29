@@ -104,9 +104,12 @@
                       >Data da contratação</label
                     >
                     <input
-                      type="date"
+                      type="text"
                       class="form-control py-2"
                       id="dataContratacao"
+                      placeholder="DD/MM/AAAA"
+                      maxlength="10"
+                      oninput="mascaraData(this)"
                       required
                     />
                     <small class="text-muted" style="font-size: 0.75rem"
@@ -237,6 +240,14 @@
     <?!= include('scripts'); ?>
 
     <script>
+      // Máscara para formatar a data automaticamente (DD/MM/AAAA)
+      function mascaraData(input) {
+        let v = input.value.replace(/\D/g, "");
+        if (v.length > 2) v = v.replace(/^(\d{2})(\d)/g, "$1/$2");
+        if (v.length > 5) v = v.replace(/(\d{2})\/(\d{2})(\d)/g, "$1/$2/$3");
+        input.value = v;
+      }
+
       function processarCalculo(event) {
         event.preventDefault();
         const btn = document.getElementById("btnAnalisar");
@@ -250,9 +261,17 @@
         const parseValor = (val) =>
           parseFloat(val.replace(/[^\d,-]/g, "").replace(",", ".")) || 0;
 
+        // Pega a data DD/MM/AAAA e converte para AAAA-MM-DD para o backend entender
+        const dataDigitada = document.getElementById("dataContratacao").value;
+        const partesData = dataDigitada.split("/");
+        const dataFormatadaBanco =
+          partesData.length === 3
+            ? `${partesData[2]}-${partesData[1]}-${partesData[0]}`
+            : "";
+
         const dados = {
           modalidade: document.getElementById("modalidade").value,
-          dataContratacao: document.getElementById("dataContratacao").value,
+          dataContratacao: dataFormatadaBanco,
           valorFinanciado: parseValor(
             document.getElementById("valorFinanciado").value,
           ),
@@ -262,6 +281,7 @@
           ),
         };
 
+        // ENVIANDO PARA O SERVIDOR (Este foi o bloco que havia sumido)
         if (typeof google !== "undefined" && google.script) {
           google.script.run
             .withSuccessHandler((res) => {
@@ -270,7 +290,6 @@
               exibirResultado(res);
             })
             .withFailureHandler((erro) => {
-              // Destrava a tela se o servidor falhar
               btn.disabled = false;
               btn.innerText = "Analisar contrato";
               painel.className = "alert alert-danger rounded-4 mt-4 p-4";
@@ -303,7 +322,7 @@
             "Consultei e meu contrato está dentro da taxa média mesmo assim preciso de advogado",
           );
           div.className = "p-4 rounded-4 shadow-sm text-dark";
-          div.style.backgroundColor = "#d4edda"; // Verde Claro
+          div.style.backgroundColor = "#d4edda";
           div.style.border = "1px solid #c3e6cb";
           div.innerHTML = `
       <h5 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-2"></i>Taxa dentro da Média</h5>
@@ -322,14 +341,14 @@
             "Meu contrato está com juros acima da taxa média, como posso reduzir?",
           );
           div.className = "p-4 rounded-4 shadow-sm text-dark";
-          div.style.backgroundColor = "#ffe8cc"; // Laranja Claro
+          div.style.backgroundColor = "#ffe8cc";
           div.style.border = "1px solid #ffd8a8";
           div.innerHTML = `
       <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncontrada}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacen}% a.m.</p>
       <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
-      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-dark text-white fw-bold w-100 py-2">
+      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-dark text-white fw-bold w-100 py-2" style="text-decoration: none; display: block;">
         <i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir
       </a>
     `;
@@ -341,7 +360,7 @@
             "meu contrato está com juros MUITO acima da taxa média, como posso reduzir?",
           );
           div.className = "p-4 rounded-4 shadow-sm text-dark";
-          div.style.backgroundColor = "#f8d7da"; // Vermelho Claro
+          div.style.backgroundColor = "#f8d7da";
           div.style.border = "1px solid #f5c6cb";
           div.innerHTML = `
       <h5 class="fw-bold text-danger mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Contrato MUITO acima da Média</h5>
