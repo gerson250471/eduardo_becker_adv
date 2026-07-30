@@ -349,7 +349,7 @@
     `;
         }
 
-        //  CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja) 26.07.30 1109
+        //  CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja) 30.07.26 1145
         else if (res.cenario === "B") {
           const msgWhats = encodeURIComponent(
             "Meu contrato está com juros acima da taxa média, como posso reduzir?",
@@ -357,15 +357,27 @@
           div.className = "p-4 rounded-4 shadow-sm text-dark";
           div.style.backgroundColor = "#ffe8cc";
           div.style.border = "1px solid #ffd8a8";
+
+          // 1. Injetamos apenas os textos de forma segura
           div.innerHTML = `
       <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
-      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" rel="noopener noreferrer" class="btn btn-adv-escuro fw-bold w-100 py-2" style="text-decoration: none; display: block; border-radius: 6px;">
-        <i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir (Gerson)
-      </a>
     `;
+
+          // 2. Construímos o botão direto na memória do navegador (Blindagem Absoluta)
+          const botaoB = document.createElement("a");
+          botaoB.href = `https://wa.me/5551995840635?text=${msgWhats}`;
+          botaoB.target = "_blank";
+          botaoB.className = "btn btn-dark text-white fw-bold w-100 py-2";
+          botaoB.style.cssText =
+            "background-color: #212529 !important; text-decoration: none; display: block; border-radius: 6px;";
+          botaoB.innerHTML =
+            '<i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir (Gerson)';
+
+          // 3. Adicionamos o botão blindado dentro do quadro
+          div.appendChild(botaoB);
         }
 
         // CENÁRIO C: Juros Maior que BACEN + 50% (Vermelho Claro)
