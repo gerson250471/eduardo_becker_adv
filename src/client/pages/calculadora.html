@@ -259,7 +259,7 @@
         painel.style.display = "none";
 
         const parseValor = (val) =>
-          parseFloat(val.replace(/[^\d,-]/g, "").replace(",", ".")) || 0;
+          parseFloat(val.toString().replace(",", ".")) || 0;
 
         // Pega a data DD/MM/AAAA e converte para AAAA-MM-DD para o backend entender
         const dataDigitada = document.getElementById("dataContratacao").value;
