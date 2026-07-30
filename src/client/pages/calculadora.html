@@ -349,7 +349,7 @@
     `;
         }
 
-        //  CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja) 30.07.26 1145
+        //  CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja) 30.07.26 1152
         else if (res.cenario === "B") {
           const msgWhats = encodeURIComponent(
             "Meu contrato está com juros acima da taxa média, como posso reduzir?",
@@ -374,7 +374,7 @@
           botaoB.style.cssText =
             "background-color: #212529 !important; text-decoration: none; display: block; border-radius: 6px;";
           botaoB.innerHTML =
-            '<i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir (Gerson)';
+            '<i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir';
 
           // 3. Adicionamos o botão blindado dentro do quadro
           div.appendChild(botaoB);
