@@ -1,7 +1,7 @@
 // =========================================================
 // 1. CONFIGURAÇÕES GLOBAIS (DEVEM FICAR NO TOPO DO ARQUIVO)
 // =========================================================
-const VERSAO_SISTEMA = 'V 1.3.8';
+const VERSAO_SISTEMA = 'V 1.3.9';
 const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
 
 function doGet(e) {
