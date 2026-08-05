@@ -338,18 +338,26 @@
           div.className = "p-4 rounded-4 shadow-sm text-dark";
           div.style.backgroundColor = "#d4edda";
           div.style.border = "1px solid #c3e6cb";
+
           div.innerHTML = `
       <h5 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-2"></i>Taxa dentro da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Seu contrato está dentro da taxa média. Mesmo assim precisa de ajuda de um advogado?</p>
-      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-success text-white fw-bold w-100 py-2" style="text-decoration: none; display: block; border-radius: 6px;">
-        <i class="fab fa-whatsapp me-2"></i> Falar com um Advogado no WhatsApp
-      </a>
     `;
+          // Construção blindada do Botão A
+          const botaoA = document.createElement("a");
+          botaoA.href = `https://wa.me/5551995840635?text=${msgWhats}`;
+          botaoA.target = "_blank";
+          botaoA.className = "btn btn-success text-white fw-bold w-100 py-2";
+          botaoA.style.cssText =
+            "text-decoration: none; display: block; border-radius: 6px;";
+          botaoA.innerHTML =
+            '<i class="fab fa-whatsapp me-2"></i> Falar com um Advogado no WhatsApp';
+          div.appendChild(botaoA);
         }
 
-        //  CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja) 30.07.26 1152
+        // CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja)
         else if (res.cenario === "B") {
           const msgWhats = encodeURIComponent(
             "Meu contrato está com juros acima da taxa média, como posso reduzir?",
@@ -358,15 +366,13 @@
           div.style.backgroundColor = "#ffe8cc";
           div.style.border = "1px solid #ffd8a8";
 
-          // 1. Injetamos apenas os textos de forma segura
           div.innerHTML = `
       <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
     `;
-
-          // 2. Construímos o botão direto na memória do navegador (Blindagem Absoluta)
+          // Construção blindada do Botão B
           const botaoB = document.createElement("a");
           botaoB.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoB.target = "_blank";
@@ -375,8 +381,6 @@
             "background-color: #212529 !important; text-decoration: none; display: block; border-radius: 6px;";
           botaoB.innerHTML =
             '<i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir';
-
-          // 3. Adicionamos o botão blindado dentro do quadro
           div.appendChild(botaoB);
         }
 
@@ -388,15 +392,23 @@
           div.className = "p-4 rounded-4 shadow-sm text-dark";
           div.style.backgroundColor = "#f8d7da";
           div.style.border = "1px solid #f5c6cb";
+
           div.innerHTML = `
       <h5 class="fw-bold text-danger mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Contrato MUITO acima da Média</h5>
       <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Atenção: A taxa do seu contrato ultrapassa em mais de 50% a taxa média autorizada pelo Banco Central.</p>
-      <a href="https://wa.me/5551995840635?text=${msgWhats}" target="_blank" class="btn btn-danger text-white fw-bold w-100 py-2" style="text-decoration: none; display: block; border-radius: 6px;">
-        <i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir
-      </a>
     `;
+          // Construção blindada do Botão C
+          const botaoC = document.createElement("a");
+          botaoC.href = `https://wa.me/5551995840635?text=${msgWhats}`;
+          botaoC.target = "_blank";
+          botaoC.className = "btn btn-danger text-white fw-bold w-100 py-2";
+          botaoC.style.cssText =
+            "text-decoration: none; display: block; border-radius: 6px;";
+          botaoC.innerHTML =
+            '<i class="fab fa-whatsapp me-2"></i> Falar com Advogado e Reduzir';
+          div.appendChild(botaoC);
         }
       }
     </script>
