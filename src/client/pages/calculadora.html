@@ -270,7 +270,6 @@
         const parseValor = (val) =>
           parseFloat(val.toString().replace(",", ".")) || 0;
 
-        // Pega a data DD/MM/AAAA e converte para AAAA-MM-DD para o backend entender
         const dataDigitada = document.getElementById("dataContratacao").value;
         const partesData = dataDigitada.split("/");
         const dataFormatadaBanco =
@@ -290,7 +289,6 @@
           ),
         };
 
-        // ENVIANDO PARA O SERVIDOR (Este foi o bloco que havia sumido)
         if (typeof google !== "undefined" && google.script) {
           google.script.run
             .withSuccessHandler((res) => {
@@ -311,7 +309,6 @@
         }
       }
 
-      // Lógica de exibição dos quadros de resultado em Javascript
       function exibirResultado(res) {
         const div = document.getElementById("painelResultado");
         div.style.display = "block";
@@ -322,7 +319,6 @@
           return;
         }
 
-        // Formatação solicitada pelo Eduardo: Trava em 2 casas decimais e usa vírgula
         const taxaEncFmt = parseFloat(res.taxaContrato)
           .toFixed(2)
           .replace(".", ",");
@@ -330,7 +326,7 @@
           .toFixed(2)
           .replace(".", ",");
 
-        // CENÁRIO A: Juros abaixo ou igual ao Bacen (Verde Claro)
+        // CENÁRIO A
         if (res.cenario === "A") {
           const msgWhats = encodeURIComponent(
             "Consultei e meu contrato está dentro da taxa média mesmo assim preciso de advogado",
@@ -345,7 +341,6 @@
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Seu contrato está dentro da taxa média. Mesmo assim precisa de ajuda de um advogado?</p>
     `;
-          // Construção blindada do Botão A
           const botaoA = document.createElement("a");
           botaoA.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoA.target = "_blank";
@@ -357,7 +352,7 @@
           div.appendChild(botaoA);
         }
 
-        // CENÁRIO B: Juros maior que BACEN e menor que BACEN + 50% (Laranja)
+        // CENÁRIO B
         else if (res.cenario === "B") {
           const msgWhats = encodeURIComponent(
             "Meu contrato está com juros acima da taxa média, como posso reduzir?",
@@ -372,7 +367,6 @@
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
     `;
-          // Construção blindada do Botão B
           const botaoB = document.createElement("a");
           botaoB.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoB.target = "_blank";
@@ -384,7 +378,7 @@
           div.appendChild(botaoB);
         }
 
-        // CENÁRIO C: Juros Maior que BACEN + 50% (Vermelho Claro)
+        // CENÁRIO C
         else if (res.cenario === "C") {
           const msgWhats = encodeURIComponent(
             "meu contrato está com juros MUITO acima da taxa média, como posso reduzir?",
@@ -399,7 +393,6 @@
       <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
       <p class="mb-3">Atenção: A taxa do seu contrato ultrapassa em mais de 50% a taxa média autorizada pelo Banco Central.</p>
     `;
-          // Construção blindada do Botão C
           const botaoC = document.createElement("a");
           botaoC.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoC.target = "_blank";
