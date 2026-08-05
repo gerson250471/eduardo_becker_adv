@@ -1,8 +1,32 @@
 // =========================================================
-// 1. CONFIGURAÇÕES GLOBAIS (DEVEM FICAR NO TOPO DO ARQUIVO)
+// 1. CONFIGURAÇÕES GLOBAIS
 // =========================================================
-const VERSAO_SISTEMA = 'V 1.5.0';
-const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
+const VERSAO_SISTEMA = 'V 1.0.0';
+
+/**
+ * Retorna o ID da planilha correto com base na variável de ambiente do projeto
+ */
+function getBancoDadosId() {
+  const ambiente = PropertiesService.getScriptProperties().getProperty('AMBIENTE');
+  
+  if (ambiente === 'PRODUCAO') {
+    return '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew'; // ID Planilha Oficial (Produção)
+  }
+  return '1dNivpBHWHEGsMTLOAI1hdJRcSphslZD4xzcorgQXsY0'; // ID Planilha Homologação (Fallback seguro)
+}
+
+// =========================================================
+// 2. CONFIGURAÇÃO DE AMBIENTE (RODAR APENAS 1 VEZ EM CADA PROJETO)
+// =========================================================
+function setAmbienteProducao() {
+  PropertiesService.getScriptProperties().setProperty('AMBIENTE', 'PRODUCAO');
+  Logger.log('✅ Este projeto foi configurado como PRODUÇÃO.');
+}
+
+function setAmbienteHomologacao() {
+  PropertiesService.getScriptProperties().setProperty('AMBIENTE', 'HOMOLOGACAO');
+  Logger.log('✅ Este projeto foi configurado como HOMOLOGAÇÃO.');
+}
 
 function doGet(e) {
   var page = e.parameter.page || 'index';
@@ -43,7 +67,7 @@ function include(filename, pageAtual, hostUrl) {
  */
 function buscarArtigosBlog() {
   try {
-    const ss = SpreadsheetApp.openById(ID_BANCO_DADOS);
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
     const aba = ss.getSheetByName('Blog');
     
     if (!aba) return [];
@@ -74,7 +98,7 @@ function buscarArtigosBlog() {
  */
 function salvarContato(dadosFormulario) {
   try {
-    const ss = SpreadsheetApp.openById(ID_BANCO_DADOS);
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
     let aba = ss.getSheetByName('Contatos');
     
     // Se a aba não existir, cria automaticamente com os cabeçalhos
@@ -191,7 +215,7 @@ function obterAvaliacoesFallback() {
  */
 function validarLogin(usuario, senha) {
   try {
-    const ss = SpreadsheetApp.openById(ID_BANCO_DADOS);
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
     const aba = ss.getSheetByName('Usuarios');
     
     if (!aba) {
