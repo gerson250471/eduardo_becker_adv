@@ -7,7 +7,7 @@
     <!-- Lado Esquerdo: Logo Limpo e Sem Fundo + Botão Whats do Header -->
     <div class="d-flex align-items-center gap-2 gap-md-3">
       <a
-        href="https://beckereribeiroadv.com/?page=index"
+        href="<?= hostUrl ?>?page=index"
         target="_top"
         class="d-inline-flex align-items-center text-decoration-none border-0 p-0 m-0"
       >
@@ -53,7 +53,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'index') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            href="https://beckereribeiroadv.com/?page=index"
+            href="<?= hostUrl ?>?page=index"
             target="_top"
             >Home</a
           >
@@ -62,7 +62,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'servicos') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            href="https://beckereribeiroadv.com/?page=servicos"
+            href="<?= hostUrl ?>?page=servicos"
             target="_top"
             >Serviços</a
           >
@@ -71,7 +71,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'quemsomos') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            href="https://beckereribeiroadv.com/?page=quemsomos"
+            href="<?= hostUrl ?>?page=quemsomos"
             target="_top"
             >Quem Somos</a
           >
@@ -80,7 +80,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'blog') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            href="https://beckereribeiroadv.com/?page=blog"
+            href="<?= hostUrl ?>?page=blog"
             target="_top"
             >Blog</a
           >
@@ -89,7 +89,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link <?= (pageAtual === 'contato') ? 'active border-bottom border-2 border-warning' : '' ?>"
-            href="https://beckereribeiroadv.com/?page=contato"
+            href="<?= hostUrl ?>?page=contato"
             target="_top"
             >Contato</a
           >
@@ -98,7 +98,7 @@
         <li class="nav-item px-2">
           <a
             class="nav-link text-warning fw-bold"
-            href="https://beckereribeiroadv.com/?page=calculadora"
+            href="<?= hostUrl ?>?page=calculadora"
             target="_top"
           >
             <i class="fas fa-calculator me-1"></i> Calculadora de Juros
@@ -110,7 +110,7 @@
       <div class="d-flex justify-content-center mt-2 mt-lg-0">
         <a
           class="btn btn-outline-light btn-sm px-3 py-2 <?= (pageAtual === 'admin') ? 'active bg-white text-dark' : '' ?>"
-          href="https://beckereribeiroadv.com/?page=admin"
+          href="<?= hostUrl ?>?page=admin"
           target="_top"
         >
           <i class="fas fa-lock me-1"></i>Área Exclusiva

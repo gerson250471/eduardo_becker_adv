@@ -6,6 +6,7 @@ const ID_BANCO_DADOS = '1KrIJcYaC1G1KrRj7s-I6qut0YfqcoqQaIPaKZk7N2Ew';
 
 function doGet(e) {
   var page = e.parameter.page || 'index';
+  var hostUrl = e.parameter.host || 'https://beckereribeiro.com/'; // MÁGICA: Captura o host dinâmico
   var template;
   
   try {
@@ -15,9 +16,10 @@ function doGet(e) {
     template = HtmlService.createTemplateFromFile('client/pages/index');
   }
   
-  // Repassa a versão do sistema e a página atual para o template
+  // Repassa as variáveis para o template principal
   template.versaoSistema = VERSAO_SISTEMA;
   template.pageAtual = page;
+  template.hostUrl = hostUrl; 
   
   return template.evaluate()
     .setTitle('Becker & Ribeiro Advocacia')
@@ -28,10 +30,11 @@ function doGet(e) {
 /**
  * Função auxiliar para incluir componentes e avaliar comandos do servidor
  */
-function include(filename, pageAtual) {
+function include(filename, pageAtual, hostUrl) {
   var t = HtmlService.createTemplateFromFile('client/components/' + filename);
   t.versaoSistema = VERSAO_SISTEMA;
-  t.pageAtual = pageAtual || 'index'; // Repassa a página atual para o header/footer
+  t.pageAtual = pageAtual || 'index'; 
+  t.hostUrl = hostUrl || 'https://beckereribeiro.com/'; // Repassa o host para o header/footer
   return t.evaluate().getContent();
 }
 

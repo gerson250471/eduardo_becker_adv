@@ -36,7 +36,7 @@
   </head>
   <body class="bg-fundo d-flex flex-column min-vh-100">
     <!-- Cabeçalho (Menu Dinâmico) -->
-    <?!= include('header', pageAtual); ?>
+    <?!= include('header', pageAtual, hostUrl); ?>
 
     <main class="flex-grow-1 d-flex align-items-center py-5">
       <div class="container py-4">
@@ -99,7 +99,7 @@
 
               <div class="text-center mt-3">
                 <a
-                  href="https://beckereribeiroadv.com/?page=index"
+                  href="<?= hostUrl ?>?page=index"
                   class="text-muted small text-decoration-none"
                 >
                   <i class="fas fa-arrow-left me-1"></i> Voltar ao site
