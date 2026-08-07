@@ -30,8 +30,16 @@ function setAmbienteHomologacao() {
 }
 
 function doGet(e) {
-  var page = e.parameter.page || 'index';
+  var rawPage = e.parameter.page || 'index';
+  var page = rawPage;
   var idArtigo = e.parameter.id || ''; 
+  
+  // 🛡️ PROTEÇÃO DE ROTEAMENTO (Bypass do Wrapper)
+  // Se o site principal cortar a variável '&id=', nós a lemos direto do 'page'
+  if (rawPage.indexOf('artigo_') === 0) {
+    page = 'artigo';
+    idArtigo = rawPage.replace('artigo_', '');
+  }
   
   // Identifica o ambiente para gerar os links corretos e evitar fugas de ambiente
   var ambiente = PropertiesService.getScriptProperties().getProperty('AMBIENTE');
@@ -53,7 +61,7 @@ function doGet(e) {
   template.versaoSistema = VERSAO_SISTEMA;
   template.pageAtual = page;
   template.hostUrl = hostUrl; 
-  template.idArtigo = idArtigo; // Injeta o ID da URL
+  template.idArtigo = idArtigo; // Injeta o ID da URL resgatado
   
   return template.evaluate()
     .setTitle('Becker & Ribeiro Advocacia')
