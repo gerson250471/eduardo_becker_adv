@@ -1,7 +1,7 @@
 // =========================================================
 // 1. CONFIGURAÇÕES GLOBAIS
 // =========================================================
-const VERSAO_SISTEMA = 'V 1.2.0';
+const VERSAO_SISTEMA = 'V 1.3.0';
 const ID_PASTA_IMAGENS = '1KrO0f-nmmjCJNgb-_kfxUk-Be-VPg4os'; // Pasta 'src' do Drive
 
 /**
