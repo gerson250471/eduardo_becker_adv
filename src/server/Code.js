@@ -1,7 +1,7 @@
 // =========================================================
 // 1. CONFIGURAÇÕES GLOBAIS
 // =========================================================
-const VERSAO_SISTEMA = 'V 1.0.0';
+const VERSAO_SISTEMA = 'V 1.2.0';
 const ID_PASTA_IMAGENS = '1KrO0f-nmmjCJNgb-_kfxUk-Be-VPg4os'; // Pasta 'src' do Drive
 
 /**
@@ -61,37 +61,6 @@ function include(filename, pageAtual, hostUrl) {
   t.pageAtual = pageAtual || 'index'; 
   t.hostUrl = hostUrl || 'https://beckereribeiro.com/'; // Repassa o host para o header/footer
   return t.evaluate().getContent();
-}
-
-/**
- * Busca a lista de artigos cadastrados na aba 'Blog' da Planilha
- */
-function buscarArtigosBlog() {
-  try {
-    const ss = SpreadsheetApp.openById(getBancoDadosId());
-    const aba = ss.getSheetByName('Blog');
-    
-    if (!aba) return [];
-
-    const dados = aba.getDataRange().getValues();
-    const cabecalho = dados.shift(); // Remove a primeira linha (cabeçalho)
-
-    // Mapeia as linhas para objetos JSON
-    return dados.map(linha => {
-      return {
-        id: linha[0],
-        titulo: linha[1],
-        resumo: linha[2],
-        conteudo: linha[3],
-        data: linha[4] ? new Date(linha[4]).toLocaleDateString('pt-BR') : '',
-        status: linha[5]
-      };
-    }).filter(artigo => artigo.status === 'Publicado'); // Retorna apenas artigos ativos
-
-  } catch (erro) {
-    Logger.log('Erro ao buscar artigos: ' + erro.toString());
-    return [];
-  }
 }
 
 /**
@@ -482,5 +451,126 @@ function salvarArtigoBlog(pacoteArtigo, dadosImagem) {
   } catch (erro) {
     Logger.log("Erro no Blog: " + erro.message);
     return { sucesso: false, mensagem: "Erro ao salvar o artigo: " + erro.message };
+  }
+}
+
+/**
+ * =========================================================
+ * BUSCA DE ARTIGOS PARA A VITRINE DO BLOG
+ * =========================================================
+ */
+function buscarArtigosBlog() {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Blog');
+    if (!aba) return [];
+
+    const dados = aba.getDataRange().getValues();
+    dados.shift(); // Remove a linha de cabeçalho
+
+    const artigos = [];
+    
+    for (let i = 0; i < dados.length; i++) {
+      const status = String(dados[i][7]).trim(); // Coluna H
+      
+      // Só envia para o site público se estiver publicado
+      if (status === 'Publicado') {
+        
+        // Converte o link de visualização do Drive para um link direto de imagem
+        let urlCapa = String(dados[i][5]).trim();
+        const match = urlCapa.match(/\/d\/(.+?)\//);
+        if (match && match[1]) {
+          urlCapa = 'https://drive.google.com/uc?id=' + match[1];
+        }
+
+        artigos.push({
+          id: dados[i][0],
+          data: dados[i][1],
+          autor: dados[i][2],
+          titulo: dados[i][3],
+          resumo: dados[i][4],
+          capa: urlCapa
+          // Nota: Não puxamos o Conteúdo_HTML aqui para deixar o carregamento da vitrine rápido.
+          // O conteúdo completo será puxado apenas quando o cliente clicar para ler o artigo.
+        });
+      }
+    }
+    
+    // Inverte a ordem para os artigos mais recentes aparecerem primeiro no topo
+    return artigos.reverse();
+    
+  } catch (erro) {
+    Logger.log("Erro ao buscar artigos: " + erro.message);
+    return [];
+  }
+}
+
+/**
+ * =========================================================
+ * BUSCA UM ARTIGO COMPLETO PELO ID (TELA DE LEITURA)
+ * =========================================================
+ */
+function buscarArtigoPorId(idArtigo) {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Blog');
+    if (!aba) return null;
+
+    const dados = aba.getDataRange().getValues();
+    dados.shift(); // Remove a linha de cabeçalho
+
+    for (let i = 0; i < dados.length; i++) {
+      const id = String(dados[i][0]).trim(); // Coluna A (ID)
+      const status = String(dados[i][7]).trim(); // Coluna H (Status)
+
+      // Retorna os dados apenas se o ID bater e estiver Publicado
+      if (id === idArtigo && status === 'Publicado') {
+        
+        // Converte o link do Drive para exibição pública
+        let urlCapa = String(dados[i][5]).trim();
+        const match = urlCapa.match(/\/d\/(.+?)\//);
+        if (match && match[1]) {
+          urlCapa = 'https://drive.google.com/uc?id=' + match[1];
+        }
+
+        return {
+          id: id,
+          data: dados[i][1],
+          autor: dados[i][2],
+          titulo: dados[i][3],
+          resumo: dados[i][4],
+          capa: urlCapa,
+          conteudo: dados[i][6] // Coluna G (Conteudo_HTML rico do Quill.js)
+        };
+      }
+    }
+    return null; // Caso não encontre ou não esteja publicado
+  } catch (erro) {
+    Logger.log("Erro ao buscar artigo por ID: " + erro.message);
+    return null;
+  }
+}
+
+/**
+ * =========================================================
+ * FUNÇÃO DE AUTORIZAÇÃO (RODAR ANTES DO DEPLOY)
+ * =========================================================
+ * Esta função serve apenas para forçar o Google a solicitar 
+ * todas as permissões necessárias para o sistema funcionar.
+ */
+function autorizarPermissoes() {
+  try {
+    // 1. Força a permissão de leitura/escrita no Google Sheets
+    SpreadsheetApp.getActiveSpreadsheet();
+    
+    // 2. Força a permissão de acesso à internet (APIs BACEN e Google Maps)
+    UrlFetchApp.fetch('https://www.google.com.br', { muteHttpExceptions: true });
+    
+    // 3. Força a leitura de propriedades do script (API Key)
+    PropertiesService.getScriptProperties().getProperty('TESTE');
+    
+    Logger.log('✅ Permissões concedidas com sucesso! O sistema está pronto para o Deploy.');
+  } catch (e) {
+    Logger.log('⚠️ As permissões foram solicitadas. Verifique se aceitou todas.');
   }
 }

@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Leitura do Artigo - Becker & Ribeiro Advocacia</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <!-- Quill.js CSS (Fundamental para renderizar as formatações do texto corretamente) -->
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+
+    <?!= include('styles'); ?>
+
+    <style>
+      .capa-artigo {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: 12px;
+      }
+      .meta-info {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+
+      /* Ajuste para o conteúdo do Quill.js renderizar de forma limpa, sem as bordas do editor */
+      .ql-editor {
+        padding: 0;
+        overflow-y: visible;
+        font-family: inherit;
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: #495057;
+      }
+      .conteudo-html img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        margin: 15px 0;
+      }
+    </style>
+  </head>
+  <body class="bg-fundo d-flex flex-column min-vh-100">
+    <?!= include('header', pageAtual, hostUrl); ?>
+
+    <main class="flex-grow-1 py-5">
+      <div class="container">
+        <!-- Loading State -->
+        <div id="loading-artigo" class="text-center py-5">
+          <div class="spinner-border text-destaque" role="status">
+            <span class="visually-hidden">Carregando...</span>
+          </div>
+          <p class="text-muted mt-3">Carregando o artigo completo...</p>
+        </div>
+
+        <!-- Conteúdo do Artigo -->
+        <div
+          id="container-artigo"
+          class="row justify-content-center"
+          style="display: none"
+        >
+          <div class="col-lg-8">
+            <!-- Navegação Voltar -->
+            <a
+              href="<?= hostUrl ?>?page=blog"
+              class="text-muted text-decoration-none mb-4 d-inline-block"
+            >
+              <i class="fas fa-arrow-left me-2"></i> Voltar para o Blog
+            </a>
+
+            <!-- Cabeçalho do Artigo -->
+            <h1 id="artigo-titulo" class="fw-bold text-principal mb-3">
+              Título
+            </h1>
+
+            <div class="meta-info mb-4 d-flex align-items-center">
+              <span class="me-3"
+                ><i class="fas fa-user-edit me-1 text-destaque"></i>
+                <span id="artigo-autor">Autor</span></span
+              >
+              <span
+                ><i class="far fa-calendar-alt me-1 text-destaque"></i>
+                <span id="artigo-data">Data</span></span
+              >
+            </div>
+
+            <img
+              id="artigo-capa"
+              src=""
+              alt="Capa"
+              class="capa-artigo shadow-sm mb-5"
+              onerror="this.style.display = 'none'"
+            />
+
+            <!-- Corpo do Texto com injeção do HTML formatado -->
+            <div class="ql-snow">
+              <div id="artigo-conteudo" class="ql-editor conteudo-html">
+                <!-- O HTML injetado entrará aqui -->
+              </div>
+            </div>
+
+            <!-- Rodapé do Artigo -->
+            <div class="mt-5 border-top pt-4 text-center">
+              <h5 class="text-principal fw-bold mb-3">
+                Precisa de orientação jurídica?
+              </h5>
+              <p class="text-muted small mb-4">
+                Entre em contato com a nossa equipe de especialistas para tirar
+                suas dúvidas sobre este tema.
+              </p>
+              <a
+                href="<?= hostUrl ?>?page=contato"
+                class="btn btn-dourado px-4 rounded-pill"
+                >Falar com um Advogado</a
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Mensagem de Erro (Artigo não encontrado) -->
+        <div id="mensagem-erro" class="text-center py-5" style="display: none">
+          <i class="fas fa-exclamation-triangle text-warning fa-3x mb-3"></i>
+          <h4 class="text-muted">Artigo não encontrado ou indisponível.</h4>
+          <a
+            href="<?= hostUrl ?>?page=blog"
+            class="btn btn-outline-secondary mt-3"
+            >Voltar ao Blog</a
+          >
+        </div>
+      </div>
+    </main>
+
+    <?!= include('footer'); ?>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <?!= include('scripts'); ?>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Captura o ID que vem na URL (Ex: ?page=artigo&id=ART-178611219)
+        const urlParams = new URLSearchParams(window.location.search);
+        const idArtigo = urlParams.get("id");
+
+        if (!idArtigo) {
+          mostrarErro();
+          return;
+        }
+
+        // Chama o servidor para buscar o artigo
+        if (typeof google !== "undefined" && google.script) {
+          google.script.run
+            .withSuccessHandler(renderizarArtigo)
+            .withFailureHandler(mostrarErro)
+            .buscarArtigoPorId(idArtigo);
+        }
+      });
+
+      function renderizarArtigo(artigo) {
+        document.getElementById("loading-artigo").style.display = "none";
+
+        if (!artigo) {
+          mostrarErro();
+          return;
+        }
+
+        // Preenche os dados na tela
+        document.getElementById("artigo-titulo").innerText = artigo.titulo;
+        document.getElementById("artigo-autor").innerText = artigo.autor;
+        document.getElementById("artigo-data").innerText = artigo.data
+          ? artigo.data.split(" ")[0]
+          : "";
+        document.getElementById("artigo-capa").src = artigo.capa;
+
+        // Injeta o HTML gerado pelo editor
+        document.getElementById("artigo-conteudo").innerHTML = artigo.conteudo;
+
+        document.getElementById("container-artigo").style.display = "flex";
+      }
+
+      function mostrarErro() {
+        document.getElementById("loading-artigo").style.display = "none";
+        document.getElementById("mensagem-erro").style.display = "block";
+      }
+    </script>
+  </body>
+</html>
