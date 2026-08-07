@@ -2,6 +2,7 @@
 // 1. CONFIGURAÇÕES GLOBAIS
 // =========================================================
 const VERSAO_SISTEMA = 'V 1.0.0';
+const ID_PASTA_IMAGENS = '1KrO0f-nmmjCJNgb-_kfxUk-Be-VPg4os'; // Pasta 'src' do Drive
 
 /**
  * Retorna o ID da planilha correto com base na variável de ambiente do projeto
