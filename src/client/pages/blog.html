@@ -110,7 +110,8 @@
       function renderizarArtigos(artigos) {
         document.getElementById("loading-blog").style.display = "none";
 
-        if (artigos.length === 0) {
+        // Trava de segurança atualizada: verifica se é nulo ou se o tamanho é 0
+        if (!artigos || artigos.length === 0) {
           document.getElementById("mensagem-vazio").style.display = "block";
           return;
         }

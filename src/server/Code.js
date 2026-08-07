@@ -459,6 +459,11 @@ function salvarArtigoBlog(pacoteArtigo, dadosImagem) {
  * BUSCA DE ARTIGOS PARA A VITRINE DO BLOG
  * =========================================================
  */
+/**
+ * =========================================================
+ * BUSCA DE ARTIGOS PARA A VITRINE DO BLOG
+ * =========================================================
+ */
 function buscarArtigosBlog() {
   try {
     const ss = SpreadsheetApp.openById(getBancoDadosId());
@@ -466,37 +471,40 @@ function buscarArtigosBlog() {
     if (!aba) return [];
 
     const dados = aba.getDataRange().getValues();
-    dados.shift(); // Remove a linha de cabeçalho
+    dados.shift(); 
 
     const artigos = [];
     
     for (let i = 0; i < dados.length; i++) {
-      const status = String(dados[i][7]).trim(); // Coluna H
+      const status = String(dados[i][7]).trim(); 
       
-      // Só envia para o site público se estiver publicado
       if (status === 'Publicado') {
         
-        // Converte o link de visualização do Drive para um link direto de imagem
         let urlCapa = String(dados[i][5]).trim();
         const match = urlCapa.match(/\/d\/(.+?)\//);
         if (match && match[1]) {
           urlCapa = 'https://drive.google.com/uc?id=' + match[1];
         }
 
+        // PROTEÇÃO: Converte Datas para texto simples para não quebrar o script
+        let dataFormatada = dados[i][1];
+        if (dataFormatada instanceof Date) {
+          dataFormatada = Utilities.formatDate(dataFormatada, "GMT-3", "dd/MM/yyyy HH:mm:ss");
+        } else {
+          dataFormatada = String(dataFormatada);
+        }
+
         artigos.push({
-          id: dados[i][0],
-          data: dados[i][1],
-          autor: dados[i][2],
-          titulo: dados[i][3],
-          resumo: dados[i][4],
+          id: String(dados[i][0]),
+          data: dataFormatada,
+          autor: String(dados[i][2]),
+          titulo: String(dados[i][3]),
+          resumo: String(dados[i][4]),
           capa: urlCapa
-          // Nota: Não puxamos o Conteúdo_HTML aqui para deixar o carregamento da vitrine rápido.
-          // O conteúdo completo será puxado apenas quando o cliente clicar para ler o artigo.
         });
       }
     }
     
-    // Inverte a ordem para os artigos mais recentes aparecerem primeiro no topo
     return artigos.reverse();
     
   } catch (erro) {
@@ -517,34 +525,40 @@ function buscarArtigoPorId(idArtigo) {
     if (!aba) return null;
 
     const dados = aba.getDataRange().getValues();
-    dados.shift(); // Remove a linha de cabeçalho
+    dados.shift(); 
 
     for (let i = 0; i < dados.length; i++) {
-      const id = String(dados[i][0]).trim(); // Coluna A (ID)
-      const status = String(dados[i][7]).trim(); // Coluna H (Status)
+      const id = String(dados[i][0]).trim(); 
+      const status = String(dados[i][7]).trim(); 
 
-      // Retorna os dados apenas se o ID bater e estiver Publicado
       if (id === idArtigo && status === 'Publicado') {
         
-        // Converte o link do Drive para exibição pública
         let urlCapa = String(dados[i][5]).trim();
         const match = urlCapa.match(/\/d\/(.+?)\//);
         if (match && match[1]) {
           urlCapa = 'https://drive.google.com/uc?id=' + match[1];
         }
 
+        // PROTEÇÃO: Converte Datas para texto simples para não quebrar o script
+        let dataFormatada = dados[i][1];
+        if (dataFormatada instanceof Date) {
+          dataFormatada = Utilities.formatDate(dataFormatada, "GMT-3", "dd/MM/yyyy HH:mm:ss");
+        } else {
+          dataFormatada = String(dataFormatada);
+        }
+
         return {
           id: id,
-          data: dados[i][1],
-          autor: dados[i][2],
-          titulo: dados[i][3],
-          resumo: dados[i][4],
+          data: dataFormatada,
+          autor: String(dados[i][2]),
+          titulo: String(dados[i][3]),
+          resumo: String(dados[i][4]),
           capa: urlCapa,
-          conteudo: dados[i][6] // Coluna G (Conteudo_HTML rico do Quill.js)
+          conteudo: String(dados[i][6]) 
         };
       }
     }
-    return null; // Caso não encontre ou não esteja publicado
+    return null; 
   } catch (erro) {
     Logger.log("Erro ao buscar artigo por ID: " + erro.message);
     return null;
