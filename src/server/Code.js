@@ -211,38 +211,6 @@ function obterAvaliacoesFallback() {
 }
 
 /**
- * Valida o login de sócios/colaboradores na aba 'Usuarios'
- */
-function validarLogin(usuario, senha) {
-  try {
-    const ss = SpreadsheetApp.openById(getBancoDadosId());
-    const aba = ss.getSheetByName('Usuarios');
-    
-    if (!aba) {
-      return { sucesso: false, mensagem: 'Aba de usuários não configurada na planilha.' };
-    }
-
-    const dados = aba.getDataRange().getValues();
-    dados.shift(); // Remove cabeçalho
-
-    const usuarioValido = dados.find(linha => {
-      const userPlanilha = String(linha[0]).trim();
-      const senhaPlanilha = String(linha[1]).trim();
-      return (userPlanilha === usuario.trim()) && (senhaPlanilha === senha.trim());
-    });
-
-    if (usuarioValido) {
-      return { sucesso: true };
-    } else {
-      return { sucesso: false, mensagem: 'Usuário ou senha incorretos.' };
-    }
-  } catch (erro) {
-    Logger.log('Erro ao validar login: ' + erro.toString());
-    return { sucesso: false, mensagem: 'Erro interno ao validar acesso.' };
-  }
-}
-
-/**
  * Consulta a taxa média do BACEN e classifica o contrato do cliente
  */
 function calcularJurosAbusivos(dados) {
@@ -312,5 +280,152 @@ function calcularJurosAbusivos(dados) {
   } catch (erro) {
     Logger.log("Erro no cálculo: " + erro.toString());
     return { sucesso: false, mensagem: "Não foi possível realizar a análise. Verifique os valores informados." };
+  }
+}
+
+// =========================================================
+// MÓDULO DE SEGURANÇA E AUTENTICAÇÃO DE USUÁRIOS
+// =========================================================
+
+/**
+ * Função auxiliar que junta o Usuário + Senha e cria o Hash irreversível (SHA-256)
+ */
+function gerarHashBase(usuario, senha) {
+  const textoParaCriptografar = String(usuario).trim().toLowerCase() + String(senha).trim();
+  return Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, textoParaCriptografar)
+    .map(function(chr){return (chr+256).toString(16).slice(-2)})
+    .join('');
+}
+
+/**
+ * 1. SCRIPT DE USO ÚNICO: Gerar os primeiros hashes na planilha
+ * Selecione esta função no painel superior e clique em "Executar"
+ */
+function gerarHashesIniciais() {
+  const ss = SpreadsheetApp.openById(getBancoDadosId());
+  const aba = ss.getSheetByName('Usuarios');
+  if (!aba) {
+    Logger.log("Aba 'Usuarios' não encontrada!");
+    return;
+  }
+  
+  const dados = aba.getDataRange().getValues();
+  const senhaPadrao = "123456";
+  
+  // O loop começa em 1 para pular o cabeçalho
+  for (let i = 1; i < dados.length; i++) {
+    const usuario = String(dados[i][0]).trim();
+    const senhaHashAtual = String(dados[i][1]).trim();
+    
+    // Se existe usuário escrito, mas o hash está vazio, ele calcula e grava
+    if (usuario !== "" && senhaHashAtual === "") {
+      const hash = gerarHashBase(usuario, senhaPadrao);
+      aba.getRange(i + 1, 2).setValue(hash); // Grava na Coluna B
+      Logger.log(`Hash gerado para: ${usuario}`);
+    }
+  }
+  Logger.log("✅ Hashes iniciais gerados com sucesso!");
+}
+
+/**
+ * 2. Valida o login conferindo o Hash e a Situação da conta
+ */
+function validarLogin(usuario, senha) {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Usuarios');
+    if (!aba) return { sucesso: false, mensagem: 'Aba de usuários não configurada.' };
+
+    const dados = aba.getDataRange().getValues();
+    dados.shift(); // Remove cabeçalho
+
+    const hashTentativa = gerarHashBase(usuario, senha);
+
+    const usuarioEncontrado = dados.find(linha => {
+      const userPlanilha = String(linha[0]).trim().toLowerCase();
+      const hashPlanilha = String(linha[1]).trim();
+      const situacao = String(linha[3]).trim().toLowerCase(); // Coluna D
+      
+      return (userPlanilha === String(usuario).trim().toLowerCase()) && 
+             (hashPlanilha === hashTentativa) && 
+             (situacao === 'ativo');
+    });
+
+    if (usuarioEncontrado) {
+      return { 
+        sucesso: true, 
+        nomeUsuario: usuarioEncontrado[0],
+        exigeTroca: usuarioEncontrado[5] // Coluna F (Trocar_Senha)
+      };
+    } else {
+      return { sucesso: false, mensagem: 'Usuário/senha incorretos ou conta inativa.' };
+    }
+  } catch (erro) {
+    return { sucesso: false, mensagem: 'Erro interno ao validar acesso.' };
+  }
+}
+
+/**
+ * 3. Salva a nova senha definitiva quando o usuário for forçado a trocar
+ */
+function atualizarSenhaObrigatoria(usuario, novaSenha) {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Usuarios');
+    const dados = aba.getDataRange().getValues();
+    
+    const userBusca = String(usuario).trim().toLowerCase();
+    
+    for (let i = 1; i < dados.length; i++) {
+      if (String(dados[i][0]).trim().toLowerCase() === userBusca) {
+        const novoHash = gerarHashBase(usuario, novaSenha);
+        aba.getRange(i + 1, 2).setValue(novoHash); // Atualiza Coluna B (Hash)
+        aba.getRange(i + 1, 6).setValue('Nao');    // Atualiza Coluna F (Trocar_Senha)
+        return { sucesso: true };
+      }
+    }
+    return { sucesso: false, mensagem: 'Usuário não encontrado no banco de dados.' };
+  } catch (e) {
+    return { sucesso: false, mensagem: 'Erro ao gravar a nova senha.' };
+  }
+}
+
+/**
+ * 4. Recuperação de Senha Automatizada via Gmail
+ */
+function recuperarSenhaEmail(email) {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Usuarios');
+    const dados = aba.getDataRange().getValues();
+    
+    const emailBusca = String(email).trim().toLowerCase();
+    
+    for (let i = 1; i < dados.length; i++) {
+      const emailPlanilha = String(dados[i][2]).trim().toLowerCase(); // Coluna C
+      
+      if (emailPlanilha === emailBusca) {
+        const usuario = String(dados[i][0]).trim();
+        const senhaProvisoria = Math.random().toString(36).slice(-8); // Gera 8 caracteres aleatórios
+        const novoHash = gerarHashBase(usuario, senhaProvisoria);
+        
+        aba.getRange(i + 1, 2).setValue(novoHash); // Substitui a senha antiga pelo novo Hash
+        aba.getRange(i + 1, 6).setValue('Sim');    // Força a troca no próximo login
+        
+        MailApp.sendEmail({
+          to: emailPlanilha,
+          subject: "Recuperação de Senha - Área Exclusiva",
+          htmlBody: `Olá,<br><br>Sua senha provisória foi gerada com sucesso.<br><br>
+                     <b>Usuário:</b> ${usuario}<br>
+                     <b>Senha Provisória:</b> ${senhaProvisoria}<br><br>
+                     Ao fazer o login, o sistema exigirá a criação de uma nova senha definitiva por motivos de segurança.`
+        });
+        
+        return { sucesso: true };
+      }
+    }
+    return { sucesso: false, mensagem: 'Este e-mail não foi encontrado na base de usuários.' };
+  } catch (e) {
+    return { sucesso: false, mensagem: 'Erro ao tentar enviar o e-mail de recuperação.' };
   }
 }

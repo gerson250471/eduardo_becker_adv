@@ -19,18 +19,22 @@
     <?!= include('styles'); ?>
 
     <style>
-      .card-login {
+      .card-admin {
         border: none;
         border-radius: 16px;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       }
-      .input-login {
+      .input-admin {
         padding: 12px 15px;
         border-radius: 8px;
       }
-      .input-login:focus {
+      .input-admin:focus {
         border-color: var(--cor-destaque);
         box-shadow: 0 0 0 3px rgba(184, 142, 47, 0.25);
+      }
+      /* Oculta as telas secundárias no carregamento inicial */
+      .tela-oculta {
+        display: none;
       }
     </style>
   </head>
@@ -40,14 +44,18 @@
 
     <main class="flex-grow-1 d-flex align-items-center py-5">
       <div class="container py-4">
-        <div class="row justify-content-center">
+        <!-- ========================================== -->
+        <!-- CONTAINER CENTRALIZADO (Login e Senhas)    -->
+        <!-- ========================================== -->
+        <div class="row justify-content-center" id="container-autenticacao">
           <div class="col-md-6 col-lg-5">
-            <div class="card card-login bg-white p-4 p-md-5">
+            <!-- TELA 1: LOGIN PRINCIPAL -->
+            <div id="box-login" class="card card-admin bg-white p-4 p-md-5">
               <div class="text-center mb-4">
                 <i class="fas fa-lock text-destaque fs-1 mb-3"></i>
                 <h3 class="text-principal fw-bold mb-1">Área Exclusiva</h3>
                 <p class="text-muted small">
-                  Acesso restrito aos sócios e colaboradores
+                  Acesso restrito aos colaboradores
                 </p>
               </div>
 
@@ -56,18 +64,18 @@
                   <label
                     for="usuario"
                     class="form-label text-muted small fw-semibold"
-                    >Usuário ou E-mail</label
+                    >Usuário</label
                   >
                   <input
                     type="text"
-                    class="form-control input-login"
+                    class="form-control input-admin"
                     id="usuario"
                     placeholder="Digite seu usuário"
                     required
                   />
                 </div>
 
-                <div class="mb-4">
+                <div class="mb-2">
                   <label
                     for="senha"
                     class="form-label text-muted small fw-semibold"
@@ -75,11 +83,22 @@
                   >
                   <input
                     type="password"
-                    class="form-control input-login"
+                    class="form-control input-admin"
                     id="senha"
                     placeholder="••••••••"
                     required
                   />
+                </div>
+
+                <!-- Link de Esqueci a Senha -->
+                <div class="text-end mb-4">
+                  <a
+                    href="javascript:void(0)"
+                    onclick="mostrarTela('box-recuperar')"
+                    class="text-muted small text-decoration-none"
+                  >
+                    Esqueceu a senha?
+                  </a>
                 </div>
 
                 <button
@@ -91,13 +110,9 @@
                 </button>
               </form>
 
-              <div
-                id="alertaLogin"
-                class="alert alert-danger mt-2"
-                style="display: none"
-              ></div>
+              <div id="alertaLogin" class="alert mt-2 tela-oculta"></div>
 
-              <div class="text-center mt-3">
+              <div class="text-center mt-3 border-top pt-3">
                 <a
                   href="<?= hostUrl ?>?page=index"
                   class="text-muted small text-decoration-none"
@@ -105,6 +120,175 @@
                   <i class="fas fa-arrow-left me-1"></i> Voltar ao site
                   principal
                 </a>
+              </div>
+            </div>
+
+            <!-- TELA 2: RECUPERAÇÃO DE SENHA -->
+            <div
+              id="box-recuperar"
+              class="card card-admin bg-white p-4 p-md-5 tela-oculta"
+            >
+              <div class="text-center mb-4">
+                <i
+                  class="fas fa-envelope-open-text text-destaque fs-1 mb-3"
+                ></i>
+                <h3 class="text-principal fw-bold mb-1">Recuperar Acesso</h3>
+                <p class="text-muted small">
+                  Enviaremos uma senha provisória para o seu e-mail cadastrado.
+                </p>
+              </div>
+
+              <form id="formRecuperar" onsubmit="solicitarRecuperacao(event)">
+                <div class="mb-4">
+                  <label
+                    for="emailRecuperacao"
+                    class="form-label text-muted small fw-semibold"
+                    >E-mail Cadastrado</label
+                  >
+                  <input
+                    type="email"
+                    class="form-control input-admin"
+                    id="emailRecuperacao"
+                    placeholder="seu@email.com"
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  id="btnRecuperar"
+                  class="btn btn-dark w-100 py-2 fw-semibold rounded-3 mb-3"
+                >
+                  Enviar Senha Provisória
+                </button>
+              </form>
+
+              <div id="alertaRecuperacao" class="alert mt-2 tela-oculta"></div>
+
+              <div class="text-center mt-3">
+                <a
+                  href="javascript:void(0)"
+                  onclick="mostrarTela('box-login')"
+                  class="text-muted small text-decoration-none"
+                >
+                  <i class="fas fa-arrow-left me-1"></i> Voltar ao Login
+                </a>
+              </div>
+            </div>
+
+            <!-- TELA 3: TROCA OBRIGATÓRIA DE SENHA -->
+            <div
+              id="box-trocar-senha"
+              class="card card-admin bg-white p-4 p-md-5 tela-oculta"
+            >
+              <div class="text-center mb-4">
+                <i class="fas fa-key text-warning fs-1 mb-3"></i>
+                <h3 class="text-principal fw-bold mb-1">Nova Senha</h3>
+                <p class="text-muted small text-danger fw-semibold">
+                  Por segurança, defina uma nova senha definitiva para o seu
+                  usuário.
+                </p>
+              </div>
+
+              <form id="formNovaSenha" onsubmit="salvarNovaSenha(event)">
+                <input type="hidden" id="usuarioOcultoTroca" />
+
+                <div class="mb-3">
+                  <label
+                    for="novaSenha"
+                    class="form-label text-muted small fw-semibold"
+                    >Nova Senha</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control input-admin"
+                    id="novaSenha"
+                    placeholder="Mínimo de 6 caracteres"
+                    required
+                    minlength="6"
+                  />
+                </div>
+
+                <div class="mb-4">
+                  <label
+                    for="confirmaSenha"
+                    class="form-label text-muted small fw-semibold"
+                    >Confirme a Nova Senha</label
+                  >
+                  <input
+                    type="password"
+                    class="form-control input-admin"
+                    id="confirmaSenha"
+                    placeholder="Repita a senha"
+                    required
+                    minlength="6"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  id="btnTrocarSenha"
+                  class="btn btn-success w-100 py-2 fw-semibold rounded-3 mb-3"
+                >
+                  Salvar e Acessar
+                </button>
+              </form>
+
+              <div id="alertaTroca" class="alert mt-2 tela-oculta"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TELA 4: DASHBOARD (Painel Central)         -->
+        <!-- ========================================== -->
+        <div id="box-dashboard" class="tela-oculta">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h2 class="text-principal fw-bold mb-0">Painel de Controle</h2>
+              <p class="text-muted mb-0">
+                Bem-vindo,
+                <span id="nomeUsuarioLogado" class="fw-bold text-destaque"
+                  >Usuário</span
+                >!
+              </p>
+            </div>
+            <button
+              onclick="fazerLogout()"
+              class="btn btn-outline-danger btn-sm rounded-pill px-3"
+            >
+              <i class="fas fa-sign-out-alt me-1"></i> Sair
+            </button>
+          </div>
+
+          <!-- Grade de Módulos (Estilo Botões do VBA) -->
+          <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
+            <!-- Módulo Blog -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 hover-elevate cursor-pointer"
+                onclick="abrirModulo('blog')"
+              >
+                <div class="card-body">
+                  <i class="fas fa-newspaper text-destaque fa-3x mb-3"></i>
+                  <h4 class="fw-bold text-principal">Gestão do Blog</h4>
+                  <p class="small text-muted mb-0">
+                    Publicar e editar artigos do site.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Módulo Kanban (Futuro) -->
+            <div class="col">
+              <div
+                class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 hover-elevate cursor-pointer opacity-75"
+              >
+                <div class="card-body">
+                  <i class="fas fa-tasks text-secondary fa-3x mb-3"></i>
+                  <h4 class="fw-bold text-secondary">Kanban</h4>
+                  <p class="small text-muted mb-0">Em breve.</p>
+                </div>
               </div>
             </div>
           </div>
@@ -121,19 +305,65 @@
     <!-- Injeção dos nossos Scripts Personalizados -->
     <?!= include('scripts'); ?>
 
+    <style>
+      .hover-elevate {
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .hover-elevate:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+      }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+    </style>
+
     <script>
+      /**
+       * Gerenciador de Telas (SPA Logic)
+       */
+      function mostrarTela(idTelaAlvo) {
+        // Lista de todas as telas da página administrativa
+        const telas = [
+          "box-login",
+          "box-recuperar",
+          "box-trocar-senha",
+          "box-dashboard",
+        ];
+        const containerAuth = document.getElementById("container-autenticacao");
+
+        // Se for o dashboard, esconde o container centralizadoizado
+        if (idTelaAlvo === "box-dashboard") {
+          containerAuth.style.display = "none";
+        } else {
+          containerAuth.style.display = "flex";
+        }
+
+        // Percorre as telas, mostrando a alvo e escondendo o resto
+        telas.forEach((tela) => {
+          const el = document.getElementById(tela);
+          if (el) {
+            el.style.display = tela === idTelaAlvo ? "block" : "none";
+          }
+        });
+      }
+
+      /**
+       * Fluxo 1: Autenticação
+       */
       function autenticarUsuario(event) {
         event.preventDefault();
         const btn = document.getElementById("btnEntrar");
         const alerta = document.getElementById("alertaLogin");
+        const usuario = document.getElementById("usuario").value.trim();
+        const senha = document.getElementById("senha").value;
 
         btn.disabled = true;
         btn.innerHTML =
           '<i class="fas fa-spinner fa-spin me-2"></i> Autenticando...';
         alerta.style.display = "none";
-
-        const usuario = document.getElementById("usuario").value;
-        const senha = document.getElementById("senha").value;
 
         if (typeof google !== "undefined" && google.script) {
           google.script.run
@@ -142,24 +372,140 @@
               btn.innerText = "Acessar Painel";
 
               if (resposta.sucesso) {
-                // Redireciona ou exibe o painel administrativo
-                alert("Login efetuado com sucesso!");
+                // Guarda o nome do usuário logado na tela
+                document.getElementById("nomeUsuarioLogado").innerText =
+                  resposta.nomeUsuario || usuario;
+
+                // Verifica a flag de troca de senha
+                if (
+                  resposta.exigeTroca === true ||
+                  resposta.exigeTroca === "Sim"
+                ) {
+                  document.getElementById("usuarioOcultoTroca").value = usuario; // Guarda para a próxima requisição
+                  mostrarTela("box-trocar-senha");
+                } else {
+                  mostrarTela("box-dashboard");
+                }
               } else {
+                alerta.className = "alert alert-danger mt-2 small";
                 alerta.innerText =
                   resposta.mensagem || "Usuário ou senha inválidos.";
                 alerta.style.display = "block";
               }
             })
+            .withFailureHandler(() => {
+              btn.disabled = false;
+              btn.innerText = "Acessar Painel";
+              alerta.className = "alert alert-danger mt-2 small";
+              alerta.innerText = "Erro ao conectar com o servidor.";
+              alerta.style.display = "block";
+            })
             .validarLogin(usuario, senha);
         } else {
-          // Teste visual local
+          // Fallback para teste visual
           setTimeout(() => {
             btn.disabled = false;
             btn.innerText = "Acessar Painel";
-            alerta.innerText =
-              "Funcionalidade conectada à planilha do Google Sheets!";
-            alerta.style.display = "block";
+            document.getElementById("nomeUsuarioLogado").innerText =
+              "Desenvolvedor";
+            mostrarTela("box-dashboard");
           }, 1000);
+        }
+      }
+
+      /**
+       * Fluxo 2: Esqueci a Senha
+       */
+      function solicitarRecuperacao(event) {
+        event.preventDefault();
+        const btn = document.getElementById("btnRecuperar");
+        const alerta = document.getElementById("alertaRecuperacao");
+        const email = document.getElementById("emailRecuperacao").value.trim();
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i> Processando...';
+        alerta.style.display = "none";
+
+        if (typeof google !== "undefined" && google.script) {
+          google.script.run
+            .withSuccessHandler((resposta) => {
+              btn.disabled = false;
+              btn.innerText = "Enviar Senha Provisória";
+              alerta.style.display = "block";
+
+              if (resposta.sucesso) {
+                alerta.className = "alert alert-success mt-2 small";
+                alerta.innerText =
+                  "Instruções enviadas para o e-mail informado.";
+                document.getElementById("formRecuperar").reset();
+              } else {
+                alerta.className = "alert alert-danger mt-2 small";
+                alerta.innerText =
+                  resposta.mensagem || "E-mail não encontrado no sistema.";
+              }
+            })
+            .recuperarSenhaEmail(email); // Função que será criada no Code.gs
+        }
+      }
+
+      /**
+       * Fluxo 3: Salvar Nova Senha Obrigatória
+       */
+      function salvarNovaSenha(event) {
+        event.preventDefault();
+        const btn = document.getElementById("btnTrocarSenha");
+        const alerta = document.getElementById("alertaTroca");
+
+        const usuario = document.getElementById("usuarioOcultoTroca").value;
+        const senha1 = document.getElementById("novaSenha").value;
+        const senha2 = document.getElementById("confirmaSenha").value;
+
+        alerta.style.display = "none";
+
+        if (senha1 !== senha2) {
+          alerta.className = "alert alert-danger mt-2 small";
+          alerta.innerText = "As senhas não conferem. Tente novamente.";
+          alerta.style.display = "block";
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i> Salvando...';
+
+        if (typeof google !== "undefined" && google.script) {
+          google.script.run
+            .withSuccessHandler((resposta) => {
+              btn.disabled = false;
+              btn.innerText = "Salvar e Acessar";
+
+              if (resposta.sucesso) {
+                mostrarTela("box-dashboard");
+              } else {
+                alerta.className = "alert alert-danger mt-2 small";
+                alerta.innerText =
+                  resposta.mensagem || "Erro ao atualizar a senha.";
+                alerta.style.display = "block";
+              }
+            })
+            .atualizarSenhaObrigatoria(usuario, senha1); // Função que será criada no Code.gs
+        }
+      }
+
+      /**
+       * Interações do Dashboard
+       */
+      function fazerLogout() {
+        document.getElementById("formLogin").reset();
+        document.getElementById("formNovaSenha").reset();
+        mostrarTela("box-login");
+      }
+
+      function abrirModulo(modulo) {
+        if (modulo === "blog") {
+          alert("Abrindo interface do Editor Quill.js... (Próxima etapa)");
+          // Aqui conectaremos com a interface de cadastro de artigos!
         }
       }
     </script>
