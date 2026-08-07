@@ -181,7 +181,11 @@
         document.getElementById("artigo-data").innerText = artigo.data
           ? artigo.data.split(" ")[0]
           : "";
-        document.getElementById("artigo-capa").src = artigo.capa;
+
+        // Injeta a imagem e força ela a aparecer na tela novamente
+        const imgCapa = document.getElementById("artigo-capa");
+        imgCapa.src = artigo.capa;
+        imgCapa.style.display = "block";
 
         // Injeta o HTML gerado pelo editor
         document.getElementById("artigo-conteudo").innerHTML = artigo.conteudo;
