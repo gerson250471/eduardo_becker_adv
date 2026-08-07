@@ -430,3 +430,57 @@ function recuperarSenhaEmail(email) {
     return { sucesso: false, mensagem: 'Erro ao tentar enviar o e-mail de recuperação.' };
   }
 }
+
+// =========================================================
+// MÓDULO DO BLOG (Gestão de Artigos)
+// =========================================================
+
+/**
+ * Recebe os dados do front-end, salva a imagem no Drive e os dados na Planilha
+ */
+function salvarArtigoBlog(pacoteArtigo, dadosImagem) {
+  try {
+    // 1. Tratamento da Imagem de Capa (Salva no Drive)
+    const pastaDestino = DriveApp.getFolderById(ID_PASTA_IMAGENS);
+    
+    // Converte a string Base64 de volta para um arquivo binário (Blob)
+    const blob = Utilities.newBlob(Utilities.base64Decode(dadosImagem.conteudoBase64), dadosImagem.tipo, dadosImagem.nome);
+    const arquivoCapa = pastaDestino.createFile(blob);
+    
+    // Força a permissão de visualização pública para garantir que a imagem apareça no site
+    arquivoCapa.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+    
+    // Captura a URL pública da imagem recém-criada
+    const urlCapa = arquivoCapa.getUrl(); 
+
+    // 2. Preparação dos Dados para a Planilha
+    const dataAtual = Utilities.formatDate(new Date(), "GMT-3", "dd/MM/yyyy HH:mm:ss");
+    const idUnico = 'ART-' + new Date().getTime(); // Gera um ID único baseado no timestamp atual
+    
+    // 3. Conexão com o Banco de Dados
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const abaBlog = ss.getSheetByName('Blog');
+    
+    if (!abaBlog) {
+      return { sucesso: false, mensagem: "Aba 'Blog' não encontrada no banco de dados." };
+    }
+    
+    // 4. Salva a nova linha com os dados exatos nas 8 colunas que você criou
+    abaBlog.appendRow([
+      idUnico,                // Coluna A (ID)
+      dataAtual,              // Coluna B (Data_Publicacao)
+      pacoteArtigo.autor,     // Coluna C (Autor)
+      pacoteArtigo.titulo,    // Coluna D (Titulo)
+      pacoteArtigo.resumo,    // Coluna E (Resumo)
+      urlCapa,                // Coluna F (Capa_URL)
+      pacoteArtigo.conteudoHTML, // Coluna G (Conteudo_HTML - Texto do Quill)
+      pacoteArtigo.status     // Coluna H (Status)
+    ]);
+    
+    return { sucesso: true, mensagem: "Artigo publicado com sucesso!" };
+    
+  } catch (erro) {
+    Logger.log("Erro no Blog: " + erro.message);
+    return { sucesso: false, mensagem: "Erro ao salvar o artigo: " + erro.message };
+  }
+}

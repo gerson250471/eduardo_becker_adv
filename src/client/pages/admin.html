@@ -15,6 +15,12 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <!-- Quill.js CSS (Tema Snow para o Editor Rico) -->
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+
     <!-- Injeção do nosso CSS Personalizado -->
     <?!= include('styles'); ?>
 
@@ -32,14 +38,39 @@
         border-color: var(--cor-destaque);
         box-shadow: 0 0 0 3px rgba(184, 142, 47, 0.25);
       }
-      /* Oculta as telas secundárias no carregamento inicial */
       .tela-oculta {
         display: none;
+      }
+      .hover-elevate {
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+      }
+      .hover-elevate:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+      }
+      .cursor-pointer {
+        cursor: pointer;
+      }
+
+      /* Ajustes visuais do Editor Quill */
+      #editor-container {
+        height: 350px;
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+      }
+      .ql-toolbar {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        background-color: #f8f9fa;
       }
     </style>
   </head>
   <body class="bg-fundo d-flex flex-column min-vh-100">
-    <!-- Cabeçalho (Menu Dinâmico) -->
+    <!-- Cabeçalho -->
     <?!= include('header', pageAtual, hostUrl); ?>
 
     <main class="flex-grow-1 d-flex align-items-center py-5">
@@ -49,7 +80,7 @@
         <!-- ========================================== -->
         <div class="row justify-content-center" id="container-autenticacao">
           <div class="col-md-6 col-lg-5">
-            <!-- TELA 1: LOGIN PRINCIPAL -->
+            <!-- TELA 1: LOGIN -->
             <div id="box-login" class="card card-admin bg-white p-4 p-md-5">
               <div class="text-center mb-4">
                 <i class="fas fa-lock text-destaque fs-1 mb-3"></i>
@@ -74,7 +105,6 @@
                     required
                   />
                 </div>
-
                 <div class="mb-2">
                   <label
                     for="senha"
@@ -89,18 +119,14 @@
                     required
                   />
                 </div>
-
-                <!-- Link de Esqueci a Senha -->
                 <div class="text-end mb-4">
                   <a
                     href="javascript:void(0)"
                     onclick="mostrarTela('box-recuperar')"
                     class="text-muted small text-decoration-none"
+                    >Esqueceu a senha?</a
                   >
-                    Esqueceu a senha?
-                  </a>
                 </div>
-
                 <button
                   type="submit"
                   id="btnEntrar"
@@ -109,17 +135,14 @@
                   Acessar Painel
                 </button>
               </form>
-
               <div id="alertaLogin" class="alert mt-2 tela-oculta"></div>
-
               <div class="text-center mt-3 border-top pt-3">
                 <a
                   href="<?= hostUrl ?>?page=index"
                   class="text-muted small text-decoration-none"
+                  ><i class="fas fa-arrow-left me-1"></i> Voltar ao site
+                  principal</a
                 >
-                  <i class="fas fa-arrow-left me-1"></i> Voltar ao site
-                  principal
-                </a>
               </div>
             </div>
 
@@ -137,7 +160,6 @@
                   Enviaremos uma senha provisória para o seu e-mail cadastrado.
                 </p>
               </div>
-
               <form id="formRecuperar" onsubmit="solicitarRecuperacao(event)">
                 <div class="mb-4">
                   <label
@@ -153,7 +175,6 @@
                     required
                   />
                 </div>
-
                 <button
                   type="submit"
                   id="btnRecuperar"
@@ -162,17 +183,14 @@
                   Enviar Senha Provisória
                 </button>
               </form>
-
               <div id="alertaRecuperacao" class="alert mt-2 tela-oculta"></div>
-
               <div class="text-center mt-3">
                 <a
                   href="javascript:void(0)"
                   onclick="mostrarTela('box-login')"
                   class="text-muted small text-decoration-none"
+                  ><i class="fas fa-arrow-left me-1"></i> Voltar ao Login</a
                 >
-                  <i class="fas fa-arrow-left me-1"></i> Voltar ao Login
-                </a>
               </div>
             </div>
 
@@ -189,10 +207,8 @@
                   usuário.
                 </p>
               </div>
-
               <form id="formNovaSenha" onsubmit="salvarNovaSenha(event)">
                 <input type="hidden" id="usuarioOcultoTroca" />
-
                 <div class="mb-3">
                   <label
                     for="novaSenha"
@@ -208,7 +224,6 @@
                     minlength="6"
                   />
                 </div>
-
                 <div class="mb-4">
                   <label
                     for="confirmaSenha"
@@ -224,7 +239,6 @@
                     minlength="6"
                   />
                 </div>
-
                 <button
                   type="submit"
                   id="btnTrocarSenha"
@@ -233,7 +247,6 @@
                   Salvar e Acessar
                 </button>
               </form>
-
               <div id="alertaTroca" class="alert mt-2 tela-oculta"></div>
             </div>
           </div>
@@ -261,13 +274,13 @@
             </button>
           </div>
 
-          <!-- Grade de Módulos (Estilo Botões do VBA) -->
+          <!-- Grade de Módulos -->
           <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
-            <!-- Módulo Blog -->
+            <!-- Módulo Blog (Agora aponta para a tela correta) -->
             <div class="col">
               <div
                 class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 hover-elevate cursor-pointer"
-                onclick="abrirModulo('blog')"
+                onclick="mostrarTela('box-blog-editor')"
               >
                 <div class="card-body">
                   <i class="fas fa-newspaper text-destaque fa-3x mb-3"></i>
@@ -293,55 +306,157 @@
             </div>
           </div>
         </div>
+
+        <!-- ========================================== -->
+        <!-- TELA 5: EDITOR DE ARTIGOS (QUILL.JS)       -->
+        <!-- ========================================== -->
+        <div id="box-blog-editor" class="tela-oculta">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h3 class="text-principal fw-bold mb-0">
+                <i class="fas fa-edit text-destaque me-2"></i>Novo Artigo
+              </h3>
+            </div>
+            <button
+              onclick="mostrarTela('box-dashboard')"
+              class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+            >
+              <i class="fas fa-arrow-left me-1"></i> Voltar ao Painel
+            </button>
+          </div>
+
+          <div class="card card-admin bg-white p-4">
+            <form id="formBlog" onsubmit="salvarArtigo(event)">
+              <div class="row g-3 mb-3">
+                <div class="col-md-8">
+                  <label class="form-label text-muted small fw-semibold"
+                    >Título do Artigo</label
+                  >
+                  <input
+                    type="text"
+                    id="blogTitulo"
+                    class="form-control input-admin"
+                    placeholder="Ex: Direitos do consumidor..."
+                    required
+                  />
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label text-muted small fw-semibold"
+                    >Status</label
+                  >
+                  <select id="blogStatus" class="form-select input-admin">
+                    <option value="Rascunho">Salvar como Rascunho</option>
+                    <option value="Publicado">Publicar Imediatamente</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label text-muted small fw-semibold"
+                  >Resumo (Texto curto para a capa)</label
+                >
+                <textarea
+                  id="blogResumo"
+                  class="form-control input-admin"
+                  rows="2"
+                  placeholder="Digite uma breve chamada..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label text-muted small fw-semibold"
+                  >Imagem de Capa</label
+                >
+                <input
+                  type="file"
+                  id="blogCapa"
+                  class="form-control input-admin"
+                  accept="image/png, image/jpeg, image/webp"
+                  required
+                />
+              </div>
+
+              <!-- Container onde o Quill.js vai injetar o editor -->
+              <div class="mb-4">
+                <label class="form-label text-muted small fw-semibold"
+                  >Conteúdo Completo</label
+                >
+                <div id="editor-container"></div>
+              </div>
+
+              <div id="alertaBlog" class="alert mt-2 tela-oculta"></div>
+
+              <div class="text-end border-top pt-3 mt-4">
+                <button
+                  type="submit"
+                  id="btnSalvarBlog"
+                  class="btn btn-success px-5 py-2 fw-semibold rounded-3"
+                >
+                  <i class="fas fa-save me-2"></i> Salvar Artigo
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </main>
 
     <!-- Rodapé -->
     <?!= include('footer'); ?>
 
-    <!-- Bootstrap JS via CDN -->
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Injeção dos nossos Scripts Personalizados -->
+    <!-- Quill.js JS (Biblioteca do Editor) -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <!-- Injeção dos nossos Scripts -->
     <?!= include('scripts'); ?>
 
-    <style>
-      .hover-elevate {
-        transition:
-          transform 0.2s,
-          box-shadow 0.2s;
-      }
-      .hover-elevate:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
-      }
-      .cursor-pointer {
-        cursor: pointer;
-      }
-    </style>
-
     <script>
-      /**
-       * Gerenciador de Telas (SPA Logic)
-       */
+      // ==========================================
+      // INICIALIZAÇÃO DO QUILL.JS
+      // ==========================================
+      var quill = new Quill("#editor-container", {
+        theme: "snow",
+        placeholder: "Escreva o conteúdo detalhado do artigo aqui...",
+        modules: {
+          toolbar: [
+            [{ header: [2, 3, false] }],
+            ["bold", "italic", "underline", "strike"],
+            [{ color: [] }, { background: [] }],
+            [{ list: "ordered" }, { list: "bullet" }],
+            ["link", "blockquote"],
+            ["clean"],
+          ],
+        },
+      });
+
+      // ==========================================
+      // NAVEGAÇÃO SPA
+      // ==========================================
       function mostrarTela(idTelaAlvo) {
-        // Lista de todas as telas da página administrativa
+        // Agora inclui a tela do editor de blog na lista
         const telas = [
           "box-login",
           "box-recuperar",
           "box-trocar-senha",
           "box-dashboard",
+          "box-blog-editor",
         ];
         const containerAuth = document.getElementById("container-autenticacao");
 
-        // Se for o dashboard, esconde o container centralizadoizado
-        if (idTelaAlvo === "box-dashboard") {
+        // Se for dashboard ou editor, esconde a caixa centralizada de login
+        if (
+          idTelaAlvo === "box-dashboard" ||
+          idTelaAlvo === "box-blog-editor"
+        ) {
           containerAuth.style.display = "none";
         } else {
           containerAuth.style.display = "flex";
         }
 
-        // Percorre as telas, mostrando a alvo e escondendo o resto
         telas.forEach((tela) => {
           const el = document.getElementById(tela);
           if (el) {
@@ -350,9 +465,9 @@
         });
       }
 
-      /**
-       * Fluxo 1: Autenticação
-       */
+      // ==========================================
+      // FUNÇÕES DE AUTENTICAÇÃO (Mantidas iguais)
+      // ==========================================
       function autenticarUsuario(event) {
         event.preventDefault();
         const btn = document.getElementById("btnEntrar");
@@ -372,16 +487,13 @@
               btn.innerText = "Acessar Painel";
 
               if (resposta.sucesso) {
-                // Guarda o nome do usuário logado na tela
                 document.getElementById("nomeUsuarioLogado").innerText =
                   resposta.nomeUsuario || usuario;
-
-                // Verifica a flag de troca de senha
                 if (
                   resposta.exigeTroca === true ||
                   resposta.exigeTroca === "Sim"
                 ) {
-                  document.getElementById("usuarioOcultoTroca").value = usuario; // Guarda para a próxima requisição
+                  document.getElementById("usuarioOcultoTroca").value = usuario;
                   mostrarTela("box-trocar-senha");
                 } else {
                   mostrarTela("box-dashboard");
@@ -402,7 +514,6 @@
             })
             .validarLogin(usuario, senha);
         } else {
-          // Fallback para teste visual
           setTimeout(() => {
             btn.disabled = false;
             btn.innerText = "Acessar Painel";
@@ -413,10 +524,8 @@
         }
       }
 
-      /**
-       * Fluxo 2: Esqueci a Senha
-       */
       function solicitarRecuperacao(event) {
+        /* ... Lógica já existente ... */
         event.preventDefault();
         const btn = document.getElementById("btnRecuperar");
         const alerta = document.getElementById("alertaRecuperacao");
@@ -445,18 +554,15 @@
                   resposta.mensagem || "E-mail não encontrado no sistema.";
               }
             })
-            .recuperarSenhaEmail(email); // Função que será criada no Code.gs
+            .recuperarSenhaEmail(email);
         }
       }
 
-      /**
-       * Fluxo 3: Salvar Nova Senha Obrigatória
-       */
       function salvarNovaSenha(event) {
+        /* ... Lógica já existente ... */
         event.preventDefault();
         const btn = document.getElementById("btnTrocarSenha");
         const alerta = document.getElementById("alertaTroca");
-
         const usuario = document.getElementById("usuarioOcultoTroca").value;
         const senha1 = document.getElementById("novaSenha").value;
         const senha2 = document.getElementById("confirmaSenha").value;
@@ -479,7 +585,6 @@
             .withSuccessHandler((resposta) => {
               btn.disabled = false;
               btn.innerText = "Salvar e Acessar";
-
               if (resposta.sucesso) {
                 mostrarTela("box-dashboard");
               } else {
@@ -489,24 +594,99 @@
                 alerta.style.display = "block";
               }
             })
-            .atualizarSenhaObrigatoria(usuario, senha1); // Função que será criada no Code.gs
+            .atualizarSenhaObrigatoria(usuario, senha1);
         }
       }
 
-      /**
-       * Interações do Dashboard
-       */
       function fazerLogout() {
         document.getElementById("formLogin").reset();
         document.getElementById("formNovaSenha").reset();
         mostrarTela("box-login");
       }
 
-      function abrirModulo(modulo) {
-        if (modulo === "blog") {
-          alert("Abrindo interface do Editor Quill.js... (Próxima etapa)");
-          // Aqui conectaremos com a interface de cadastro de artigos!
+      // ==========================================
+      // GRAVAÇÃO DO BLOG (Comunicação com o Servidor)
+      // ==========================================
+      function salvarArtigo(event) {
+        event.preventDefault();
+        const btn = document.getElementById("btnSalvarBlog");
+        const alerta = document.getElementById("alertaBlog");
+
+        const titulo = document.getElementById("blogTitulo").value;
+        const resumo = document.getElementById("blogResumo").value;
+        const status = document.getElementById("blogStatus").value;
+        const autor = document.getElementById("nomeUsuarioLogado").innerText;
+
+        // Pega o HTML formatado gerado pelo editor
+        const conteudoHTML = quill.root.innerHTML;
+
+        if (quill.getText().trim().length === 0) {
+          alerta.className = "alert alert-warning mt-2 small";
+          alerta.innerText = "O conteúdo do artigo não pode estar vazio.";
+          alerta.style.display = "block";
+          return;
         }
+
+        const inputArquivo = document.getElementById("blogCapa");
+        const arquivo = inputArquivo.files[0];
+
+        btn.disabled = true;
+        btn.innerHTML =
+          '<i class="fas fa-spinner fa-spin me-2"></i> Processando Arquivos...';
+        alerta.style.display = "none";
+
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const dadosImagem = {
+            nome: arquivo.name,
+            tipo: arquivo.type,
+            conteudoBase64: e.target.result.split(",")[1],
+          };
+
+          const pacoteArtigo = {
+            titulo: titulo,
+            resumo: resumo,
+            status: status,
+            autor: autor,
+            conteudoHTML: conteudoHTML,
+          };
+
+          // CONEXÃO COM O BACK-END (salvarArtigoBlog)
+          if (typeof google !== "undefined" && google.script) {
+            google.script.run
+              .withSuccessHandler((resposta) => {
+                btn.disabled = false;
+                btn.innerHTML =
+                  '<i class="fas fa-save me-2"></i> Salvar Artigo';
+
+                if (resposta.sucesso) {
+                  alerta.className = "alert alert-success mt-2 small";
+                  alerta.innerText = resposta.mensagem;
+                  alerta.style.display = "block";
+
+                  document.getElementById("formBlog").reset();
+                  quill.root.innerHTML = "";
+
+                  setTimeout(() => mostrarTela("box-dashboard"), 2000);
+                } else {
+                  alerta.className = "alert alert-danger mt-2 small";
+                  alerta.innerText = resposta.mensagem;
+                  alerta.style.display = "block";
+                }
+              })
+              .withFailureHandler((erro) => {
+                btn.disabled = false;
+                btn.innerHTML =
+                  '<i class="fas fa-save me-2"></i> Salvar Artigo';
+                alerta.className = "alert alert-danger mt-2 small";
+                alerta.innerText = "Erro ao comunicar com o servidor.";
+                alerta.style.display = "block";
+                console.error(erro);
+              })
+              .salvarArtigoBlog(pacoteArtigo, dadosImagem);
+          }
+        };
+        reader.readAsDataURL(arquivo);
       }
     </script>
   </body>
