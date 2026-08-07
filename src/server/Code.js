@@ -483,7 +483,8 @@ function buscarArtigosBlog() {
         let urlCapa = String(dados[i][5]).trim();
         const match = urlCapa.match(/\/d\/(.+?)\//);
         if (match && match[1]) {
-          urlCapa = 'https://drive.google.com/uc?id=' + match[1];
+          // Usa a nova rota oficial do Google para evitar bloqueios de CORS
+          urlCapa = 'https://lh3.googleusercontent.com/d/' + match[1];
         }
 
         // PROTEÇÃO: Converte Datas para texto simples para não quebrar o script
@@ -536,9 +537,10 @@ function buscarArtigoPorId(idArtigo) {
         let urlCapa = String(dados[i][5]).trim();
         const match = urlCapa.match(/\/d\/(.+?)\//);
         if (match && match[1]) {
-          urlCapa = 'https://drive.google.com/uc?id=' + match[1];
+          // Usa a nova rota oficial do Google para evitar bloqueios de CORS
+          urlCapa = 'https://lh3.googleusercontent.com/d/' + match[1];
         }
-
+        
         // PROTEÇÃO: Converte Datas para texto simples para não quebrar o script
         let dataFormatada = dados[i][1];
         if (dataFormatada instanceof Date) {
