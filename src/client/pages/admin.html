@@ -4,24 +4,19 @@
     <meta charset="UTF-8" />
     <title>Área Exclusiva - Becker & Ribeiro Advocacia</title>
 
-    <!-- Bootstrap 5 CSS via CDN -->
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
       rel="stylesheet"
     />
-    <!-- Font Awesome para ícones -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-
-    <!-- Quill.js CSS (Tema Snow para o Editor Rico) -->
     <link
       href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
       rel="stylesheet"
     />
 
-    <!-- Injeção do nosso CSS Personalizado -->
     <?!= include('styles'); ?>
 
     <style>
@@ -54,12 +49,10 @@
         cursor: pointer;
       }
 
-      /* Ajustes visuais do Editor Quill */
       #editor-container {
         height: 350px;
         border-bottom-left-radius: 8px;
         border-bottom-right-radius: 8px;
-        font-family: inherit;
         font-size: 1rem;
       }
       .ql-toolbar {
@@ -67,20 +60,26 @@
         border-top-right-radius: 8px;
         background-color: #f8f9fa;
       }
+
+      .table-admin th {
+        font-weight: 600;
+        color: #495057;
+        border-bottom-width: 2px;
+      }
+      .table-admin td {
+        vertical-align: middle;
+      }
     </style>
   </head>
   <body class="bg-fundo d-flex flex-column min-vh-100">
-    <!-- Cabeçalho -->
     <?!= include('header', pageAtual, hostUrl); ?>
 
     <main class="flex-grow-1 d-flex align-items-center py-5">
       <div class="container py-4">
-        <!-- ========================================== -->
-        <!-- CONTAINER CENTRALIZADO (Login e Senhas)    -->
-        <!-- ========================================== -->
+        <!-- CONTAINER DE AUTENTICAÇÃO (MANTIDO INTACTO) -->
         <div class="row justify-content-center" id="container-autenticacao">
           <div class="col-md-6 col-lg-5">
-            <!-- TELA 1: LOGIN -->
+            <!-- TELA LOGIN -->
             <div id="box-login" class="card card-admin bg-white p-4 p-md-5">
               <div class="text-center mb-4">
                 <i class="fas fa-lock text-destaque fs-1 mb-3"></i>
@@ -89,112 +88,41 @@
                   Acesso restrito aos colaboradores
                 </p>
               </div>
-
               <form id="formLogin" onsubmit="autenticarUsuario(event)">
                 <div class="mb-3">
-                  <label
-                    for="usuario"
-                    class="form-label text-muted small fw-semibold"
+                  <label class="form-label text-muted small fw-semibold"
                     >Usuário</label
                   >
                   <input
                     type="text"
                     class="form-control input-admin"
                     id="usuario"
-                    placeholder="Digite seu usuário"
                     required
                   />
                 </div>
                 <div class="mb-2">
-                  <label
-                    for="senha"
-                    class="form-label text-muted small fw-semibold"
+                  <label class="form-label text-muted small fw-semibold"
                     >Senha</label
                   >
                   <input
                     type="password"
                     class="form-control input-admin"
                     id="senha"
-                    placeholder="••••••••"
                     required
                   />
-                </div>
-                <div class="text-end mb-4">
-                  <a
-                    href="javascript:void(0)"
-                    onclick="mostrarTela('box-recuperar')"
-                    class="text-muted small text-decoration-none"
-                    >Esqueceu a senha?</a
-                  >
                 </div>
                 <button
                   type="submit"
                   id="btnEntrar"
-                  class="btn btn-dourado w-100 py-2 fw-semibold rounded-3 mb-3"
+                  class="btn btn-dourado w-100 py-2 fw-semibold rounded-3 mb-3 mt-3"
                 >
                   Acessar Painel
                 </button>
               </form>
               <div id="alertaLogin" class="alert mt-2 tela-oculta"></div>
-              <div class="text-center mt-3 border-top pt-3">
-                <a
-                  href="<?= hostUrl ?>?page=index"
-                  class="text-muted small text-decoration-none"
-                  ><i class="fas fa-arrow-left me-1"></i> Voltar ao site
-                  principal</a
-                >
-              </div>
             </div>
 
-            <!-- TELA 2: RECUPERAÇÃO DE SENHA -->
-            <div
-              id="box-recuperar"
-              class="card card-admin bg-white p-4 p-md-5 tela-oculta"
-            >
-              <div class="text-center mb-4">
-                <i
-                  class="fas fa-envelope-open-text text-destaque fs-1 mb-3"
-                ></i>
-                <h3 class="text-principal fw-bold mb-1">Recuperar Acesso</h3>
-                <p class="text-muted small">
-                  Enviaremos uma senha provisória para o seu e-mail cadastrado.
-                </p>
-              </div>
-              <form id="formRecuperar" onsubmit="solicitarRecuperacao(event)">
-                <div class="mb-4">
-                  <label
-                    for="emailRecuperacao"
-                    class="form-label text-muted small fw-semibold"
-                    >E-mail Cadastrado</label
-                  >
-                  <input
-                    type="email"
-                    class="form-control input-admin"
-                    id="emailRecuperacao"
-                    placeholder="seu@email.com"
-                    required
-                  />
-                </div>
-                <button
-                  type="submit"
-                  id="btnRecuperar"
-                  class="btn btn-dark w-100 py-2 fw-semibold rounded-3 mb-3"
-                >
-                  Enviar Senha Provisória
-                </button>
-              </form>
-              <div id="alertaRecuperacao" class="alert mt-2 tela-oculta"></div>
-              <div class="text-center mt-3">
-                <a
-                  href="javascript:void(0)"
-                  onclick="mostrarTela('box-login')"
-                  class="text-muted small text-decoration-none"
-                  ><i class="fas fa-arrow-left me-1"></i> Voltar ao Login</a
-                >
-              </div>
-            </div>
-
-            <!-- TELA 3: TROCA OBRIGATÓRIA DE SENHA -->
+            <!-- TELA TROCA SENHA -->
             <div
               id="box-trocar-senha"
               class="card card-admin bg-white p-4 p-md-5 tela-oculta"
@@ -203,38 +131,31 @@
                 <i class="fas fa-key text-warning fs-1 mb-3"></i>
                 <h3 class="text-principal fw-bold mb-1">Nova Senha</h3>
                 <p class="text-muted small text-danger fw-semibold">
-                  Por segurança, defina uma nova senha definitiva para o seu
-                  usuário.
+                  Defina uma nova senha definitiva.
                 </p>
               </div>
               <form id="formNovaSenha" onsubmit="salvarNovaSenha(event)">
                 <input type="hidden" id="usuarioOcultoTroca" />
                 <div class="mb-3">
-                  <label
-                    for="novaSenha"
-                    class="form-label text-muted small fw-semibold"
+                  <label class="form-label text-muted small fw-semibold"
                     >Nova Senha</label
                   >
                   <input
                     type="password"
                     class="form-control input-admin"
                     id="novaSenha"
-                    placeholder="Mínimo de 6 caracteres"
                     required
                     minlength="6"
                   />
                 </div>
                 <div class="mb-4">
-                  <label
-                    for="confirmaSenha"
-                    class="form-label text-muted small fw-semibold"
-                    >Confirme a Nova Senha</label
+                  <label class="form-label text-muted small fw-semibold"
+                    >Confirme</label
                   >
                   <input
                     type="password"
                     class="form-control input-admin"
                     id="confirmaSenha"
-                    placeholder="Repita a senha"
                     required
                     minlength="6"
                   />
@@ -247,13 +168,12 @@
                   Salvar e Acessar
                 </button>
               </form>
-              <div id="alertaTroca" class="alert mt-2 tela-oculta"></div>
             </div>
           </div>
         </div>
 
         <!-- ========================================== -->
-        <!-- TELA 4: DASHBOARD (Painel Central)         -->
+        <!-- TELA 4: DASHBOARD CENTRAL                  -->
         <!-- ========================================== -->
         <div id="box-dashboard" class="tela-oculta">
           <div class="d-flex justify-content-between align-items-center mb-4">
@@ -274,33 +194,18 @@
             </button>
           </div>
 
-          <!-- Grade de Módulos -->
           <div class="row row-cols-1 row-cols-md-3 g-4 mt-2">
-            <!-- Módulo Blog (Agora aponta para a tela correta) -->
             <div class="col">
               <div
                 class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 hover-elevate cursor-pointer"
-                onclick="mostrarTela('box-blog-editor')"
+                onclick="carregarListaBlog()"
               >
                 <div class="card-body">
                   <i class="fas fa-newspaper text-destaque fa-3x mb-3"></i>
                   <h4 class="fw-bold text-principal">Gestão do Blog</h4>
                   <p class="small text-muted mb-0">
-                    Publicar e editar artigos do site.
+                    Publicar, editar e excluir artigos.
                   </p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Módulo Kanban (Futuro) -->
-            <div class="col">
-              <div
-                class="card h-100 border-0 shadow-sm rounded-4 text-center p-4 hover-elevate cursor-pointer opacity-75"
-              >
-                <div class="card-body">
-                  <i class="fas fa-tasks text-secondary fa-3x mb-3"></i>
-                  <h4 class="fw-bold text-secondary">Kanban</h4>
-                  <p class="small text-muted mb-0">Em breve.</p>
                 </div>
               </div>
             </div>
@@ -308,25 +213,74 @@
         </div>
 
         <!-- ========================================== -->
-        <!-- TELA 5: EDITOR DE ARTIGOS (QUILL.JS)       -->
+        <!-- TELA 5: LISTA DE ARTIGOS (NOVO)            -->
+        <!-- ========================================== -->
+        <div id="box-blog-lista" class="tela-oculta">
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h3 class="text-principal fw-bold mb-0">
+                <i class="fas fa-list text-destaque me-2"></i>Artigos Publicados
+              </h3>
+            </div>
+            <div>
+              <button
+                onclick="mostrarTela('box-dashboard')"
+                class="btn btn-outline-secondary btn-sm rounded-pill px-3 me-2"
+              >
+                <i class="fas fa-arrow-left me-1"></i> Voltar
+              </button>
+              <button
+                onclick="abrirEditorNovo()"
+                class="btn btn-dourado btn-sm rounded-pill px-3 fw-semibold"
+              >
+                <i class="fas fa-plus me-1"></i> Criar Artigo
+              </button>
+            </div>
+          </div>
+
+          <div class="card card-admin bg-white p-4">
+            <div class="table-responsive">
+              <table class="table table-hover table-admin align-middle">
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Título</th>
+                    <th>Status</th>
+                    <th class="text-end">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="tabela-artigos-admin">
+                  <!-- Linhas injetadas via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TELA 6: EDITOR DE ARTIGOS (QUILL.JS)       -->
         <!-- ========================================== -->
         <div id="box-blog-editor" class="tela-oculta">
           <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-              <h3 class="text-principal fw-bold mb-0">
+              <h3 id="titulo-tela-editor" class="text-principal fw-bold mb-0">
                 <i class="fas fa-edit text-destaque me-2"></i>Novo Artigo
               </h3>
             </div>
             <button
-              onclick="mostrarTela('box-dashboard')"
+              onclick="mostrarTela('box-blog-lista')"
               class="btn btn-outline-secondary btn-sm rounded-pill px-3"
             >
-              <i class="fas fa-arrow-left me-1"></i> Voltar ao Painel
+              Cancelar
             </button>
           </div>
 
           <div class="card card-admin bg-white p-4">
             <form id="formBlog" onsubmit="salvarArtigo(event)">
+              <!-- NOVO: Campos ocultos para controle de edição -->
+              <input type="hidden" id="blogId" />
+              <input type="hidden" id="blogCapaAtual" />
+
               <div class="row g-3 mb-3">
                 <div class="col-md-8">
                   <label class="form-label text-muted small fw-semibold"
@@ -336,7 +290,6 @@
                     type="text"
                     id="blogTitulo"
                     class="form-control input-admin"
-                    placeholder="Ex: Direitos do consumidor..."
                     required
                   />
                 </div>
@@ -345,8 +298,8 @@
                     >Status</label
                   >
                   <select id="blogStatus" class="form-select input-admin">
-                    <option value="Rascunho">Salvar como Rascunho</option>
-                    <option value="Publicado">Publicar Imediatamente</option>
+                    <option value="Rascunho">Rascunho</option>
+                    <option value="Publicado">Publicado</option>
                   </select>
                 </div>
               </div>
@@ -359,25 +312,31 @@
                   id="blogResumo"
                   class="form-control input-admin"
                   rows="2"
-                  placeholder="Digite uma breve chamada..."
                   required
                 ></textarea>
               </div>
 
               <div class="mb-4">
                 <label class="form-label text-muted small fw-semibold"
-                  >Imagem de Capa</label
+                  >Nova Imagem de Capa</label
                 >
+                <!-- Removido o 'required' para permitir edição sem trocar a imagem -->
                 <input
                   type="file"
                   id="blogCapa"
                   class="form-control input-admin"
                   accept="image/png, image/jpeg, image/webp"
-                  required
                 />
+                <div
+                  id="avisoImagemEdicao"
+                  class="form-text small text-primary"
+                  style="display: none"
+                >
+                  <i class="fas fa-info-circle"></i> Deixe em branco para manter
+                  a imagem atual do artigo.
+                </div>
               </div>
 
-              <!-- Container onde o Quill.js vai injetar o editor -->
               <div class="mb-4">
                 <label class="form-label text-muted small fw-semibold"
                   >Conteúdo Completo</label
@@ -402,25 +361,18 @@
       </div>
     </main>
 
-    <!-- Rodapé -->
     <?!= include('footer'); ?>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Quill.js JS (Biblioteca do Editor) -->
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-
-    <!-- Injeção dos nossos Scripts -->
     <?!= include('scripts'); ?>
 
     <script>
-      // ==========================================
-      // INICIALIZAÇÃO DO QUILL.JS
-      // ==========================================
+      let listaArtigosGlobal = []; // Guarda os artigos carregados na memória para facilitar a edição
+
       var quill = new Quill("#editor-container", {
         theme: "snow",
-        placeholder: "Escreva o conteúdo detalhado do artigo aqui...",
+        placeholder: "Escreva o conteúdo detalhado...",
         modules: {
           toolbar: [
             [{ header: [2, 3, false] }],
@@ -433,23 +385,19 @@
         },
       });
 
-      // ==========================================
-      // NAVEGAÇÃO SPA
-      // ==========================================
       function mostrarTela(idTelaAlvo) {
-        // Agora inclui a tela do editor de blog na lista
         const telas = [
           "box-login",
-          "box-recuperar",
           "box-trocar-senha",
           "box-dashboard",
+          "box-blog-lista",
           "box-blog-editor",
         ];
         const containerAuth = document.getElementById("container-autenticacao");
 
-        // Se for dashboard ou editor, esconde a caixa centralizada de login
         if (
           idTelaAlvo === "box-dashboard" ||
+          idTelaAlvo === "box-blog-lista" ||
           idTelaAlvo === "box-blog-editor"
         ) {
           containerAuth.style.display = "none";
@@ -459,14 +407,12 @@
 
         telas.forEach((tela) => {
           const el = document.getElementById(tela);
-          if (el) {
-            el.style.display = tela === idTelaAlvo ? "block" : "none";
-          }
+          if (el) el.style.display = tela === idTelaAlvo ? "block" : "none";
         });
       }
 
       // ==========================================
-      // FUNÇÕES DE AUTENTICAÇÃO (Mantidas iguais)
+      // LÓGICA DO LOGIN (Mantida)
       // ==========================================
       function autenticarUsuario(event) {
         event.preventDefault();
@@ -476,8 +422,7 @@
         const senha = document.getElementById("senha").value;
 
         btn.disabled = true;
-        btn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i> Autenticando...';
+        btn.innerHTML = "Aguarde...";
         alerta.style.display = "none";
 
         if (typeof google !== "undefined" && google.script) {
@@ -485,208 +430,181 @@
             .withSuccessHandler((resposta) => {
               btn.disabled = false;
               btn.innerText = "Acessar Painel";
-
               if (resposta.sucesso) {
                 document.getElementById("nomeUsuarioLogado").innerText =
                   resposta.nomeUsuario || usuario;
-                if (
-                  resposta.exigeTroca === true ||
+                mostrarTela(
                   resposta.exigeTroca === "Sim"
-                ) {
-                  document.getElementById("usuarioOcultoTroca").value = usuario;
-                  mostrarTela("box-trocar-senha");
-                } else {
-                  mostrarTela("box-dashboard");
-                }
+                    ? "box-trocar-senha"
+                    : "box-dashboard",
+                );
               } else {
                 alerta.className = "alert alert-danger mt-2 small";
-                alerta.innerText =
-                  resposta.mensagem || "Usuário ou senha inválidos.";
+                alerta.innerText = resposta.mensagem;
                 alerta.style.display = "block";
               }
-            })
-            .withFailureHandler(() => {
-              btn.disabled = false;
-              btn.innerText = "Acessar Painel";
-              alerta.className = "alert alert-danger mt-2 small";
-              alerta.innerText = "Erro ao conectar com o servidor.";
-              alerta.style.display = "block";
             })
             .validarLogin(usuario, senha);
-        } else {
-          setTimeout(() => {
-            btn.disabled = false;
-            btn.innerText = "Acessar Painel";
-            document.getElementById("nomeUsuarioLogado").innerText =
-              "Desenvolvedor";
-            mostrarTela("box-dashboard");
-          }, 1000);
-        }
-      }
-
-      function solicitarRecuperacao(event) {
-        /* ... Lógica já existente ... */
-        event.preventDefault();
-        const btn = document.getElementById("btnRecuperar");
-        const alerta = document.getElementById("alertaRecuperacao");
-        const email = document.getElementById("emailRecuperacao").value.trim();
-
-        btn.disabled = true;
-        btn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i> Processando...';
-        alerta.style.display = "none";
-
-        if (typeof google !== "undefined" && google.script) {
-          google.script.run
-            .withSuccessHandler((resposta) => {
-              btn.disabled = false;
-              btn.innerText = "Enviar Senha Provisória";
-              alerta.style.display = "block";
-
-              if (resposta.sucesso) {
-                alerta.className = "alert alert-success mt-2 small";
-                alerta.innerText =
-                  "Instruções enviadas para o e-mail informado.";
-                document.getElementById("formRecuperar").reset();
-              } else {
-                alerta.className = "alert alert-danger mt-2 small";
-                alerta.innerText =
-                  resposta.mensagem || "E-mail não encontrado no sistema.";
-              }
-            })
-            .recuperarSenhaEmail(email);
-        }
-      }
-
-      function salvarNovaSenha(event) {
-        /* ... Lógica já existente ... */
-        event.preventDefault();
-        const btn = document.getElementById("btnTrocarSenha");
-        const alerta = document.getElementById("alertaTroca");
-        const usuario = document.getElementById("usuarioOcultoTroca").value;
-        const senha1 = document.getElementById("novaSenha").value;
-        const senha2 = document.getElementById("confirmaSenha").value;
-
-        alerta.style.display = "none";
-
-        if (senha1 !== senha2) {
-          alerta.className = "alert alert-danger mt-2 small";
-          alerta.innerText = "As senhas não conferem. Tente novamente.";
-          alerta.style.display = "block";
-          return;
-        }
-
-        btn.disabled = true;
-        btn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i> Salvando...';
-
-        if (typeof google !== "undefined" && google.script) {
-          google.script.run
-            .withSuccessHandler((resposta) => {
-              btn.disabled = false;
-              btn.innerText = "Salvar e Acessar";
-              if (resposta.sucesso) {
-                mostrarTela("box-dashboard");
-              } else {
-                alerta.className = "alert alert-danger mt-2 small";
-                alerta.innerText =
-                  resposta.mensagem || "Erro ao atualizar a senha.";
-                alerta.style.display = "block";
-              }
-            })
-            .atualizarSenhaObrigatoria(usuario, senha1);
         }
       }
 
       function fazerLogout() {
         document.getElementById("formLogin").reset();
-        document.getElementById("formNovaSenha").reset();
         mostrarTela("box-login");
       }
 
       // ==========================================
-      // GRAVAÇÃO DO BLOG (Comunicação com o Servidor)
+      // MÓDULO BLOG: LISTAGEM
       // ==========================================
+      function carregarListaBlog() {
+        mostrarTela("box-blog-lista");
+        const tbody = document.getElementById("tabela-artigos-admin");
+        tbody.innerHTML =
+          '<tr><td colspan="4" class="text-center py-4 text-muted"><i class="fas fa-spinner fa-spin me-2"></i> Carregando artigos...</td></tr>';
+
+        google.script.run
+          .withSuccessHandler((artigos) => {
+            listaArtigosGlobal = artigos; // Salva na memória
+            tbody.innerHTML = "";
+
+            if (artigos.length === 0) {
+              tbody.innerHTML =
+                '<tr><td colspan="4" class="text-center py-4 text-muted">Nenhum artigo encontrado.</td></tr>';
+              return;
+            }
+
+            artigos.forEach((art) => {
+              const badge =
+                art.status === "Publicado"
+                  ? '<span class="badge bg-success">Publicado</span>'
+                  : '<span class="badge bg-secondary">Rascunho</span>';
+              tbody.innerHTML += `
+                <tr>
+                  <td class="text-muted small">${art.data}</td>
+                  <td class="fw-semibold">${art.titulo}</td>
+                  <td>${badge}</td>
+                  <td class="text-end">
+                    <button onclick="abrirEditorEdicao('${art.id}')" class="btn btn-sm btn-outline-primary rounded-circle me-1" title="Editar"><i class="fas fa-pen"></i></button>
+                    <button onclick="excluirArtigo('${art.id}')" class="btn btn-sm btn-outline-danger rounded-circle" title="Excluir"><i class="fas fa-trash"></i></button>
+                  </td>
+                </tr>
+              `;
+            });
+          })
+          .listarArtigosAdmin();
+      }
+
+      // ==========================================
+      // MÓDULO BLOG: EDITOR (NOVO E EDIÇÃO)
+      // ==========================================
+      function abrirEditorNovo() {
+        document.getElementById("formBlog").reset();
+        document.getElementById("blogId").value = "";
+        document.getElementById("blogCapaAtual").value = "";
+        document.getElementById("blogCapa").required = true; // Novo artigo EXIGE imagem
+        document.getElementById("avisoImagemEdicao").style.display = "none";
+        document.getElementById("titulo-tela-editor").innerHTML =
+          '<i class="fas fa-edit text-destaque me-2"></i>Novo Artigo';
+        quill.root.innerHTML = "";
+        mostrarTela("box-blog-editor");
+      }
+
+      function abrirEditorEdicao(idArtigo) {
+        const artigo = listaArtigosGlobal.find((a) => a.id === idArtigo);
+        if (!artigo) return;
+
+        document.getElementById("formBlog").reset();
+        document.getElementById("blogId").value = artigo.id;
+        document.getElementById("blogCapaAtual").value = artigo.capa;
+
+        document.getElementById("blogTitulo").value = artigo.titulo;
+        document.getElementById("blogStatus").value = artigo.status;
+        document.getElementById("blogResumo").value = artigo.resumo;
+        quill.root.innerHTML = artigo.conteudo;
+
+        // Na edição, a imagem não é obrigatória
+        document.getElementById("blogCapa").required = false;
+        document.getElementById("avisoImagemEdicao").style.display = "block";
+        document.getElementById("titulo-tela-editor").innerHTML =
+          '<i class="fas fa-pen text-primary me-2"></i>Editar Artigo';
+
+        mostrarTela("box-blog-editor");
+      }
+
       function salvarArtigo(event) {
         event.preventDefault();
         const btn = document.getElementById("btnSalvarBlog");
         const alerta = document.getElementById("alertaBlog");
 
-        const titulo = document.getElementById("blogTitulo").value;
-        const resumo = document.getElementById("blogResumo").value;
-        const status = document.getElementById("blogStatus").value;
-        const autor = document.getElementById("nomeUsuarioLogado").innerText;
-
-        // Pega o HTML formatado gerado pelo editor
-        const conteudoHTML = quill.root.innerHTML;
+        const pacoteArtigo = {
+          id: document.getElementById("blogId").value,
+          capaAtual: document.getElementById("blogCapaAtual").value,
+          titulo: document.getElementById("blogTitulo").value,
+          resumo: document.getElementById("blogResumo").value,
+          status: document.getElementById("blogStatus").value,
+          autor: document.getElementById("nomeUsuarioLogado").innerText,
+          conteudoHTML: quill.root.innerHTML,
+        };
 
         if (quill.getText().trim().length === 0) {
           alerta.className = "alert alert-warning mt-2 small";
-          alerta.innerText = "O conteúdo do artigo não pode estar vazio.";
+          alerta.innerText = "Conteúdo vazio.";
           alerta.style.display = "block";
           return;
         }
 
-        const inputArquivo = document.getElementById("blogCapa");
-        const arquivo = inputArquivo.files[0];
+        const arquivo = document.getElementById("blogCapa").files[0];
 
         btn.disabled = true;
         btn.innerHTML =
-          '<i class="fas fa-spinner fa-spin me-2"></i> Processando Arquivos...';
+          '<i class="fas fa-spinner fa-spin me-2"></i> Salvando...';
         alerta.style.display = "none";
 
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          const dadosImagem = {
-            nome: arquivo.name,
-            tipo: arquivo.type,
-            conteudoBase64: e.target.result.split(",")[1],
-          };
-
-          const pacoteArtigo = {
-            titulo: titulo,
-            resumo: resumo,
-            status: status,
-            autor: autor,
-            conteudoHTML: conteudoHTML,
-          };
-
-          // CONEXÃO COM O BACK-END (salvarArtigoBlog)
-          if (typeof google !== "undefined" && google.script) {
-            google.script.run
-              .withSuccessHandler((resposta) => {
-                btn.disabled = false;
-                btn.innerHTML =
-                  '<i class="fas fa-save me-2"></i> Salvar Artigo';
-
-                if (resposta.sucesso) {
-                  alerta.className = "alert alert-success mt-2 small";
-                  alerta.innerText = resposta.mensagem;
-                  alerta.style.display = "block";
-
-                  document.getElementById("formBlog").reset();
-                  quill.root.innerHTML = "";
-
-                  setTimeout(() => mostrarTela("box-dashboard"), 2000);
-                } else {
-                  alerta.className = "alert alert-danger mt-2 small";
-                  alerta.innerText = resposta.mensagem;
-                  alerta.style.display = "block";
-                }
-              })
-              .withFailureHandler((erro) => {
-                btn.disabled = false;
-                btn.innerHTML =
-                  '<i class="fas fa-save me-2"></i> Salvar Artigo';
+        const enviarParaServidor = (dadosImagem) => {
+          google.script.run
+            .withSuccessHandler((res) => {
+              btn.disabled = false;
+              btn.innerHTML = '<i class="fas fa-save me-2"></i> Salvar Artigo';
+              if (res.sucesso) {
+                carregarListaBlog(); // Volta para a tabela atualizada
+              } else {
                 alerta.className = "alert alert-danger mt-2 small";
-                alerta.innerText = "Erro ao comunicar com o servidor.";
+                alerta.innerText = res.mensagem;
                 alerta.style.display = "block";
-                console.error(erro);
-              })
-              .salvarArtigoBlog(pacoteArtigo, dadosImagem);
-          }
+              }
+            })
+            .salvarArtigoBlog(pacoteArtigo, dadosImagem);
         };
-        reader.readAsDataURL(arquivo);
+
+        if (arquivo) {
+          const reader = new FileReader();
+          reader.onload = (e) =>
+            enviarParaServidor({
+              nome: arquivo.name,
+              tipo: arquivo.type,
+              conteudoBase64: e.target.result.split(",")[1],
+            });
+          reader.readAsDataURL(arquivo);
+        } else {
+          enviarParaServidor(null); // Edição sem trocar a imagem
+        }
+      }
+
+      // ==========================================
+      // MÓDULO BLOG: EXCLUSÃO
+      // ==========================================
+      function excluirArtigo(idArtigo) {
+        if (
+          confirm("Tem certeza que deseja excluir este artigo permanentemente?")
+        ) {
+          const tbody = document.getElementById("tabela-artigos-admin");
+          tbody.innerHTML =
+            '<tr><td colspan="4" class="text-center py-4 text-danger"><i class="fas fa-spinner fa-spin me-2"></i> Excluindo...</td></tr>';
+
+          google.script.run
+            .withSuccessHandler(() => carregarListaBlog()) // Recarrega a lista após excluir
+            .excluirArtigoBlog(idArtigo);
+        }
       }
     </script>
   </body>

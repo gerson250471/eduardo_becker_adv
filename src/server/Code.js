@@ -418,64 +418,118 @@ function recuperarSenhaEmail(email) {
 }
 
 // =========================================================
-// MÓDULO DO BLOG (Gestão de Artigos)
+// MÓDULO DO BLOG (Gestão e CRUD de Artigos)
 // =========================================================
 
 /**
- * Recebe os dados do front-end, salva a imagem no Drive e os dados na Planilha
+ * Salva um NOVO artigo ou ATUALIZA um existente
  */
 function salvarArtigoBlog(pacoteArtigo, dadosImagem) {
   try {
-    // 1. Tratamento da Imagem de Capa (Salva no Drive)
-    const pastaDestino = DriveApp.getFolderById(ID_PASTA_IMAGENS);
-    
-    // Converte a string Base64 de volta para um arquivo binário (Blob)
-    const blob = Utilities.newBlob(Utilities.base64Decode(dadosImagem.conteudoBase64), dadosImagem.tipo, dadosImagem.nome);
-    const arquivoCapa = pastaDestino.createFile(blob);
-    
-    // Força a permissão de visualização pública para garantir que a imagem apareça no site
-    arquivoCapa.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
-    
-    // Captura a URL pública da imagem recém-criada
-    const urlCapa = arquivoCapa.getUrl(); 
-
-    // 2. Preparação dos Dados para a Planilha
-    const dataAtual = Utilities.formatDate(new Date(), "GMT-3", "dd/MM/yyyy HH:mm:ss");
-    const idUnico = 'ART-' + new Date().getTime(); // Gera um ID único baseado no timestamp atual
-    
-    // 3. Conexão com o Banco de Dados
     const ss = SpreadsheetApp.openById(getBancoDadosId());
     const abaBlog = ss.getSheetByName('Blog');
-    
-    if (!abaBlog) {
-      return { sucesso: false, mensagem: "Aba 'Blog' não encontrada no banco de dados." };
+    if (!abaBlog) return { sucesso: false, mensagem: "Aba 'Blog' não encontrada." };
+
+    let urlCapa = pacoteArtigo.capaAtual || ""; // Se for edição, mantém a capa antiga por padrão
+
+    // Se o usuário enviou uma IMAGEM NOVA, faz o upload para o Drive
+    if (dadosImagem) {
+      const pastaDestino = DriveApp.getFolderById(ID_PASTA_IMAGENS);
+      const blob = Utilities.newBlob(Utilities.base64Decode(dadosImagem.conteudoBase64), dadosImagem.tipo, dadosImagem.nome);
+      const arquivoCapa = pastaDestino.createFile(blob);
+      arquivoCapa.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      urlCapa = arquivoCapa.getUrl(); 
     }
-    
-    // 4. Salva a nova linha com os dados exatos nas 8 colunas que você criou
-    abaBlog.appendRow([
-      idUnico,                // Coluna A (ID)
-      dataAtual,              // Coluna B (Data_Publicacao)
-      pacoteArtigo.autor,     // Coluna C (Autor)
-      pacoteArtigo.titulo,    // Coluna D (Titulo)
-      pacoteArtigo.resumo,    // Coluna E (Resumo)
-      urlCapa,                // Coluna F (Capa_URL)
-      pacoteArtigo.conteudoHTML, // Coluna G (Conteudo_HTML - Texto do Quill)
-      pacoteArtigo.status     // Coluna H (Status)
-    ]);
-    
-    return { sucesso: true, mensagem: "Artigo publicado com sucesso!" };
-    
+
+    const dataAtual = Utilities.formatDate(new Date(), "GMT-3", "dd/MM/yyyy HH:mm:ss");
+
+    // LÓGICA DE ATUALIZAÇÃO (Se tiver ID, é edição)
+    if (pacoteArtigo.id) {
+      const dados = abaBlog.getDataRange().getValues();
+      for (let i = 1; i < dados.length; i++) {
+        if (String(dados[i][0]).trim() === pacoteArtigo.id) {
+          abaBlog.getRange(i + 1, 4).setValue(pacoteArtigo.titulo);     // Coluna D
+          abaBlog.getRange(i + 1, 5).setValue(pacoteArtigo.resumo);     // Coluna E
+          if (dadosImagem) abaBlog.getRange(i + 1, 6).setValue(urlCapa);// Coluna F (Só altera se mandou imagem nova)
+          abaBlog.getRange(i + 1, 7).setValue(pacoteArtigo.conteudoHTML); // Coluna G
+          abaBlog.getRange(i + 1, 8).setValue(pacoteArtigo.status);     // Coluna H
+          return { sucesso: true, mensagem: "Artigo atualizado com sucesso!" };
+        }
+      }
+    } 
+    // LÓGICA DE CRIAÇÃO (Se não tiver ID, é um artigo novo)
+    else {
+      const idUnico = 'ART-' + new Date().getTime();
+      abaBlog.appendRow([
+        idUnico, dataAtual, pacoteArtigo.autor, pacoteArtigo.titulo,
+        pacoteArtigo.resumo, urlCapa, pacoteArtigo.conteudoHTML, pacoteArtigo.status
+      ]);
+      return { sucesso: true, mensagem: "Novo artigo publicado com sucesso!" };
+    }
   } catch (erro) {
     Logger.log("Erro no Blog: " + erro.message);
-    return { sucesso: false, mensagem: "Erro ao salvar o artigo: " + erro.message };
+    return { sucesso: false, mensagem: "Erro ao salvar: " + erro.message };
   }
 }
 
 /**
- * =========================================================
- * BUSCA DE ARTIGOS PARA A VITRINE DO BLOG
- * =========================================================
+ * Lista TODOS os artigos para o Painel Administrativo (incluindo rascunhos)
  */
+function listarArtigosAdmin() {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Blog');
+    if (!aba) return [];
+
+    const dados = aba.getDataRange().getValues();
+    dados.shift(); 
+
+    return dados.map(linha => {
+      let dataFormatada = linha[1];
+      if (dataFormatada instanceof Date) {
+        dataFormatada = Utilities.formatDate(dataFormatada, "GMT-3", "dd/MM/yyyy");
+      } else {
+        dataFormatada = String(dataFormatada).split(' ')[0];
+      }
+
+      return {
+        id: String(linha[0]),
+        data: dataFormatada,
+        autor: String(linha[2]),
+        titulo: String(linha[3]),
+        resumo: String(linha[4]),
+        capa: String(linha[5]),
+        conteudo: String(linha[6]),
+        status: String(linha[7])
+      };
+    }).reverse(); // Os mais novos primeiro
+  } catch (erro) {
+    Logger.log("Erro ao listar artigos admin: " + erro.message);
+    return [];
+  }
+}
+
+/**
+ * Exclui um artigo da planilha pelo ID
+ */
+function excluirArtigoBlog(idArtigo) {
+  try {
+    const ss = SpreadsheetApp.openById(getBancoDadosId());
+    const aba = ss.getSheetByName('Blog');
+    const dados = aba.getDataRange().getValues();
+    
+    for (let i = 1; i < dados.length; i++) {
+      if (String(dados[i][0]).trim() === idArtigo) {
+        aba.deleteRow(i + 1);
+        return { sucesso: true, mensagem: "Artigo excluído permanentemente." };
+      }
+    }
+    return { sucesso: false, mensagem: "Artigo não encontrado." };
+  } catch (erro) {
+    return { sucesso: false, mensagem: "Erro ao excluir: " + erro.message };
+  }
+}
+
 /**
  * =========================================================
  * BUSCA DE ARTIGOS PARA A VITRINE DO BLOG
