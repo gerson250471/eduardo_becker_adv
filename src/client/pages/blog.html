@@ -47,14 +47,14 @@
         z-index: 2;
       }
 
-      /* NOVO: Efeito de hover suave para o título clicável */
+      /* Efeito de hover suave para o título clicável */
       .titulo-link {
         color: inherit;
         text-decoration: none;
         transition: color 0.2s ease;
       }
       .titulo-link:hover {
-        color: #b88e2f; /* Dourado da marca */
+        color: #b88e2f;
       }
     </style>
   </head>
@@ -104,6 +104,9 @@
     <?!= include('scripts'); ?>
 
     <script>
+      // 1. Recebe a URL do servidor de forma segura e guarda numa variável JavaScript pura
+      const BASE_URL = "<?= hostUrl ?>";
+
       // Assim que a página carregar, busca os artigos
       document.addEventListener("DOMContentLoaded", function () {
         if (typeof google !== "undefined" && google.script) {
@@ -132,22 +135,20 @@
         artigos.forEach((artigo) => {
           const dataCurta = artigo.data ? artigo.data.split(" ")[0] : "";
 
-          // NOVO: Criamos a variável do link uma vez só para reutilizar na imagem, título e botão
-          const linkArtigo = `<?= hostUrl ?>?page=artigo_${artigo.id}`;
+          // 2. Constrói o link usando a variável JavaScript limpa
+          const linkArtigo = BASE_URL + "?page=artigo_" + artigo.id;
 
           const cardHTML = `
             <div class="col">
               <div class="card card-blog h-100 bg-white shadow-sm position-relative">
                 <span class="badge-data"><i class="far fa-calendar-alt me-1"></i> ${dataCurta}</span>
                 
-                <!-- NOVO 1: Imagem agora é um link -->
                 <a href="${linkArtigo}" target="_top">
                   <img src="${artigo.capa}" class="card-img-top capa-blog" alt="Capa do Artigo" onerror="this.onerror=null; this.src='https://placehold.co/600x400/eaeaea/b88e2f?text=Sem+Imagem'">
                 </a>
 
                 <div class="card-body d-flex flex-column p-4">
                   
-                  <!-- NOVO 2: Título agora é um link -->
                   <a href="${linkArtigo}" target="_top" class="titulo-link">
                     <h5 class="card-title text-principal fw-bold mb-3">${artigo.titulo}</h5>
                   </a>
@@ -155,7 +156,6 @@
                   <p class="card-text text-muted small flex-grow-1">${artigo.resumo}</p>
                   
                   <div class="mt-3 border-top pt-3 text-end">
-                    <!-- Botão mantido -->
                     <a href="${linkArtigo}" target="_top" class="btn btn-outline-dourado btn-sm fw-semibold rounded-pill px-4">
                       Ler Completo <i class="fas fa-arrow-right ms-1"></i>
                     </a>
