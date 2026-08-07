@@ -148,9 +148,8 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // Captura o ID que vem na URL (Ex: ?page=artigo&id=ART-178611219)
-        const urlParams = new URLSearchParams(window.location.search);
-        const idArtigo = urlParams.get("id");
+        // NOVO: Recebe o ID de forma segura injetado pelo Back-end
+        const idArtigo = "<?= idArtigo ?>";
 
         if (!idArtigo) {
           mostrarErro();

@@ -31,9 +31,10 @@ function setAmbienteHomologacao() {
 
 function doGet(e) {
   var page = e.parameter.page || 'index';
-  var hostUrl = e.parameter.host || 'https://beckereribeiro.com/'; // MÁGICA: Captura o host dinâmico
+  var hostUrl = e.parameter.host || 'https://beckereribeiro.com/'; 
+  var idArtigo = e.parameter.id || ''; // NOVO: O servidor captura o ID da URL
+
   var template;
-  
   try {
     template = HtmlService.createTemplateFromFile('client/pages/' + page);
   } catch (error) {
@@ -41,10 +42,11 @@ function doGet(e) {
     template = HtmlService.createTemplateFromFile('client/pages/index');
   }
   
-  // Repassa as variáveis para o template principal
+  // Repassa as variáveis para as telas (Front-end)
   template.versaoSistema = VERSAO_SISTEMA;
   template.pageAtual = page;
   template.hostUrl = hostUrl; 
+  template.idArtigo = idArtigo; // NOVO: Injeta o ID diretamente na página
   
   return template.evaluate()
     .setTitle('Becker & Ribeiro Advocacia')
