@@ -44,7 +44,7 @@ function doGet(e) {
   var ambiente = PropertiesService.getScriptProperties().getProperty('AMBIENTE');
   
   var hostPadrao = (ambiente === 'PRODUCAO') 
-    ? 'https://beckereribeiro.com/' 
+    ? 'https://beckereribeiroadv.com/' 
     : 'https://beckereribeiroadv.com/homologacao/';
     
   var hostUrl = e.parameter.host || hostPadrao; 
@@ -77,7 +77,7 @@ function include(filename, pageAtual, hostUrl) {
   var t = HtmlService.createTemplateFromFile('client/components/' + filename);
   t.versaoSistema = VERSAO_SISTEMA;
   t.pageAtual = pageAtual || 'index'; 
-  t.hostUrl = hostUrl || 'https://beckereribeiro.com/'; // Repassa o host para o header/footer
+  t.hostUrl = hostUrl || 'https://beckereribeiroadv.com/'; // Repassa o host para o header/footer
   return t.evaluate().getContent();
 }
 
