@@ -35,7 +35,6 @@ function doGet(e) {
   var idArtigo = e.parameter.id || ''; 
   
   // 🛡️ PROTEÇÃO DE ROTEAMENTO (Bypass do Wrapper)
-  // Se o site principal cortar a variável '&id=', nós a lemos direto do 'page'
   if (rawPage.indexOf('artigo_') === 0) {
     page = 'artigo';
     idArtigo = rawPage.replace('artigo_', '');
@@ -43,6 +42,7 @@ function doGet(e) {
   
   // Identifica o ambiente para gerar os links corretos e evitar fugas de ambiente
   var ambiente = PropertiesService.getScriptProperties().getProperty('AMBIENTE');
+  
   var hostPadrao = (ambiente === 'PRODUCAO') 
     ? 'https://beckereribeiro.com/' 
     : 'https://beckereribeiroadv.com/homologacao/';
@@ -51,6 +51,7 @@ function doGet(e) {
   
   var template;
   try {
+    // Garante o mapeamento correto da pasta de páginas
     template = HtmlService.createTemplateFromFile('client/pages/' + page);
   } catch (error) {
     page = 'index';
@@ -61,7 +62,7 @@ function doGet(e) {
   template.versaoSistema = VERSAO_SISTEMA;
   template.pageAtual = page;
   template.hostUrl = hostUrl; 
-  template.idArtigo = idArtigo; // Injeta o ID da URL resgatado
+  template.idArtigo = idArtigo;
   
   return template.evaluate()
     .setTitle('Becker & Ribeiro Advocacia')
