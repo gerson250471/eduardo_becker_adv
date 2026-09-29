@@ -75,13 +75,13 @@
           </p>
         </div>
 
-        <!-- Formulário do Anexo -->
+        <!-- Formulário -->
         <div class="row justify-content-center">
           <div class="col-lg-8">
             <div class="card card-calc shadow-lg p-4 p-md-5">
               <form id="formCalculadora" onsubmit="processarCalculo(event)">
                 <div class="row g-3">
-                  <!-- Modalidade de Crédito Atualizada -->
+                  <!-- Modalidade de Crédito -->
                   <div class="col-md-6">
                     <label class="form-label fw-bold small text-dark"
                       >Modalidade do crédito</label
@@ -107,22 +107,24 @@
                     </select>
                   </div>
 
-                  <!-- Data da Contratação -->
+                  <!-- Mês e Ano da Contratação (Padrão BACEN) -->
                   <div class="col-md-6">
                     <label class="form-label fw-bold small"
-                      >Data da contratação</label
+                      >Mês e ano da contratação</label
                     >
                     <input
                       type="text"
                       class="form-control py-2"
                       id="dataContratacao"
-                      placeholder="DD/MM/AAAA"
-                      maxlength="10"
+                      placeholder="MM/AAAA"
+                      maxlength="7"
+                      pattern="(0[1-9]|1[0-2])\/[0-9]{4}"
+                      title="Informe o mês e o ano no formato MM/AAAA (ex: 04/2026)"
                       oninput="mascaraData(this)"
                       required
                     />
                     <small class="text-muted" style="font-size: 0.75rem"
-                      >Use a data de assinatura do contrato.</small
+                      >Informe o mês e o ano de assinatura do contrato.</small
                     >
                   </div>
 
@@ -249,12 +251,20 @@
     <?!= include('scripts'); ?>
 
     <script>
-      // Máscara para formatar a data automaticamente (DD/MM/AAAA)
+      // Máscara para formatar Mês e Ano automaticamente (MM/AAAA)
       function mascaraData(input) {
         let v = input.value.replace(/\D/g, "");
         if (v.length > 2) v = v.replace(/^(\d{2})(\d)/g, "$1/$2");
-        if (v.length > 5) v = v.replace(/(\d{2})\/(\d{2})(\d)/g, "$1/$2/$3");
         input.value = v;
+      }
+
+      // Formata valores numéricos para moeda (R$)
+      function formatarMoeda(valor) {
+        const num = parseFloat(valor) || 0;
+        return num.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        });
       }
 
       function processarCalculo(event) {
@@ -272,10 +282,14 @@
 
         const dataDigitada = document.getElementById("dataContratacao").value;
         const partesData = dataDigitada.split("/");
-        const dataFormatadaBanco =
-          partesData.length === 3
-            ? `${partesData[2]}-${partesData[1]}-${partesData[0]}`
-            : "";
+
+        // Converte MM/AAAA para AAAA-MM-01 para manter compatibilidade com o Code.js
+        let dataFormatadaBanco = "";
+        if (partesData.length === 2) {
+          dataFormatadaBanco = `${partesData[1]}-${partesData[0]}-01`;
+        } else if (partesData.length === 3) {
+          dataFormatadaBanco = `${partesData[2]}-${partesData[1]}-${partesData[0]}`;
+        }
 
         const dados = {
           modalidade: document.getElementById("modalidade").value,
@@ -326,6 +340,38 @@
           .toFixed(2)
           .replace(".", ",");
 
+        const parcelaOrigFmt = formatarMoeda(res.parcelaOriginal);
+        const novaParcelaFmt = formatarMoeda(res.novaParcela);
+        const ecoMensalFmt = formatarMoeda(res.economiaMensal);
+        const ecoTotalFmt = formatarMoeda(res.economiaTotal);
+
+        // Bloco visual da estimativa de recálculo (Exibido nos cenários B e C)
+        const blocoRecalculoHTML = `
+          <div class="bg-white p-3 rounded-3 border mb-3 text-dark shadow-sm">
+            <h6 class="fw-bold mb-3" style="color: #0b3d2e;">
+              <i class="fas fa-calculator me-1"></i> Estimativa de Recálculo (Padrão BACEN):
+            </h6>
+            <div class="row g-2 small">
+              <div class="col-sm-6">
+                <span class="text-muted">Parcela Atual:</span><br>
+                <strong class="text-danger fs-6"><del>${parcelaOrigFmt}</del></strong>
+              </div>
+              <div class="col-sm-6">
+                <span class="text-muted">Nova Parcela Revisada:</span><br>
+                <strong class="text-success fs-5">${novaParcelaFmt}</strong>
+              </div>
+              <div class="col-sm-6 mt-2 pt-2 border-top">
+                <span class="text-muted">Diferença no Mês:</span><br>
+                <strong class="text-dark fs-6">- ${ecoMensalFmt} /mês</strong>
+              </div>
+              <div class="col-sm-6 mt-2 pt-2 border-top">
+                <span class="text-muted">Economia Total Estimada:</span><br>
+                <strong class="text-success fs-6">${ecoTotalFmt}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+
         // CENÁRIO A
         if (res.cenario === "A") {
           const msgWhats = encodeURIComponent(
@@ -336,11 +382,11 @@
           div.style.border = "1px solid #c3e6cb";
 
           div.innerHTML = `
-      <h5 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-2"></i>Taxa dentro da Média</h5>
-      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
-      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
-      <p class="mb-3">Seu contrato está dentro da taxa média. Mesmo assim precisa de ajuda de um advogado?</p>
-    `;
+            <h5 class="fw-bold text-success mb-2"><i class="fas fa-check-circle me-2"></i>Taxa dentro da Média</h5>
+            <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
+            <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
+            <p class="mb-3">Seu contrato está dentro da taxa média. Mesmo assim precisa de ajuda de um advogado?</p>
+          `;
           const botaoA = document.createElement("a");
           botaoA.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoA.target = "_blank";
@@ -355,18 +401,19 @@
         // CENÁRIO B
         else if (res.cenario === "B") {
           const msgWhats = encodeURIComponent(
-            "Meu contrato está com juros acima da taxa média, como posso reduzir?",
+            `Olá! Fiz a simulação no site e meu contrato está com juros acima da média (${taxaEncFmt}% a.m. contra ${taxaBacFmt}% do BACEN). A parcela pode cair de ${parcelaOrigFmt} para ${novaParcelaFmt} (economia total de ${ecoTotalFmt}). Como posso reduzir?`,
           );
           div.className = "p-4 rounded-4 shadow-sm text-dark";
           div.style.backgroundColor = "#ffe8cc";
           div.style.border = "1px solid #ffd8a8";
 
           div.innerHTML = `
-      <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
-      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
-      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
-      <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
-    `;
+            <h5 class="fw-bold text-dark mb-2"><i class="fas fa-exclamation-circle me-2 text-warning"></i>Contrato acima da Média</h5>
+            <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
+            <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
+            <p class="mb-3">Identificamos que a taxa cobrada está acima da média praticada pelo mercado.</p>
+            ${blocoRecalculoHTML}
+          `;
           const botaoB = document.createElement("a");
           botaoB.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoB.target = "_blank";
@@ -381,18 +428,19 @@
         // CENÁRIO C
         else if (res.cenario === "C") {
           const msgWhats = encodeURIComponent(
-            "meu contrato está com juros MUITO acima da taxa média, como posso reduzir?",
+            `Olá! Fiz a simulação no site e meu contrato está com juros MUITO acima da média (${taxaEncFmt}% a.m. contra ${taxaBacFmt}% do BACEN). A parcela pode cair de ${parcelaOrigFmt} para ${novaParcelaFmt} (economia total de ${ecoTotalFmt}). Como posso reduzir?`,
           );
           div.className = "p-4 rounded-4 shadow-sm text-dark";
           div.style.backgroundColor = "#f8d7da";
           div.style.border = "1px solid #f5c6cb";
 
           div.innerHTML = `
-      <h5 class="fw-bold text-danger mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Contrato MUITO acima da Média</h5>
-      <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
-      <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
-      <p class="mb-3">Atenção: A taxa do seu contrato ultrapassa em mais de 50% a taxa média autorizada pelo Banco Central.</p>
-    `;
+            <h5 class="fw-bold text-danger mb-2"><i class="fas fa-exclamation-triangle me-2"></i>Contrato MUITO acima da Média</h5>
+            <p class="mb-1"><strong>Sua taxa calculada:</strong> ${taxaEncFmt}% a.m.</p>
+            <p class="mb-3"><strong>Média do BACEN no período:</strong> ${taxaBacFmt}% a.m.</p>
+            <p class="mb-3">Atenção: A taxa do seu contrato ultrapassa em mais de 50% a taxa média autorizada pelo Banco Central.</p>
+            ${blocoRecalculoHTML}
+          `;
           const botaoC = document.createElement("a");
           botaoC.href = `https://wa.me/5551995840635?text=${msgWhats}`;
           botaoC.target = "_blank";
