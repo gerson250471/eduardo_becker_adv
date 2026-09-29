@@ -201,6 +201,7 @@ function obterAvaliacoesFallback() {
 /**
  * Consulta a taxa média do BACEN e classifica o contrato do cliente
  */
+
 function calcularJurosAbusivos(dados) {
   try {
     const { modalidade, dataContratacao, valorFinanciado, numParcelas, valorParcela } = dados;
@@ -258,7 +259,7 @@ function calcularJurosAbusivos(dados) {
       cenario = 'C';
     }
 
-    // 6. NOVO: Recálculo da Prestação Justa (Padrão Calculadora do Cidadão BACEN)
+    // 6. Recálculo da Prestação Justa (Padrão Calculadora do Cidadão BACEN)
     const iBacen = parseFloat(taxaMediaBacen.toFixed(2)) / 100;
     const fatorPrice = (iBacen * Math.pow(1 + iBacen, numParcelas)) / (Math.pow(1 + iBacen, numParcelas) - 1);
     const novaParcela = valorFinanciado * fatorPrice;
@@ -271,12 +272,16 @@ function calcularJurosAbusivos(dados) {
       taxaContrato: taxaContratoEncontrada,
       taxaBacen: taxaMediaBacen.toFixed(2),
       cenario: cenario,
-      // Novos dados enviados para o ecrã da calculadora:
       parcelaOriginal: parseFloat(valorParcela).toFixed(2),
       novaParcela: novaParcela > 0 ? novaParcela.toFixed(2) : "0.00",
       economiaMensal: diferencaMensal > 0 ? diferencaMensal.toFixed(2) : "0.00",
       economiaTotal: diferencaTotal > 0 ? diferencaTotal.toFixed(2) : "0.00"
     };
+
+  } catch (erro) {
+    Logger.log("Erro no cálculo: " + erro.toString());
+    return { sucesso: false, mensagem: "Não foi possível realizar a análise. Verifique os valores informados." };
+  }
 }
 
 // =========================================================
